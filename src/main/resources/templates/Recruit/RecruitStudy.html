@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>스터디원 모집</h1>
+    <ul>
+        <li><a href="recruitstudy/writeform">글쓰기</a> </li>
+    </ul>
+    <div th:each="recruitStudy : ${list}">
+        <div th:if="${recruitStudy.personnel} != ${recruitStudy.recruitingPersonnel}">
+            모집중
+        </div>
+        <div th:if="${recruitStudy.personnel} == ${recruitStudy.recruitingPersonnel}">
+            모집완료
+        </div>
+        <div>
+            사진
+            <img th:src="${recruitStudy.image}">
+        </div>
+        <div th:text="${recruitStudy.title}">
+            제목
+        </div>
+        <div th:text="${recruitStudy.writer}">
+            닉네임
+        </div>
+    </div>
+</body>
+</html>
