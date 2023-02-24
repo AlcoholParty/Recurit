@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>멘토모집</h1>
+    <ul>
+        <li><a href="recruitmentorlist/writeform">글쓰기</a></li>
+        <li><a href="/">메인으로</a> </li>
+    </ul>
+    <div style="border: 1px solid black" th:each="recruitMentor : ${list}">
+        <span th:text="${recruitMentor.studyType}"></span>
+        <span> | </span>
+        <span th:if="${recruitMentor.recruiting} == '0'">모집중</span>
+        <span th:if="${recruitMentor.recruiting} != '0'">모집완료</span>
+        <span> | </span>
+        <span th:text="${recruitMentor.title}"></span>
+        <span> | </span>
+        <span th:text="${recruitMentor.writer}"></span>
+    </div>
+</body>
+</html>

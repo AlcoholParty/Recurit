@@ -7,9 +7,12 @@
 <body>
     <h1>스터디원 모집</h1>
     <ul>
+        <li><a href="recruitmentorlist">멘토모집</a> </li>
+        <li><a href="recruitmenteelist">멘티모집</a> </li>
         <li><a href="recruitstudy/writeform">글쓰기</a> </li>
+        <li><a href="/">메인으로</a> </li>
     </ul>
-    <div th:each="recruitStudy : ${list}">
+    <div style="border: 1px solid black" th:each="recruitStudy : ${list}">
         <div th:if="${recruitStudy.personnel} != ${recruitStudy.recruitingPersonnel}">
             모집중
         </div>
