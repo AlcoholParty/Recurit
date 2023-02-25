@@ -12,23 +12,34 @@
         <li><a href="recruitstudy/writeform">글쓰기</a> </li>
         <li><a href="/">메인으로</a> </li>
     </ul>
-    <div style="border: 1px solid black" th:each="recruitStudy : ${list}">
-        <div th:if="${recruitStudy.personnel} != ${recruitStudy.recruitingPersonnel}">
-            모집중
+    <form  th:each="recruitStudy : ${list}">
+        <div style="border: 1px solid black">
+            <input type="hidden" name="idx" th:value="${recruitStudy.idx}">
+            <div th:if="${recruitStudy.recruiting} == '0'">
+                모집중
+            </div>
+            <div th:if="${recruitStudy.recruiting} != '0'">
+                모집완료
+            </div>
+            <div>
+                사진
+                <img th:src="${recruitStudy.image}">
+            </div>
+            <div name="title" th:text="${recruitStudy.title}">
+                제목
+            </div>
+            <div th:text="${recruitStudy.writer}">
+                닉네임
+            </div>
+            <input type="button" value="상세보기" onclick="change(this.form);">
         </div>
-        <div th:if="${recruitStudy.personnel} == ${recruitStudy.recruitingPersonnel}">
-            모집완료
-        </div>
-        <div>
-            사진
-            <img th:src="${recruitStudy.image}">
-        </div>
-        <div th:text="${recruitStudy.title}">
-            제목
-        </div>
-        <div th:text="${recruitStudy.writer}">
-            닉네임
-        </div>
-    </div>
+    </form>
 </body>
+<script>
+    function change(f){
+        f.action = '/recruitstudy/post';
+        f.method = "GET";
+        f.submit();
+    }
+</script>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 import java.util.List;
@@ -41,4 +42,52 @@ public class RecruitStudyController {
         return "redirect:/recruitstudy";
     }
 
+    @GetMapping("/post")
+    public String changeForm(Long idx, Model model, Principal principal) {
+        String emailId = principal.getName();
+        String nickname = recruitStudyService.returnNickname(emailId);
+        model.addAttribute("nickname", nickname);
+        RecruitStudy recruitStudy = recruitStudyService.findRecruitStudy(idx);
+        model.addAttribute("recruitStudy", recruitStudy);
+        return "Recruit/RecruitStudyPost";
+    }
+
+    @GetMapping("/post/like")
+    @ResponseBody
+    public String like(RecruitStudy recruitStudy) {
+        String res = "no";
+        RecruitStudy afterRecruitStudy = recruitStudyService.likeUpdate(recruitStudy);
+        if(afterRecruitStudy != null) {
+            res = String.valueOf(afterRecruitStudy.getStudyLike());
+        }
+        return res;
+    }
+
+    @GetMapping("/post/modifyform")
+    public String modifyForm(RecruitStudy recruitStudy, Model model) {
+        //저기서 idx뽑고
+        //그다음 글 변경 가능한 곳으로 이동
+        RecruitStudy recruitStudy1 = recruitStudyService.findRecruitStudy(recruitStudy.getIdx());
+        model.addAttribute("recruitStudy", recruitStudy1);
+        return "Recruit/RecruitStudyModifyForm";
+    }
+
+    @GetMapping("/post/delete")
+    @ResponseBody
+    public String delete(RecruitStudy recruitStudy){
+        String res = "no";
+        RecruitStudy deleteRecruitStudy = recruitStudyService.findRecruitStudy(recruitStudy.getIdx());
+        res = recruitStudyService.delete(deleteRecruitStudy);
+        return res;
+    }
+
+    @GetMapping("/post/modifyform/modify")
+    @ResponseBody
+    public String modify(RecruitStudy recruitStudy){
+        String res = "no";
+        if(recruitStudy != null) {
+            res = recruitStudyService.modify(recruitStudy);
+        }
+        return res;
+    }
 }

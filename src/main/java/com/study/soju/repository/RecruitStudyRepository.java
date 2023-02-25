@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Object> {
-
+    RecruitStudy findByIdx(Long idx);
 }

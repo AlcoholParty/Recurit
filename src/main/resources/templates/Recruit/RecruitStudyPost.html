@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>스터디원 모집</h1>
+    <input type="hidden" id="idx" th:value="${recruitStudy.idx}">
+    <ul>
+        <li>
+            <span th:if="${recruitStudy.recruiting} == '0'">모집중</span>
+            <span th:if="${recruitStudy.recruiting} != '0'">모집완료</span>
+        </li>
+        <li>
+            <span>제목 : </span>
+            <input type="text" th:value="${recruitStudy.title}" readonly>
+        </li>
+        <li>
+            <span>작성자 : </span>
+            <input type="text" th:value="${recruitStudy.writer}" readonly>
+        </li>
+        <li>
+            <div>분야</div>
+            <input type="text" th:value="${recruitStudy.studyType}" readonly>
+<!--            <select name="studyType">-->
+<!--                <option value="">선택하던가 말던가</option>-->
+<!--                <option th:if="${recruitStudy.studyType} == 'computer'" value="computer" selected>컴퓨터</option>-->
+<!--                <option th:if="${recruitStudy.studyType} != 'computer'" value="computer">컴퓨터</option>-->
+<!--                <option th:if="${recruitStudy.studyType} == 'design'" value="design" selected>디자인</option>-->
+<!--                <option th:if="${recruitStudy.studyType} != 'design'" value="design">디자인</option>-->
+<!--                <option th:if="${recruitStudy.studyType} == 'education'" value="education" selected>교육</option>-->
+<!--                <option th:if="${recruitStudy.studyType} != 'education'" value="education">교육</option>-->
+<!--            </select>-->
+        </li>
+        <li>
+            <div>모집인원</div>
+            <input type="text" name="personnel" th:value="${recruitStudy.personnel} + 명" readonly>
+<!--            <select name="personnel">-->
+<!--                <option value="">선택하던지 말던지</option>-->
+<!--                <option th:if="${recruitStudy.personnel} == '1'" value="1" selected>1</option>-->
+<!--                <option th:if="${recruitStudy.personnel} != '1'" value="1" >1</option>-->
+<!--                <option th:if="${recruitStudy.personnel} == '2'" value="2" selected>2</option>-->
+<!--                <option th:if="${recruitStudy.personnel} != '2'" value="2" >2</option>-->
+<!--                <option th:if="${recruitStudy.personnel} == '3'" value="3" selected>3</option>-->
+<!--                <option th:if="${recruitStudy.personnel} != '3'" value="3" >3</option>-->
+<!--                <option th:if="${recruitStudy.personnel} == '4'" value="4" selected>4</option>-->
+<!--                <option th:if="${recruitStudy.personnel} != '4'" value="4" >4</option>-->
+<!--            </select>-->
+        </li>
+        <li>
+            <div>스터디소개</div>
+            <textarea th:text="${recruitStudy.studyIntro}" readonly></textarea>
+        </li>
+        <li>
+            <form>
+                <input type="button" value="찜하기" onclick="like(this.form);">
+                <input type="hidden" id="studyLikeCheck" name="studyLikeCheck" th:value="${recruitStudy.studyLikeCheck}">
+                <input type="hidden" id="studyLike" name="studyLike" th:value="${recruitStudy.studyLike}">
+                <span id="studyLikeView" th:text="${recruitStudy.studyLike}">숫자</span>
+            </form>
+        </li>
+        <li th:if="${nickname} == ${recruitStudy.writer}">
+            <input type="button" value="글 수정" th:onclick="|location.href='@{post/modifyform(idx=${recruitStudy.idx})}'|">
+            <input type="button" value="글 삭제" onclick="writeDelete();">
+        </li>
+        <li th:if="${emailId} != ${recruitStudy.writer}">
+            <input type="button" value="신청하기">
+        </li>
+    </ul>
+</body>
+<script src="/js/httpRequest.js"></script>
+<script>
+    function writeDelete() {
+        let idx = document.getElementById("idx").value;
+        let url = "/recruitstudy/post/delete";
+        let param = "idx=" + idx;
+        sendRequest(url, param, deleteStudy, "GET");
+    }
+    function deleteStudy() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("삭제실패");
+                return;
+            } else {
+                alert("삭제 성공");
+                location.href="/recruitstudy";
+            }
+        }
+    }
+    function like(f){
+        //숫자를 하나 증가시키고
+        //좋아요를 눌렀는지 확인하는 숫자를 1로 변경
+        //이후 httpRequest로 값을 보내서 db에 저장시키면 되겠지?
+        //그 전에 조건문으로 좋아요를 눌렀는지 확인하는 숫자를 미리 보고 결정하기
+        let studyLikeCheck = f.studyLikeCheck.value;
+        let studyLike = parseInt(f.studyLike.value);
+        let idx = document.getElementById("idx").value;
+        if(studyLikeCheck == '1') {
+            studyLikeCheck -= 1;
+            studyLike -= 1;
+            let url = "/recruitstudy/post/like";
+            param = "idx=" + idx +
+                    "&studyLikeCheck=" + studyLikeCheck +
+                    "&studyLike=" + studyLike;
+            sendRequest(url, param, res, "GET");
+        } else {
+            studyLikeCheck += 1;
+            studyLike += 1;
+            let url = "/recruitstudy/post/like";
+            let param = "idx=" + idx +
+                        "&studyLikeCheck=" + studyLikeCheck +
+                        "&studyLike=" + studyLike;
+            sendRequest(url, param, res, "GET");
+        }
+    }
+    function res(){
+        let studyLikeCheck = document.getElementById("studyLikeCheck");
+        let studyLike = document.getElementById("studyLike");
+        let studyLikeView = document.getElementById("studyLikeView");
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == "no") {
+                if(studyLikeCheck.value == 1) {
+                    alert("좋아요 취소 실패");
+                } else {
+                    alert("좋아요 실패");
+                }
+            } else {
+                if(studyLikeCheck.value == 1) {
+                    studyLikeCheck.value = 0;
+                    studyLike.value = parseInt(data);
+                    studyLikeView.innerHTML = data;
+                    alert("좋아요 취소");
+                }else{
+                    studyLikeCheck.value = 1;
+                    studyLike.value = parseInt(data);
+                    studyLikeView.innerHTML = data;
+                    alert("좋아요!");
+                }
+            }
+        }
+    }
+</script>
+</html>
