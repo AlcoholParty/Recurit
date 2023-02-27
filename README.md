@@ -59,3 +59,31 @@
 ### 1. 스터디원 구하기 글 수정작업
 ### 2. 스터디원 구하기 글 삭제작업
 ### 3. 스터디원 구하기 글에서 좋아요 버튼 누르기 (다시 수정해야함 -> db를 추가해서 어떤 유저가 클릭헀는지도 확인 해야함)
+
+## 02/27
+### 1. 스터디원 구하기 찜기능 작업
+### 1-1. 스터디원 구하기 찜하기
+### 1-2. 스터디원 구하기 찜 취소하기
+### 추가된 데이터베이스
+### RecruitStudyLike
+	CREATE TABLE RecruitStudyLike(
+		recruitStudyLikeIdx INT PRIMARY KEY, #좋아요 번호
+		recruitStudyIdx INT NOT NULL, #스터디 게시글 번호
+		nickname VARCHAR(50) NOT NULL #유저 닉네임
+	);
+
+
+### 2. 스터디원 구하기 댓글 기능 작업
+### 2-1. 스터디원 구하기 댓글 추가
+### 2-2. 스터디원 구하기 댓글 삭제
+### 2-3. 스터디원 구하기 댓글 수정
+### 추가된 데이터베이스
+### RecruitStudyComment
+	CREATE TABLE RecruitStudyComment(
+		commentIdx INT PRIMARY KEY, #댓글 번호
+		recruitStudyIdx INT NOT NULL, #스터디 게시글 번호
+		writeDate VARCHAR(10) NOT NULL, #댓글 작성시간
+		writer VARCHAR(50) NOT NULL, #댓글 작성유저 닉네임
+		comment VARCHAR(500) NOT NULL, # 댓글 내용
+		deleteCheck INT NOT NULL, # 댓글 삭제 확인
+	);
