@@ -1,8 +1,9 @@
 package com.study.soju.service;
 
-import com.study.soju.entity.Member;
-import com.study.soju.entity.RecruitStudy;
+import com.study.soju.entity.*;
 import com.study.soju.repository.MemberRepository;
+import com.study.soju.repository.RecruitStudyCommentRepository;
+import com.study.soju.repository.RecruitStudyLikeRepository;
 import com.study.soju.repository.RecruitStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,12 @@ import java.util.List;
 public class RecruitStudyService {
     @Autowired
     RecruitStudyRepository recruitStudyRepository;
+
+    @Autowired
+    RecruitStudyLikeRepository recruitStudyLikeRepository;
+
+    @Autowired
+    RecruitStudyCommentRepository recruitStudyCommentRepository;
 
     @Autowired
     MemberRepository memberRepository;
@@ -40,14 +47,35 @@ public class RecruitStudyService {
         return recruitStudy;
     }
 
+    //check 값을 확인해서 변경하기위한 메서드
+    public int likeCheck(String nickname, Long idx) {
+        int count = 0;
+        RecruitStudyLike recruitStudyLike = recruitStudyLikeRepository.findByRecruitStudyIdxAndNickname(idx, nickname);
+        if(recruitStudyLike != null){
+            count = 1;
+        }
+        return count;
+    }
+
     //좋아요값 수정하기
-    public RecruitStudy likeUpdate(RecruitStudy recruitStudy) {
+    public RecruitStudy likeUpdate(RecruitStudy recruitStudy, RecruitStudyLike recruitStudyLike) {
+        //idx를 가지고 어떤 글인지 확인하고
+        //글의 객체를 가지고옴
         Long idx = recruitStudy.getIdx();
-        int studyLike = recruitStudy.getStudyLike();
-        int studyLikeCheck = recruitStudy.getStudyLikeCheck();
         RecruitStudy beforeRecruitStudy = recruitStudyRepository.findByIdx(idx);
+        //좋아요 db 수정
+        //studyIdx 와 nickname 으로 객체가 있는지 조회한뒤 null 값이면 값이 없는것 이므로 데이터 저장
+        //만약 값이 있다면 그 저장된 정보를 삭제
+        RecruitStudyLike recruitStudyLike1 = recruitStudyLikeRepository.findByRecruitStudyIdxAndNickname(recruitStudyLike.getRecruitStudyIdx(), recruitStudyLike.getNickname());
+        if (recruitStudyLike1 == null) {
+            recruitStudyLikeRepository.save(recruitStudyLike);
+        }else {
+            //저장이 되어있는거니깐 데이터베이스 삭제
+            recruitStudyLikeRepository.delete(recruitStudyLike1);
+        }
+        //like 의 갯수는 studyIdx 로 저장된 정보들 갯수를 카운트 해서 like 에 저장
+        int studyLike = recruitStudyLikeRepository.countByRecruitStudyIdx(recruitStudyLike.getRecruitStudyIdx());
         beforeRecruitStudy.setStudyLike(studyLike);
-        beforeRecruitStudy.setStudyLikeCheck(studyLikeCheck);
         RecruitStudy afterRecruitStudy = recruitStudyRepository.save(beforeRecruitStudy);
         return afterRecruitStudy;
     }
@@ -80,6 +108,47 @@ public class RecruitStudyService {
     public String delete(RecruitStudy recruitStudy){
         recruitStudyRepository.delete(recruitStudy);
         return "yes";
+    }
+
+    //전체 댓글 리스트
+    public List<RecruitStudyComment> findCommentList(){
+        List<RecruitStudyComment> recruitStudyCommentList = recruitStudyCommentRepository.findAll();
+        return recruitStudyCommentList;
+    }
+
+    //댓글 저장
+    public String saveComment(RecruitStudyComment recruitStudyComment) {
+        String res = "no";
+        if (recruitStudyComment != null){
+            recruitStudyCommentRepository.save(recruitStudyComment);
+            res = "yes";
+        }
+        return res;
+    }
+
+    //댓글 삭제
+    public String deleteComment(Long commentIdx){
+        String res = "no";
+        RecruitStudyComment deleteComment = recruitStudyCommentRepository.findByCommentIdx(commentIdx);
+        if(deleteComment != null){
+            deleteComment.setDeleteCheck(1);
+            recruitStudyCommentRepository.save(deleteComment);
+            res = "yes";
+        }
+        return res;
+    }
+
+    //댓글 수정
+    public String modifyComment(RecruitStudyComment recruitStudyComment){
+        String res = "no";
+        RecruitStudyComment beforeModify = recruitStudyCommentRepository.findByCommentIdx(recruitStudyComment.getCommentIdx());
+        if(beforeModify != null){
+            beforeModify.setComment(recruitStudyComment.getComment());
+            beforeModify.setWriteDate(recruitStudyComment.getWriteDate());
+            recruitStudyCommentRepository.save(beforeModify);
+            res = "yes";
+        }
+        return res;
     }
 
 }
