@@ -21,6 +21,7 @@ public class RecruitStudyController {
     @Autowired
     RecruitStudyService recruitStudyService;
 
+
     //스터디원 모집 메인페이지
     @GetMapping("")
     public String recruitStudy(Model model) {
@@ -58,12 +59,14 @@ public class RecruitStudyController {
         RecruitStudy recruitStudy = recruitStudyService.findRecruitStudy(idx);
         //카운트 변수를 닉네임과 idx 가 일치하는 내용이 있으면 본인이 좋아요를 한것과 같으니깐 1을 보내주고
         //내용이 없으면 0을 보내준다
-        int count = recruitStudyService.likeCheck(nickname, idx);
+        long memberIdx = recruitStudyService.returnIdx(emailId);
+        model.addAttribute("memberIdx", memberIdx);
+        int count = recruitStudyService.likeCheck(idx, memberIdx);
         recruitStudy.setStudyLikeCheck(count);
         model.addAttribute("recruitStudy", recruitStudy);
 
         //댓글 리스트 보내주기
-        List<RecruitStudyComment> recruitStudyCommentList = recruitStudyService.findCommentList();
+        List<RecruitStudyComment> recruitStudyCommentList = recruitStudyService.findCommentList(idx);
         model.addAttribute("list", recruitStudyCommentList);
 
         return "Recruit/RecruitStudyPost";

@@ -13,10 +13,10 @@ import javax.persistence.*;
 public class RecruitStudyComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentIdx;
+    private Long idx;
 
     @Column(nullable = false)
-    private Long recruitStudyIdx;
+    private Long commentIdx;
 
     @Column(length = 10, nullable = false)
     private String writeDate;

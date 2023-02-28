@@ -36,22 +36,27 @@ public class RecruitStudyService {
         return nickname;
     }
 
+    public long returnIdx(String emailId) {
+        Member member = memberRepository.findByEmailId(emailId);
+        return member.getIdx();
+    }
+
     //리스트로 전체내용 뽑아오기
     public List<RecruitStudy> recruitStudyListAll() {
         return recruitStudyRepository.findAll();
     }
 
     //title 로 객체 찾기
-    public RecruitStudy findRecruitStudy(Long idx) {
+    public RecruitStudy findRecruitStudy(long idx) {
         RecruitStudy recruitStudy = recruitStudyRepository.findByIdx(idx);
         return recruitStudy;
     }
 
     //check 값을 확인해서 변경하기위한 메서드
-    public int likeCheck(String nickname, Long idx) {
+    public int likeCheck(long likeIdx, long memberIdx) {
         int count = 0;
-        RecruitStudyLike recruitStudyLike = recruitStudyLikeRepository.findByRecruitStudyIdxAndNickname(idx, nickname);
-        if(recruitStudyLike != null){
+        RecruitStudyLike recruitStudyLike = recruitStudyLikeRepository.findByLikeIdxAndMemberIdx(likeIdx, memberIdx);
+        if(recruitStudyLike != null) {
             count = 1;
         }
         return count;
@@ -61,12 +66,11 @@ public class RecruitStudyService {
     public RecruitStudy likeUpdate(RecruitStudy recruitStudy, RecruitStudyLike recruitStudyLike) {
         //idx를 가지고 어떤 글인지 확인하고
         //글의 객체를 가지고옴
-        Long idx = recruitStudy.getIdx();
-        RecruitStudy beforeRecruitStudy = recruitStudyRepository.findByIdx(idx);
+        //RecruitStudy beforeRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
         //좋아요 db 수정
-        //studyIdx 와 nickname 으로 객체가 있는지 조회한뒤 null 값이면 값이 없는것 이므로 데이터 저장
+        //studyIdx 와 memberIdx 로 객체가 있는지 조회한뒤 null 값이면 값이 없는것 이므로 데이터 저장
         //만약 값이 있다면 그 저장된 정보를 삭제
-        RecruitStudyLike recruitStudyLike1 = recruitStudyLikeRepository.findByRecruitStudyIdxAndNickname(recruitStudyLike.getRecruitStudyIdx(), recruitStudyLike.getNickname());
+        RecruitStudyLike recruitStudyLike1 = recruitStudyLikeRepository.findByLikeIdxAndMemberIdx(recruitStudyLike.getLikeIdx(), recruitStudyLike.getMemberIdx());
         if (recruitStudyLike1 == null) {
             recruitStudyLikeRepository.save(recruitStudyLike);
         }else {
@@ -74,9 +78,12 @@ public class RecruitStudyService {
             recruitStudyLikeRepository.delete(recruitStudyLike1);
         }
         //like 의 갯수는 studyIdx 로 저장된 정보들 갯수를 카운트 해서 like 에 저장
-        int studyLike = recruitStudyLikeRepository.countByRecruitStudyIdx(recruitStudyLike.getRecruitStudyIdx());
-        beforeRecruitStudy.setStudyLike(studyLike);
-        RecruitStudy afterRecruitStudy = recruitStudyRepository.save(beforeRecruitStudy);
+        //int studyLike = recruitStudyLikeRepository.countByLikeIdx(recruitStudyLike.getLikeIdx());
+        //beforeRecruitStudy.setStudyLike(studyLike);
+        //RecruitStudy afterRecruitStudy = recruitStudyRepository.save(beforeRecruitStudy);
+        //RecruitStudy afterRecruitStudy = recruitStudyLikeRepository.updateStudyLikeCount(recruitStudyLike.getLikeIdx());
+        recruitStudyLikeRepository.updateStudyLikeCount(recruitStudy.getIdx());
+        RecruitStudy afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
         return afterRecruitStudy;
     }
 
@@ -105,21 +112,21 @@ public class RecruitStudyService {
     }
 
     //내용 삭제
-    public String delete(RecruitStudy recruitStudy){
+    public String delete(RecruitStudy recruitStudy) {
         recruitStudyRepository.delete(recruitStudy);
         return "yes";
     }
 
     //전체 댓글 리스트
-    public List<RecruitStudyComment> findCommentList(){
-        List<RecruitStudyComment> recruitStudyCommentList = recruitStudyCommentRepository.findAll();
+    public List<RecruitStudyComment> findCommentList(long commentIdx) {
+        List<RecruitStudyComment> recruitStudyCommentList = recruitStudyCommentRepository.findByCommentIdx(commentIdx);
         return recruitStudyCommentList;
     }
 
     //댓글 저장
     public String saveComment(RecruitStudyComment recruitStudyComment) {
         String res = "no";
-        if (recruitStudyComment != null){
+        if (recruitStudyComment != null) {
             recruitStudyCommentRepository.save(recruitStudyComment);
             res = "yes";
         }
@@ -127,10 +134,10 @@ public class RecruitStudyService {
     }
 
     //댓글 삭제
-    public String deleteComment(Long commentIdx){
+    public String deleteComment(long idx) {
         String res = "no";
-        RecruitStudyComment deleteComment = recruitStudyCommentRepository.findByCommentIdx(commentIdx);
-        if(deleteComment != null){
+        RecruitStudyComment deleteComment = recruitStudyCommentRepository.findByIdx(idx);
+        if(deleteComment != null) {
             deleteComment.setDeleteCheck(1);
             recruitStudyCommentRepository.save(deleteComment);
             res = "yes";
@@ -139,10 +146,10 @@ public class RecruitStudyService {
     }
 
     //댓글 수정
-    public String modifyComment(RecruitStudyComment recruitStudyComment){
+    public String modifyComment(RecruitStudyComment recruitStudyComment) {
         String res = "no";
-        RecruitStudyComment beforeModify = recruitStudyCommentRepository.findByCommentIdx(recruitStudyComment.getCommentIdx());
-        if(beforeModify != null){
+        RecruitStudyComment beforeModify = recruitStudyCommentRepository.findByIdx(recruitStudyComment.getIdx());
+        if(beforeModify != null) {
             beforeModify.setComment(recruitStudyComment.getComment());
             beforeModify.setWriteDate(recruitStudyComment.getWriteDate());
             recruitStudyCommentRepository.save(beforeModify);

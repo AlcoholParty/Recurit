@@ -59,7 +59,7 @@
     <ul th:each="comment : ${list}" style="border:2px solid black;">
         <div th:if="${comment.deleteCheck} == '0'">
             <form>
-                <input type="hidden" name="commentIdx" th:value="${comment.commentIdx}">
+                <input type="hidden" name="idx" th:value="${comment.idx}">
                 <li>
                     <span>작성일자 : </span>
                     <input type="text" name="writeDate" th:value="${comment.writeDate}" readonly>
@@ -90,7 +90,7 @@
 <script th:inline="javascript">
 //////////////////////////////////////////////////////댓글 수정////////////////////////////////////////////////////////////////
     function commentModify(f){
-        let commentIdx = f.commentIdx.value;
+        let idx = f.idx.value;
         let comment = f.comment.value;
         const TIME_ZONE = 3240 * 10000; // 현재 시간을 설정하는 변수
         let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
@@ -99,7 +99,7 @@
             return;
         }
         let url = "/recruitstudy/post/comment/modify"
-        let param = "commentIdx=" + commentIdx +
+        let param = "idx=" + idx +
                     "&comment=" + comment +
                     "&writeDate=" + today;
         sendRequest(url, param, commentModifyRes, "GET");
@@ -128,9 +128,9 @@
 
 //////////////////////////////////////////////////////댓글 삭제////////////////////////////////////////////////////////////////
     function commentDelete(f) {
-        let commentIdx = f.commentIdx.value;
+        let idx = f.idx.value;
         let url = "/recruitstudy/post/comment/delete"
-        let param = "commentIdx=" + commentIdx;
+        let param = "idx=" + idx;
         sendRequest(url, param, deleteRes, "GET");
     }
     function deleteRes(){
@@ -154,7 +154,7 @@
         let idx = document.getElementById("idx").value;
         let comment = document.getElementById("comment").value;
         let url = "/recruitstudy/post/comment"
-        let param = "recruitStudyIdx=" + idx +
+        let param = "commentIdx=" + idx +
                     "&writeDate=" + today +
                     "&writer=" + [[${nickname}]] +
                     "&comment=" + comment;
@@ -202,10 +202,9 @@
         let url = "/recruitstudy/post/like";
         param = "idx=" + idx +
                 "&studyLike=" + studyLike +
-                "&recruitStudyIdx=" + idx +
-                "&nickname=" + [[${nickname}]];
+                "&likeIdx=" + idx +
+                "&memberIdx=" + [[${memberIdx}]];
         sendRequest(url, param, likeRes, "GET");
-
     }
     function likeRes(){
         let studyLikeCheck = document.getElementById("studyLikeCheck");
