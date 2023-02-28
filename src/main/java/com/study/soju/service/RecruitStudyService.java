@@ -71,6 +71,7 @@ public class RecruitStudyService {
         //studyIdx 와 memberIdx 로 객체가 있는지 조회한뒤 null 값이면 값이 없는것 이므로 데이터 저장
         //만약 값이 있다면 그 저장된 정보를 삭제
         RecruitStudyLike recruitStudyLike1 = recruitStudyLikeRepository.findByLikeIdxAndMemberIdx(recruitStudyLike.getLikeIdx(), recruitStudyLike.getMemberIdx());
+        System.out.println(recruitStudyLike1);
         if (recruitStudyLike1 == null) {
             recruitStudyLikeRepository.save(recruitStudyLike);
         }else {
@@ -82,7 +83,7 @@ public class RecruitStudyService {
         //beforeRecruitStudy.setStudyLike(studyLike);
         //RecruitStudy afterRecruitStudy = recruitStudyRepository.save(beforeRecruitStudy);
         //RecruitStudy afterRecruitStudy = recruitStudyLikeRepository.updateStudyLikeCount(recruitStudyLike.getLikeIdx());
-        recruitStudyLikeRepository.updateStudyLikeCount(recruitStudy.getIdx());
+        recruitStudyRepository.updateStudyLikeCount(recruitStudy.getIdx());
         RecruitStudy afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
         return afterRecruitStudy;
     }

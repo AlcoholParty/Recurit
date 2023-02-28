@@ -13,4 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Object> {
     RecruitStudy findByIdx(long idx);
 
+    @Modifying
+    @Query("UPDATE RecruitStudy rs SET rs.studyLike = (SELECT COUNT(rsl) FROM RecruitStudyLike rsl WHERE rsl.likeIdx = :idx) WHERE rs.idx = :idx")
+    void updateStudyLikeCount(@Param("idx") long idx);
+
 }

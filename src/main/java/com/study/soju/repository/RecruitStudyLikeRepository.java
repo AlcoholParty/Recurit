@@ -28,8 +28,6 @@ public interface RecruitStudyLikeRepository extends JpaRepository<RecruitStudyLi
     //@Modifying
     //@Query("UPDATE RecruitStudy rs SET rs.studyLike = (SELECT COUNT(rsl) FROM RecruitStudyLike rsl WHERE rsl.recruitStudy.idx = :studyIdx) WHERE rs.idx = :studyIdx")
     //RecruitStudy updateStudyLikeCount(@Param("studyIdx") Long studyIdx);
-    @Modifying
-    @Query("UPDATE RecruitStudy rs SET rs.studyLike = (SELECT COUNT(rsl) FROM RecruitStudyLike rsl WHERE rsl.recruitStudy.idx = :studyIdx) WHERE rs.idx = :studyIdx")
-    void updateStudyLikeCount(@Param("studyIdx") long studyIdx);
+
 
 }
