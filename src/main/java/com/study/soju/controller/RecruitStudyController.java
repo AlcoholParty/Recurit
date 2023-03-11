@@ -5,10 +5,13 @@ import com.study.soju.entity.RecruitStudyComment;
 import com.study.soju.entity.RecruitStudyLike;
 import com.study.soju.service.RecruitStudyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
@@ -24,8 +27,10 @@ public class RecruitStudyController {
 
     //스터디원 모집 메인페이지
     @GetMapping("")
-    public String recruitStudy(Model model) {
-        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll();
+    //value 에 페이지 라는 파라미터를 url 에서 가져온다. 만약 그 값이 없다면 0 으로 기본값을 잡아준다. 그값은 int 타입의 page 에 넣어준다.
+    public String recruitStudy(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        //현재 페이지의 숫자를 가지고 그 값에 맞는 리스트를 끌어온다.
+        Page<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(page);
         model.addAttribute("list", recruitStudyList);
         return "Recruit/RecruitStudy";
     }
@@ -129,7 +134,7 @@ public class RecruitStudyController {
     @ResponseBody
     public String commentDelete(RecruitStudyComment recruitStudyComment){
         String res = "no";
-        res = recruitStudyService.deleteComment(recruitStudyComment.getCommentIdx());
+        res = recruitStudyService.deleteComment(recruitStudyComment.getIdx());
         return res;
     }
 

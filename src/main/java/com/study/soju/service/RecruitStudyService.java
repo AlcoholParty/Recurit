@@ -6,8 +6,13 @@ import com.study.soju.repository.RecruitStudyCommentRepository;
 import com.study.soju.repository.RecruitStudyLikeRepository;
 import com.study.soju.repository.RecruitStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,8 +47,14 @@ public class RecruitStudyService {
     }
 
     //리스트로 전체내용 뽑아오기
-    public List<RecruitStudy> recruitStudyListAll() {
-        return recruitStudyRepository.findAll();
+    public Page<RecruitStudy> recruitStudyListAll(int page) { // page 파라미터를 받아서 현재 어느 페이지에 있는지 알려줌
+        //게시물을 역순으로 보여주기 위해서 Sort.Order 객체로 이루어진 리스트를 생성
+        List<Sort.Order> sorts = new ArrayList<>();
+        //이후 리스트에 idx 를 역순으로 정렬한다.
+        sorts.add(Sort.Order.desc("idx"));
+        //이후 파라미터값에 Sort.by(소트 리스트) 를 추가해서 page 리스트를 받아온다.
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts)); // 총 5개의 값들을 보여줄것이고 현재 페이지 위치를 알려줌
+        return recruitStudyRepository.findAll(pageable); // 그 정보를 가진 pageable 객체를 가지고 findAll 로 리스트를 가져운다(Page 객체지만 리스트와 비슷함)
     }
 
     //title 로 객체 찾기
