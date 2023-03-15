@@ -11,16 +11,26 @@
         <li><a href="/">메인으로</a> </li>
     </ul>
     <div style="border: 1px solid black" th:each="recruitMentor : ${list}">
-        <span th:text="${recruitMentor.studyType}"></span>
-        <span> | </span>
-        <span th:if="${recruitMentor.recruiting} == '0'">모집중</span>
-        <span th:if="${recruitMentor.recruiting} != '0'">모집완료</span>
-        <span> | </span>
-        <span th:text="${recruitMentor.title}"></span>
-        <span> | </span>
-        <span th:text="${recruitMentor.writer}"></span>
-        <span> | </span>
-        <span><input type="button" value="상세보기" onclick=""> </span>
+        <form>
+            <input type="hidden" th:value="${recruitMentor.idx}" name="idx">
+            <span th:text="${recruitMentor.studyType}"></span>
+            <span> | </span>
+            <span th:if="${recruitMentor.recruiting} == '0'">모집중</span>
+            <span th:if="${recruitMentor.recruiting} != '0'">모집완료</span>
+            <span> | </span>
+            <span th:text="${recruitMentor.title}"></span>
+            <span> | </span>
+            <span th:text="${recruitMentor.writer}"></span>
+            <span> | </span>
+            <span><input type="button" value="상세보기" onclick="change(this.form);"></span>
+        </form>
     </div>
 </body>
+<script>
+    function change(f){
+        f.action = '/recruitmentorlist/post';
+        f.method = "GET";
+        f.submit();
+    }
+</script>
 </html>
