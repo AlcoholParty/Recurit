@@ -104,36 +104,36 @@
 ### 추가된 데이터베이스 
 ### RecruitMentorLike
 	CREATE TABLE RecruitMentorLike(
-		idx BIGINT PRIMARY KEY,
-		likeIdx BIGINT NOT NULL,
-		memberIdx BIGINT NOT NULL
+		idx BIGINT PRIMARY KEY, #좋아요 번호
+		likeIdx BIGINT NOT NULL, #멘토 게시글 번호
+		memberIdx BIGINT NOT NULL #유저 번호
 	);
 ### RecruitMenteeLike
 	CREATE TABLE RecruitMenteeLike(
-		idx BIGINT PRIMARY KEY,
-		likeIdx BIGINT NOT NULL,
-		memberIdx BIGINT NOT NULL
+		idx BIGINT PRIMARY KEY, #좋아요 번호
+		likeIdx BIGINT NOT NULL, #멘티 게시글 번호
+		memberIdx BIGINT NOT NULL #유저 번호
 	);
 ### 4. 멘토, 멘티 찜 기능
 ### 추가된 데이터베이스
 ### RecruitMentorComment
 	CREATE TABLE RecruitMentorComment(
-		idx BIGINT PRIMARY KEY,
-		commentIdx BIGINT NOT NULL,
-		writeDate VARCHAR NOT NULL,
-		writer VARCHAR NOT NULL,
-		comment VARCHAR NOT NULL,
-		deleteCheck INT NOT NULL
+		idx BIGINT PRIMARY KEY, #댓글 번호
+		commentIdx BIGINT NOT NULL, #멘토 게시글 번호
+		writeDate VARCHAR NOT NULL, #댓글 작성시간
+		writer VARCHAR NOT NULL, #댓글 작성유저 닉네임
+		comment VARCHAR NOT NULL, #댓글 내용
+		deleteCheck INT NOT NULL #댓글 삭제 확인
 	);
 
 ### RecruitMenteeComment
 	CREATE TABLE RecruitMentorComment(
-		idx BIGINT PRIMARY KEY,
-		commentIdx BIGINT NOT NULL,
-		writeDate VARCHAR NOT NULL,
-		writer VARCHAR NOT NULL,
-		comment VARCHAR NOT NULL,
-		deleteCheck INT NOT NULL
+		idx BIGINT PRIMARY KEY, #댓글 번호
+		commentIdx BIGINT NOT NULL, #멘티 게시글 번호
+		writeDate VARCHAR NOT NULL, #댓글 작성시간
+		writer VARCHAR NOT NULL, #댓글 작성유저 닉네임
+		comment VARCHAR NOT NULL, #댓글 내용
+		deleteCheck INT NOT NULL #댓글 삭제 확인
 	);
 
 ### 수정된 데이터베이스
@@ -141,7 +141,7 @@
 	CREATE TABLE RecruitStudyLike(
 		idx BIGINT PRIMARY KEY, #좋아요 번호
 		likeIdx BIGINT NOT NULL, #스터디 게시글 번호
-		memberIdx BIGINT NOT NULL #유저 닉네임
+		memberIdx BIGINT NOT NULL #유저 번호
 	);
 	
 ### RecruitStudyComment
