@@ -10,5 +10,6 @@ import java.util.List;
 public interface RecruitStudyCommentRepository extends JpaRepository<RecruitStudyComment, Object> {
     RecruitStudyComment findByIdx(long idx);
 
+    int countByCommentIdx(long commentIdx);
     List<RecruitStudyComment> findByCommentIdx(long commentIdx);
 }
