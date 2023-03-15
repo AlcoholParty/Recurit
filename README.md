@@ -96,3 +96,60 @@
 ### 1.스터디원 구하기 페이징 처리
 ### 페이징 처리를 통해서 많은 값들을 처리할 때 눈에 보기 쉽게 정렬
 ### 이후 리스트를 가져올 때 최근 게시물부터 보여주기 위해서 역순으로 정렬한 뒤 리스트를 사용
+
+## 03/15
+### 1. 멘토, 멘티 구하기 글 수정
+### 2. 멘토, 멘티 구하기 글 삭제
+### 3. 멘토, 멘티 좋아요 기능
+### 추가된 데이터베이스 
+### RecruitMentorLike
+	CREATE TABLE RecruitMentorLike(
+		idx BIGINT PRIMARY KEY,
+		likeIdx BIGINT NOT NULL,
+		memberIdx BIGINT NOT NULL
+	);
+### RecruitMenteeLike
+	CREATE TABLE RecruitMenteeLike(
+		idx BIGINT PRIMARY KEY,
+		likeIdx BIGINT NOT NULL,
+		memberIdx BIGINT NOT NULL
+	);
+### 4. 멘토, 멘티 찜 기능
+### 추가된 데이터베이스
+### RecruitMentorComment
+	CREATE TABLE RecruitMentorComment(
+		idx BIGINT PRIMARY KEY,
+		commentIdx BIGINT NOT NULL,
+		writeDate VARCHAR NOT NULL,
+		writer VARCHAR NOT NULL,
+		comment VARCHAR NOT NULL,
+		deleteCheck INT NOT NULL
+	);
+
+### RecruitMenteeComment
+	CREATE TABLE RecruitMentorComment(
+		idx BIGINT PRIMARY KEY,
+		commentIdx BIGINT NOT NULL,
+		writeDate VARCHAR NOT NULL,
+		writer VARCHAR NOT NULL,
+		comment VARCHAR NOT NULL,
+		deleteCheck INT NOT NULL
+	);
+
+### 수정된 데이터베이스
+### RecruitStudyLike
+	CREATE TABLE RecruitStudyLike(
+		idx BIGINT PRIMARY KEY, #좋아요 번호
+		likeIdx BIGINT NOT NULL, #스터디 게시글 번호
+		memberIdx BIGINT NOT NULL #유저 닉네임
+	);
+	
+### RecruitStudyComment
+	CREATE TABLE RecruitStudyComment(
+		idx BIGINT PRIMARY KEY, #댓글 번호
+		commentIdx BIGINT NOT NULL, #스터디 게시글 번호
+		writeDate VARCHAR(10) NOT NULL, #댓글 작성시간
+		writer VARCHAR(50) NOT NULL, #댓글 작성유저 닉네임
+		comment VARCHAR(500) NOT NULL, # 댓글 내용
+		deleteCheck INT NOT NULL, # 댓글 삭제 확인
+	);
