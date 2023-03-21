@@ -112,15 +112,18 @@ public class RecruitMenteeService {
     }
 
     //글 좋아요 눌렀는지 확인하기
-    public RecruitMentee likeUpdate(RecruitMentee recruitMentee, RecruitMenteeLike recruitMenteeLike) {
+    public RecruitMentee likeUpdate(RecruitMenteeLike recruitMenteeLike) {
         RecruitMenteeLike recruitMenteeLike1 = recruitMenteeLikeRepository.findByLikeIdxAndMemberIdx(recruitMenteeLike.getLikeIdx(), recruitMenteeLike.getMemberIdx());
+        RecruitMentee afterRecruitMentee = null;
         if (recruitMenteeLike1 == null) {
             recruitMenteeLikeRepository.save(recruitMenteeLike);
+            recruitMenteeRepository.updateMenteeLikeCount(recruitMenteeLike.getLikeIdx());
+            afterRecruitMentee = recruitMenteeRepository.findByIdx(recruitMenteeLike.getLikeIdx());
         }else {
             recruitMenteeLikeRepository.delete(recruitMenteeLike1);
+            recruitMenteeRepository.updateMenteeLikeCount(recruitMenteeLike1.getLikeIdx());
+            afterRecruitMentee = recruitMenteeRepository.findByIdx(recruitMenteeLike1.getLikeIdx());
         }
-        recruitMenteeRepository.updateMenteeLikeCount(recruitMentee.getIdx());
-        RecruitMentee afterRecruitMentee = recruitMenteeRepository.findByIdx(recruitMentee.getIdx());
         return afterRecruitMentee;
     }
 

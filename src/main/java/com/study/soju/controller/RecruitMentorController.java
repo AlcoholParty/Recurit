@@ -96,9 +96,9 @@ public class RecruitMentorController {
     //글 좋아요
     @GetMapping("/post/like")
     @ResponseBody
-    public String like(RecruitMentor recruitMentor, RecruitMentorLike recruitMentorLike) {
+    public String like(RecruitMentorLike recruitMentorLike) {
         String res = "no";
-        RecruitMentor afterRecruitMentor = recruitMentorService.likeUpdate(recruitMentor, recruitMentorLike);
+        RecruitMentor afterRecruitMentor = recruitMentorService.likeUpdate(recruitMentorLike);
         if(afterRecruitMentor != null) {
             res = String.valueOf(afterRecruitMentor.getStudyLike());
         }

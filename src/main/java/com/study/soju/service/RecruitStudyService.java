@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -28,6 +28,18 @@ public class RecruitStudyService {
 
     @Autowired
     MemberRepository memberRepository;
+
+    //페이징을 위한 전체 게시물 갯수 반환하기
+    public int rowTotal() {
+        //전체 카운트 갯수를 반환하느것은 long 타입이기때문에 int 로 형변환을 해준다.
+        return Long.valueOf(recruitStudyRepository.count()).intValue();
+    }
+
+    public List<RecruitStudy> recruitStudyListAll(HashMap<String, Integer> map) {
+        List<RecruitStudy> recruitStudyList = recruitStudyRepository.findRecruitStudyList(map.get("start"), map.get("end"));
+        System.out.println(recruitStudyList);
+        return recruitStudyList;
+    }
 
     //글쓴내용 저장
     public void writeRecruitStudy(RecruitStudy recruitStudy) {
@@ -46,16 +58,19 @@ public class RecruitStudyService {
         return member.getIdx();
     }
 
-    //리스트로 전체내용 뽑아오기
-    public Page<RecruitStudy> recruitStudyListAll(int page) { // page 파라미터를 받아서 현재 어느 페이지에 있는지 알려줌
-        //게시물을 역순으로 보여주기 위해서 Sort.Order 객체로 이루어진 리스트를 생성
-        //List<Sort.Order> sorts = new ArrayList<>();
-        //이후 리스트에 idx 를 역순으로 정렬한다.
-        //sorts.add(Sort.Order.desc("idx"));
-        //이후 파라미터값에 Sort.by(소트 리스트) 를 추가해서 page 리스트를 받아온다.
-        Pageable pageable = PageRequest.of(page, 5, Sort.by("studyLike").descending().and(Sort.by("title"))); // 총 5개의 값들을 보여줄것이고 현재 페이지 위치를 알려줌
-        return recruitStudyRepository.findAll(pageable); // 그 정보를 가진 pageable 객체를 가지고 findAll 로 리스트를 가져운다(Page 객체지만 리스트와 비슷함)
-    }
+//    //리스트로 전체내용 뽑아오기
+//    이건 Page 클래스를 이용하는 방식
+//    public Page<RecruitStudy> recruitStudyListAll(int page) { // page 파라미터를 받아서 현재 어느 페이지에 있는지 알려줌
+//        //게시물을 역순으로 보여주기 위해서 Sort.Order 객체로 이루어진 리스트를 생성
+//        //List<Sort.Order> sorts = new ArrayList<>();
+//        //이후 리스트에 idx 를 역순으로 정렬한다.
+//        //sorts.add(Sort.Order.desc("idx"));
+//        //이후 파라미터값에 Sort.by(소트 리스트) 를 추가해서 page 리스트를 받아온다.
+//        //맨처음에 studyLike로 정렬
+//        Pageable pageable = PageRequest.of(page, 2, Sort.by("idx")); // 총 5개의 값들을 보여줄것이고 현재 페이지 위치를 알려줌
+//        Page<RecruitStudy> recruitStudyList = recruitStudyRepository.findAll(pageable);
+//        return recruitStudyList; // 그 정보를 가진 pageable 객체를 가지고 findAll 로 리스트를 가져운다(Page 객체지만 리스트와 비슷함)
+//    }
 
     //title 로 객체 찾기
     public RecruitStudy findRecruitStudy(long idx) {
@@ -74,7 +89,7 @@ public class RecruitStudyService {
     }
 
     //좋아요값 수정하기
-    public RecruitStudy likeUpdate(RecruitStudy recruitStudy, RecruitStudyLike recruitStudyLike) {
+    public RecruitStudy likeUpdate(RecruitStudyLike recruitStudyLike) {
         //idx를 가지고 어떤 글인지 확인하고
         //글의 객체를 가지고옴
         //RecruitStudy beforeRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
@@ -82,20 +97,22 @@ public class RecruitStudyService {
         //studyIdx 와 memberIdx 로 객체가 있는지 조회한뒤 null 값이면 값이 없는것 이므로 데이터 저장
         //만약 값이 있다면 그 저장된 정보를 삭제
         RecruitStudyLike recruitStudyLike1 = recruitStudyLikeRepository.findByLikeIdxAndMemberIdx(recruitStudyLike.getLikeIdx(), recruitStudyLike.getMemberIdx());
-        System.out.println(recruitStudyLike1);
+        RecruitStudy afterRecruitStudy = null;
         if (recruitStudyLike1 == null) {
             recruitStudyLikeRepository.save(recruitStudyLike);
+            recruitStudyRepository.updateStudyLikeCount(recruitStudyLike.getLikeIdx());
+            afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudyLike.getLikeIdx());
         }else {
             //저장이 되어있는거니깐 데이터베이스 삭제
             recruitStudyLikeRepository.delete(recruitStudyLike1);
+            recruitStudyRepository.updateStudyLikeCount(recruitStudyLike1.getLikeIdx());
+            afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudyLike1.getLikeIdx());
         }
         //like 의 갯수는 studyIdx 로 저장된 정보들 갯수를 카운트 해서 like 에 저장
         //int studyLike = recruitStudyLikeRepository.countByLikeIdx(recruitStudyLike.getLikeIdx());
         //beforeRecruitStudy.setStudyLike(studyLike);
         //RecruitStudy afterRecruitStudy = recruitStudyRepository.save(beforeRecruitStudy);
         //RecruitStudy afterRecruitStudy = recruitStudyLikeRepository.updateStudyLikeCount(recruitStudyLike.getLikeIdx());
-        recruitStudyRepository.updateStudyLikeCount(recruitStudy.getIdx());
-        RecruitStudy afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
         return afterRecruitStudy;
     }
 

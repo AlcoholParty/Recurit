@@ -4,9 +4,9 @@ import com.study.soju.entity.RecruitStudy;
 import com.study.soju.entity.RecruitStudyComment;
 import com.study.soju.entity.RecruitStudyLike;
 import com.study.soju.service.RecruitStudyService;
+import com.study.soju.util.PageSetup;
+import com.study.soju.util.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -30,8 +31,26 @@ public class RecruitStudyController {
     //value 에 페이지 라는 파라미터를 url 에서 가져온다. 만약 그 값이 없다면 0 으로 기본값을 잡아준다. 그값은 int 타입의 page 에 넣어준다.
     public String recruitStudy(Model model, @RequestParam(value="page", defaultValue="0") int page) {
         //현재 페이지의 숫자를 가지고 그 값에 맞는 리스트를 끌어온다.
-        Page<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(page);
+        //페이징 처리
+        int nowPage = 1;
+        //만약 페이지값이 있다면 nowPage 값을 파라미터로 넘어온 page 값으로 변경
+        if(page != 0) {
+            nowPage = page;
+        }
+        // 한 페이지에 표시되는 게시물의 시작번호와 끝번호를 계산
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        //전체 열의 갯수를 가지고온다.
+        int rowTotal = recruitStudyService.rowTotal();
+        //페이징 처리를 위해 맵을 이용해서 리스트 가져오기
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map);
         model.addAttribute("list", recruitStudyList);
+        //페이징 처리를 위해 url, 이동할 페이지번호, 전체 열의 갯수, 페이징을 위해 설정을 잡아둔 값들을 가지고 HTML 에 작성해줄 내용을 생성한다.
+        String pageMenu = Paging.getPaging("recruitstudy", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
         return "Recruit/RecruitStudy";
     }
 
@@ -80,9 +99,9 @@ public class RecruitStudyController {
     //스터디원 모집 글 상세보기 좋아요기능
     @GetMapping("/post/like")
     @ResponseBody
-    public String like(RecruitStudy recruitStudy, RecruitStudyLike recruitStudyLike) {
+    public String like(RecruitStudyLike recruitStudyLike) {
         String res = "no";
-        RecruitStudy afterRecruitStudy = recruitStudyService.likeUpdate(recruitStudy, recruitStudyLike);
+        RecruitStudy afterRecruitStudy = recruitStudyService.likeUpdate(recruitStudyLike);
         if(afterRecruitStudy != null) {
             res = String.valueOf(afterRecruitStudy.getStudyLike());
         }

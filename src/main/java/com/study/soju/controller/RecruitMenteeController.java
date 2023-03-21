@@ -65,9 +65,9 @@ public class RecruitMenteeController {
     //멘티 글 좋아요
     @GetMapping("/post/like")
     @ResponseBody
-    public String like(RecruitMentee recruitMentee, RecruitMenteeLike recruitMenteeLike) {
+    public String like(RecruitMenteeLike recruitMenteeLike) {
         String res = "no";
-        RecruitMentee afterRecruitMentee = recruitMenteeService.likeUpdate(recruitMentee, recruitMenteeLike);
+        RecruitMentee afterRecruitMentee = recruitMenteeService.likeUpdate(recruitMenteeLike);
         if(afterRecruitMentee != null) {
             res = String.valueOf(afterRecruitMentee.getStudyLike());
         }

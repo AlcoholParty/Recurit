@@ -24,4 +24,9 @@ public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Obje
     @Query("UPDATE RecruitStudy rs SET rs.studyLike = (SELECT COUNT(rsl) FROM RecruitStudyLike rsl WHERE rsl.likeIdx = :idx) WHERE rs.idx = :idx")
     void updateStudyLikeCount(@Param("idx") long idx);
 
+    //idx 를 역순으로 정렬한 이후 거기서 페이징 처리 하기
+    @Modifying
+    @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY idx DESC)AS ranking FROM RecruitStudy)AS ranking WHERE ranking BETWEEN :start AND :end", nativeQuery = true)
+    List<RecruitStudy> findRecruitStudyList(@Param("start") int start, @Param("end") int end);
+
 }

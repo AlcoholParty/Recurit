@@ -32,28 +32,42 @@
                 닉네임
             </div>
             <input type="button" value="상세보기" onclick="change(this.form);">
+            <div th:text="${recruitStudy.studyIntro}">
+                내용
+            </div>
         </div>
     </form>
     <!-- 페이징처리 시작 -->
     <!-- page.isEmpty : 페이지의 존재 여부(게시물이 있으면 false, 없으면 true) -->
     <!-- 만약 게시물이 있다면 -->
-    <div th:if="${!list.isEmpty()}">
+<!--    <div th:if="${!list.isEmpty()}">-->
         <!-- 만약 이전 페이지가 존재한다면 이전 버튼을 생성, onclick 시 이동하는 url 작성 -->
-        <input type="button" value="이전" th:if="${list.hasPrevious}" th:onclick="|location.href='@{?(page=${list.number-1})}'|">
+<!--        <input type="button" value="이전" th:if="${list.hasPrevious}" th:onclick="|location.href='@{?(page=${list.number-1})}'|">-->
         <!-- page의 숫자만큼 input 버튼 생성, 저 if 문은 앞뒤로 5개씩만 보이게 설정 -->
-        <span th:each="page: ${#numbers.sequence(0, list.totalPages-1)}" th:if="${page >= list.number-5 and page <= list.number+5}">
-            <!-- value 값은 사용자가 보는 값이기 때문에 0부터 시작하는 page 에 1을 추가해서 보여준다. onclick 시 이동하는 url 작성 -->
-            <input type="button" th:value="${page} + 1" th:onclick="|location.href='@{?(page=${page})}'|">
-        </span>
+<!--        <input type="button" th:value="${#numbers.formatInteger(count/5)}" th:onclick="|location.href='@{?(page=${count})}'|">-->
+<!--        <input type="button" th:value="${count} + 2" th:onclick="|location.href='@{?(page=${count} + 1)}'|">-->
+<!--        <input type="button" th:value="${count} + 3" th:onclick="|location.href='@{?(page=${count} + 2)}'|">-->
+<!--        <input type="button" th:value="${count} + 4" th:onclick="|location.href='@{?(page=${count} + 3)}'|">-->
+<!--        <input type="button" th:value="${count} + 5" th:onclick="|location.href='@{?(page=${count} + 4)}'|">-->
+<!--        <span th:each="page: ${#numbers.sequence(0, list.totalPages-1)}" th:if="${page >= list.number and page <= list.number+4}">-->
+<!--            &lt;!&ndash; value 값은 사용자가 보는 값이기 때문에 0부터 시작하는 page 에 1을 추가해서 보여준다. onclick 시 이동하는 url 작성 &ndash;&gt;-->
+<!--            <input type="button" th:value="${page} + 1" th:onclick="|location.href='@{?(page=${page})}'|">-->
+<!--        </span>-->
         <!-- 만약 다음 페이지가 존재한다면 다음 버튼을 생성, onclick 시 이동하는 url 작성 -->
-        <input type="button" value="다음" th:if="${list.hasNext}" th:onclick="|location.href='@{?(page=${list.number+1})}'|">
+<!--        <input type="button" value="다음" th:if="${list.hasNext}" th:onclick="|location.href='@{?(page=${list.number+1})}'|">-->
+<!--    </div>-->
+    <div th:utext="${pageMenu}">
+
     </div>
 </body>
-<script>
+<script th:inline="javascript">
     function change(f){
         f.action = '/recruitstudy/post';
         f.method = "GET";
         f.submit();
+    }
+    function noPage() {
+        alert("더이상 이동할 페이지가 없습니다.");
     }
 </script>
 </html>

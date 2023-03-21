@@ -109,15 +109,18 @@ public class RecruitMentorService {
     }
 
     //좋아요값 수정하기
-    public RecruitMentor likeUpdate(RecruitMentor recruitMentor, RecruitMentorLike recruitMentorLike) {
+    public RecruitMentor likeUpdate(RecruitMentorLike recruitMentorLike) {
         RecruitMentorLike recruitMentorLike1 = recruitMentorLikeRepository.findByLikeIdxAndMemberIdx(recruitMentorLike.getLikeIdx(), recruitMentorLike.getMemberIdx());
+        RecruitMentor afterRecruitMentor = null;
         if (recruitMentorLike1 == null) {
             recruitMentorLikeRepository.save(recruitMentorLike);
+            recruitMentorRepository.updateMentorLikeCount(recruitMentorLike.getLikeIdx());
+            afterRecruitMentor = recruitMentorRepository.findByIdx(recruitMentorLike.getLikeIdx());
         }else {
             recruitMentorLikeRepository.delete(recruitMentorLike1);
+            recruitMentorRepository.updateMentorLikeCount(recruitMentorLike1.getLikeIdx());
+            afterRecruitMentor = recruitMentorRepository.findByIdx(recruitMentorLike1.getLikeIdx());
         }
-        recruitMentorRepository.updateMentorLikeCount(recruitMentor.getIdx());
-        RecruitMentor afterRecruitMentor = recruitMentorRepository.findByIdx(recruitMentor.getIdx());
         return afterRecruitMentor;
     }
 

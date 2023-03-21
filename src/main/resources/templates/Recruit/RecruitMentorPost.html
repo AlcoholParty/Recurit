@@ -194,8 +194,7 @@
         let studyLike = parseInt(f.studyLike.value);
         let idx = document.getElementById("idx").value;
         let url = "/recruitmentorlist/post/like";
-        param = "idx=" + idx +
-                "&studyLike=" + studyLike +
+        param = "&studyLike=" + studyLike +
                 "&likeIdx=" + idx +
                 "&memberIdx=" + [[${memberIdx}]];
         sendRequest(url, param, likeRes, "GET");
