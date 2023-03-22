@@ -8,6 +8,7 @@ import com.study.soju.repository.RecruitMenteeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -23,6 +24,15 @@ public class RecruitMenteeService {
     @Autowired
     RecruitMenteeLikeRepository recruitMenteeLikeRepository;
 
+    public int rowTotal() {
+        return Long.valueOf(recruitMenteeRepository.count()).intValue();
+    }
+
+    public List<RecruitMentee> recruitMenteeListAll(HashMap<String, Integer> map) {
+        List<RecruitMentee> recruitMenteeList = recruitMenteeRepository.findRecruitMenteeList(map.get("start"), map.get("end"));
+        return recruitMenteeList;
+    }
+
     //글쓴내용 저장
     public void writeRecruitMentee(RecruitMentee recruitMentee) {
         recruitMenteeRepository.save(recruitMentee);
@@ -35,10 +45,10 @@ public class RecruitMenteeService {
         return nickname;
     }
 
-    //리스트로 전체내용 뽑아오기
-    public List<RecruitMentee> recruitMenteeListAll() {
-        return recruitMenteeRepository.findAll();
-    }
+//    //리스트로 전체내용 뽑아오기
+//    public List<RecruitMentee> recruitMenteeListAll() {
+//        return recruitMenteeRepository.findAll();
+//    }
 
     //idx 로 글 뽑아가기
     public RecruitMentee findRecruitMentee(Long idx) {

@@ -2,14 +2,18 @@ package com.study.soju.controller;
 
 import com.study.soju.entity.*;
 import com.study.soju.service.RecruitMenteeService;
+import com.study.soju.util.PageSetup;
+import com.study.soju.util.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -21,9 +25,28 @@ public class RecruitMenteeController {
 
     //멘티 구하기 메인 페이지
     @GetMapping("")
-    public String recruitMenteeList(Model model) {
-        List<RecruitMentee> list = recruitMenteeService.recruitMenteeListAll();
-        model.addAttribute("list", list);
+    public String recruitMenteeList(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+        //현재 페이지의 숫자를 가지고 그 값에 맞는 리스트를 끌어온다.
+        //페이징 처리
+        int nowPage = 1;
+        //만약 페이지값이 있다면 nowPage 값을 파라미터로 넘어온 page 값으로 변경
+        if(page != 0) {
+            nowPage = page;
+        }
+        // 한 페이지에 표시되는 게시물의 시작번호와 끝번호를 계산
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        //전체 열의 갯수를 가지고온다.
+        int rowTotal = recruitMenteeService.rowTotal();
+        //페이징 처리를 위해 맵을 이용해서 리스트 가져오기
+        List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(map);
+        model.addAttribute("list", recruitMenteeList);
+        //페이징 처리를 위해 url, 이동할 페이지번호, 전체 열의 갯수, 페이징을 위해 설정을 잡아둔 값들을 가지고 HTML 에 작성해줄 내용을 생성한다.
+        String pageMenu = Paging.getPaging("recruitmenteelist", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
         return "Recruit/RecruitMenteeList";
     }
 

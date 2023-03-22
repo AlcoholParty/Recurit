@@ -1,17 +1,28 @@
 package com.study.soju.controller;
 
+import com.study.soju.entity.RecruitStudy;
+import com.study.soju.service.RecruitStudyService;
+import com.study.soju.service.SignUpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
+    @Autowired
+    SignUpService signUpService;
+
+    @Autowired
+    RecruitStudyService recruitStudyService;
     // 로그인 후 메인 페이지
     @GetMapping("/")
-    public String main(Principal principal) {
+    public String main(Principal principal, Model model) {
         // 1. 로그인을 했는지 체크한다.
         // 1-1. 로그인을 안한 경우
         if ( principal == null ) {
@@ -20,6 +31,16 @@ public class MainController {
             // 1-2. 로그인을 한 경우
         } else {
             // 1-2-1. 메인 페이지로 이동한다.
+            String nickname = signUpService.returnNickname(principal.getName());
+            model.addAttribute("nickname", nickname);
+            List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll();
+            List<RecruitStudy> recruitStudies = new ArrayList<>();
+            recruitStudies.add(recruitStudyList.get(0));
+            recruitStudies.add(recruitStudyList.get(1));
+            recruitStudies.add(recruitStudyList.get(2));
+            recruitStudies.add(recruitStudyList.get(3));
+            recruitStudies.add(recruitStudyList.get(4));
+            model.addAttribute("list", recruitStudies);
             return "Main";
         }
     }

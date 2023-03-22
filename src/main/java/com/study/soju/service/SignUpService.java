@@ -71,4 +71,10 @@ public class SignUpService implements UserDetailsService {
                 .roles(member.getRoleName())
                 .build();
     }
+
+    public String returnNickname(String emailId) {
+        String nickname = memberRepository.findByEmailId(emailId).getNickname();
+        return nickname;
+    }
+
 }

@@ -8,6 +8,7 @@ import com.study.soju.repository.RecruitMentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -21,6 +22,15 @@ public class RecruitMentorService {
     @Autowired
     RecruitMentorLikeRepository recruitMentorLikeRepository;
 
+    public int rowTotal() {
+        return Long.valueOf(recruitMentorRepository.count()).intValue();
+    }
+
+    public List<RecruitMentor> recruitMentorListAll(HashMap<String, Integer> map) {
+        List<RecruitMentor> recruitMentorList = recruitMentorRepository.findRecruitMentorList(map.get("start"), map.get("end"));
+        return recruitMentorList;
+    }
+
     //이메일로 닉네임 검색
     public String returnNickname(String emailId){
         Member member = memberRepository.findByEmailId(emailId);
@@ -33,10 +43,10 @@ public class RecruitMentorService {
         recruitMentorRepository.save(recruitMentor);
     }
 
-    //리스트로 전체내용 뽑아오기
-    public List<RecruitMentor> recruitMentorListAll() {
-        return recruitMentorRepository.findAll();
-    }
+//    //리스트로 전체내용 뽑아오기
+//    public List<RecruitMentor> recruitMentorListAll() {
+//        return recruitMentorRepository.findAll();
+//    }
 
     //idx로 필요한 recruitMentor 객체 보내주기
     public RecruitMentor findRecruitMentor(Long idx) {

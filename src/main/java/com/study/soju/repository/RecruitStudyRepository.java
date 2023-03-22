@@ -29,4 +29,8 @@ public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Obje
     @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY idx DESC)AS ranking FROM RecruitStudy)AS ranking WHERE ranking BETWEEN :start AND :end", nativeQuery = true)
     List<RecruitStudy> findRecruitStudyList(@Param("start") int start, @Param("end") int end);
 
+    @Modifying
+    @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY studyLike DESC)AS ranking FROM RecruitStudy)AS ranking;", nativeQuery = true)
+    List<RecruitStudy> findRecruitStudyList();
+
 }

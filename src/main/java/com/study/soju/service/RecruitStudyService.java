@@ -35,9 +35,12 @@ public class RecruitStudyService {
         return Long.valueOf(recruitStudyRepository.count()).intValue();
     }
 
+    public List<RecruitStudy> recruitStudyListAll() {
+        return recruitStudyRepository.findRecruitStudyList();
+    }
+
     public List<RecruitStudy> recruitStudyListAll(HashMap<String, Integer> map) {
         List<RecruitStudy> recruitStudyList = recruitStudyRepository.findRecruitStudyList(map.get("start"), map.get("end"));
-        System.out.println(recruitStudyList);
         return recruitStudyList;
     }
 
