@@ -1,15 +1,8 @@
 package com.study.soju.service;
 
 import com.study.soju.entity.*;
-import com.study.soju.repository.MemberRepository;
-import com.study.soju.repository.RecruitStudyCommentRepository;
-import com.study.soju.repository.RecruitStudyLikeRepository;
-import com.study.soju.repository.RecruitStudyRepository;
+import com.study.soju.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -29,6 +22,14 @@ public class RecruitStudyService {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    AlarmRepository alarmRepository;
+
+    //닉네임으로 emailId 가져오기
+    public String returnEmailId(String nickname) {
+        return memberRepository.findByNickname(nickname).getEmailId();
+    }
+
     //페이징을 위한 전체 게시물 갯수 반환하기
     public int rowTotal() {
         //전체 카운트 갯수를 반환하느것은 long 타입이기때문에 int 로 형변환을 해준다.
@@ -46,6 +47,8 @@ public class RecruitStudyService {
 
     //글쓴내용 저장
     public void writeRecruitStudy(RecruitStudy recruitStudy) {
+        //스터디원을 구할때 본인도 들어가기때문에 기본 설정값을 1로 잡아준다.
+        recruitStudy.setRecruitingPersonnel(1);
         recruitStudyRepository.save(recruitStudy);
     }
 
@@ -81,6 +84,11 @@ public class RecruitStudyService {
         return recruitStudy;
     }
 
+    //writer 로 객체 찾기
+    public RecruitStudy findRecruitStudy(String writer) {
+        return recruitStudyRepository.findByWriter(writer);
+    }
+
     //check 값을 확인해서 변경하기위한 메서드
     public int likeCheck(long likeIdx, long memberIdx) {
         int count = 0;
@@ -92,7 +100,7 @@ public class RecruitStudyService {
     }
 
     //좋아요값 수정하기
-    public RecruitStudy likeUpdate(RecruitStudyLike recruitStudyLike) {
+    public RecruitStudy likeUpdate(RecruitStudyLike recruitStudyLike, Alarm alarm) {
         //idx를 가지고 어떤 글인지 확인하고
         //글의 객체를 가지고옴
         //RecruitStudy beforeRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
@@ -105,6 +113,10 @@ public class RecruitStudyService {
             recruitStudyLikeRepository.save(recruitStudyLike);
             recruitStudyRepository.updateStudyLikeCount(recruitStudyLike.getLikeIdx());
             afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudyLike.getLikeIdx());
+            //좋아요를 눌렀을때 알람 생성
+            alarm.setTitle(alarm.getNickname() + "님 이 좋아요를 눌렀어요");
+            //알람 생성
+            alarmRepository.save(alarm);
         }else {
             //저장이 되어있는거니깐 데이터베이스 삭제
             recruitStudyLikeRepository.delete(recruitStudyLike1);
@@ -156,10 +168,12 @@ public class RecruitStudyService {
     }
 
     //댓글 저장
-    public String saveComment(RecruitStudyComment recruitStudyComment) {
+    public String saveComment(RecruitStudyComment recruitStudyComment, Alarm alarm) {
         String res = "no";
         if (recruitStudyComment != null) {
             recruitStudyCommentRepository.save(recruitStudyComment);
+            alarm.setTitle(alarm.getNickname() + "님 이 댓글을 달았어요");
+            alarmRepository.save(alarm);
             res = "yes";
         }
         return res;
@@ -185,6 +199,24 @@ public class RecruitStudyService {
             beforeModify.setComment(recruitStudyComment.getComment());
             beforeModify.setWriteDate(recruitStudyComment.getWriteDate());
             recruitStudyCommentRepository.save(beforeModify);
+            res = "yes";
+        }
+        return res;
+    }
+
+    //스터디원 신청
+    public String studyApply(Alarm alarm) {
+        String res = "no";
+        //신청이 두번 가지않게 하기위해서 알람 타입, 이메일, 닉네임, 스터디글 idx 를 확인해서 있으면 중복이므로 알람을 생성하지 않는다.
+        Alarm alarm1 = alarmRepository.findByAlarmTypeAndEmailIdAndNicknameAndRecruitStudyIdx(alarm.getAlarmType(),
+                                                                                              alarm.getEmailId(),
+                                                                                              alarm.getNickname(),
+                                                                                              alarm.getRecruitStudyIdx());
+        if(alarm1 != null) {
+            res = "exist";
+        } else {
+            alarm.setTitle(alarm.getNickname() + "님 이 스터디원 신청을 했습니다.");
+            alarmRepository.save(alarm);
             res = "yes";
         }
         return res;

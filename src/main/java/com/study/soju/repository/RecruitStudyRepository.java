@@ -17,6 +17,8 @@ import java.util.List;
 public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Object> {
     RecruitStudy findByIdx(long idx);
 
+    RecruitStudy findByWriter(String writer);
+
     //서비스에서 받아온 pageable 정보로 리스트(Page 객체) 를 리턴한다.
     Page<RecruitStudy> findAll(Pageable pageable);
 

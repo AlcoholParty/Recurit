@@ -16,6 +16,8 @@ import java.util.List;
 public interface RecruitMenteeRepository extends JpaRepository<RecruitMentee, Object> {
     RecruitMentee findByIdx(Long idx);
 
+    RecruitMentee findByWriter(String writer);
+
     @Modifying
     @Query("UPDATE RecruitMentee rm SET rm.studyLike = (SELECT COUNT(rml) FROM RecruitMenteeLike rml WHERE rml.likeIdx = :idx) WHERE rm.idx = :idx")
     void updateMenteeLikeCount(@Param("idx") long idx);

@@ -143,11 +143,11 @@
             <div class="headerMenuRight">
                 <div class="whenLogin">
                     <div class="welcome" th:text="${nickname} + '님 반갑습니다!'"></div>
-<!--                    <div class="notificationsMenu">-->
-<!--                        <div class="icon" data-number="5">-->
-<!--                            <i class="ri-notification-4-fill"></i>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="notificationsMenu" onclick="location.href='/mypage/alarm'">
+                        <div class="icon" th:data-number="${alarmCount}">
+                            <i class="ri-notification-4-fill"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="btnLogin">
@@ -312,65 +312,65 @@
         <li>
             <input type="button" value="<" class="toleft slider">
         </li>
-        <li class="bestStudyElement" th:each="recruitStudy : ${list}">
+<!--        <li class="bestStudyElement" th:each="recruitStudy : ${list}">-->
+<!--            <div class="bestStudyA">-->
+<!--                <a th:href="@{/recruitstudy/post(idx = ${recruitStudy.idx})}">-->
+<!--                    <img th:src="${recruitStudy.image}" class="bestStudyImg">-->
+<!--                    <p class="bestStudyTitle" th:text="${recruitStudy.title}"></p>-->
+<!--                    <p class="bestStudyText" th:text="${recruitStudy.writer}"></p>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </li>-->
+
+        <li class="bestStudyElement">
             <div class="bestStudyA">
-                <a th:href="@{/recruitstudy/post(idx = ${recruitStudy.idx})}">
-                    <img th:src="${recruitStudy.image}" class="bestStudyImg">
-                    <p class="bestStudyTitle" th:text="${recruitStudy.title}"></p>
-                    <p class="bestStudyText" th:text="${recruitStudy.writer}"></p>
+                <a href="/">
+                    <img src="/img/pink.jpg" class="bestStudyImg">
+                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText">밤톨</p>
                 </a>
             </div>
         </li>
 
-<!--        <li class="bestStudyElement">-->
-<!--            <div class="bestStudyA">-->
-<!--                <a href="/">-->
-<!--                    <img src="/img/pink.jpg" class="bestStudyImg">-->
-<!--                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>-->
-<!--                    <p class="bestStudyText">밤톨</p>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </li>-->
+        <li class="bestStudyElement">
+            <div class="bestStudyA">
+                <a href="/">
+                    <img src="/img/pink.jpg" class="bestStudyImg">
+                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText">밤톨</p>
+                </a>
+            </div>
+        </li>
 
-<!--        <li class="bestStudyElement">-->
-<!--            <div class="bestStudyA">-->
-<!--                <a href="/">-->
-<!--                    <img src="/img/pink.jpg" class="bestStudyImg">-->
-<!--                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>-->
-<!--                    <p class="bestStudyText">밤톨</p>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </li>-->
+        <li class="bestStudyElement">
+            <div class="bestStudyA">
+                <a href="/">
+                    <img src="/img/pink.jpg" class="bestStudyImg">
+                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText">밤톨</p>
+                </a>
+            </div>
+        </li>
 
-<!--        <li class="bestStudyElement">-->
-<!--            <div class="bestStudyA">-->
-<!--                <a href="/">-->
-<!--                    <img src="/img/pink.jpg" class="bestStudyImg">-->
-<!--                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>-->
-<!--                    <p class="bestStudyText">밤톨</p>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </li>-->
+        <li class="bestStudyElement">
+            <div class="bestStudyA">
+                <a href="/">
+                    <img src="/img/pink.jpg" class="bestStudyImg">
+                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText">밤톨</p>
+                </a>
+            </div>
+        </li>
 
-<!--        <li class="bestStudyElement">-->
-<!--            <div class="bestStudyA">-->
-<!--                <a href="/">-->
-<!--                    <img src="/img/pink.jpg" class="bestStudyImg">-->
-<!--                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>-->
-<!--                    <p class="bestStudyText">밤톨</p>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </li>-->
-
-<!--        <li class="bestStudyElement">-->
-<!--            <div class="bestStudyA">-->
-<!--                <a href="/">-->
-<!--                    <img src="/img/pink.jpg" class="bestStudyImg">-->
-<!--                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>-->
-<!--                    <p class="bestStudyText">밤톨</p>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </li>-->
+        <li class="bestStudyElement">
+            <div class="bestStudyA">
+                <a href="/">
+                    <img src="/img/pink.jpg" class="bestStudyImg">
+                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText">밤톨</p>
+                </a>
+            </div>
+        </li>
     </ul>
 </div>
 

@@ -1,6 +1,7 @@
 package com.study.soju.controller;
 
 import com.study.soju.entity.RecruitStudy;
+import com.study.soju.service.MyPageService;
 import com.study.soju.service.RecruitStudyService;
 import com.study.soju.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class MainController {
     SignUpService signUpService;
 
     @Autowired
-    RecruitStudyService recruitStudyService;
+    MyPageService myPageService;
+
+
     // 로그인 후 메인 페이지
     @GetMapping("/")
     public String main(Principal principal, Model model) {
@@ -33,14 +36,8 @@ public class MainController {
             // 1-2-1. 메인 페이지로 이동한다.
             String nickname = signUpService.returnNickname(principal.getName());
             model.addAttribute("nickname", nickname);
-            List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll();
-            List<RecruitStudy> recruitStudies = new ArrayList<>();
-            recruitStudies.add(recruitStudyList.get(0));
-            recruitStudies.add(recruitStudyList.get(1));
-            recruitStudies.add(recruitStudyList.get(2));
-            recruitStudies.add(recruitStudyList.get(3));
-            recruitStudies.add(recruitStudyList.get(4));
-            model.addAttribute("list", recruitStudies);
+            int alarmCount = myPageService.alarmCount(principal.getName());
+            model.addAttribute("alarmCount", alarmCount);
             return "Main";
         }
     }

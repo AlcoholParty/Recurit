@@ -1,5 +1,6 @@
 package com.study.soju.controller;
 
+import com.study.soju.entity.Alarm;
 import com.study.soju.entity.RecruitStudy;
 import com.study.soju.entity.RecruitStudyComment;
 import com.study.soju.entity.RecruitStudyLike;
@@ -89,6 +90,10 @@ public class RecruitStudyController {
         recruitStudy.setStudyLikeCheck(count);
         model.addAttribute("recruitStudy", recruitStudy);
 
+        //알람 처리를 위해서 writer 의 emailId 를 넘겨준다.
+        String email = recruitStudyService.returnEmailId(recruitStudy.getWriter());
+        model.addAttribute("emailId", email);
+
         //댓글 리스트 보내주기
         List<RecruitStudyComment> recruitStudyCommentList = recruitStudyService.findCommentList(idx);
         model.addAttribute("list", recruitStudyCommentList);
@@ -99,9 +104,11 @@ public class RecruitStudyController {
     //스터디원 모집 글 상세보기 좋아요기능
     @GetMapping("/post/like")
     @ResponseBody
-    public String like(RecruitStudyLike recruitStudyLike) {
+    public String like(RecruitStudyLike recruitStudyLike, Alarm alarm) {
+        //알람을 만들어 주기 위해서 Type 추가
+        alarm.setAlarmType(1);
         String res = "no";
-        RecruitStudy afterRecruitStudy = recruitStudyService.likeUpdate(recruitStudyLike);
+        RecruitStudy afterRecruitStudy = recruitStudyService.likeUpdate(recruitStudyLike, alarm);
         if(afterRecruitStudy != null) {
             res = String.valueOf(afterRecruitStudy.getStudyLike());
         }
@@ -142,9 +149,11 @@ public class RecruitStudyController {
     //댓글 작성
     @GetMapping("/post/comment")
     @ResponseBody
-    public String comment(RecruitStudyComment recruitStudyComment){
+    public String comment(RecruitStudyComment recruitStudyComment, Alarm alarm){
+        //알람을 만들어 주기 위해서 Type 추가
+        alarm.setAlarmType(4);
         String res = "no";
-        res = recruitStudyService.saveComment(recruitStudyComment);
+        res = recruitStudyService.saveComment(recruitStudyComment, alarm);
         return res;
     }
 
@@ -163,6 +172,17 @@ public class RecruitStudyController {
     public String commentModify(RecruitStudyComment recruitStudyComment){
         String res = "no";
         res = recruitStudyService.modifyComment(recruitStudyComment);
+        return res;
+    }
+
+    //스터디원 구하기 신청
+    @GetMapping("/post/apply")
+    @ResponseBody
+    public String studyApply(RecruitStudy recruitStudy, Alarm alarm) {
+        String res = "no";
+        //알람을 생성하기 위해서 타입 넣어주기
+        alarm.setAlarmType(2);
+        res = recruitStudyService.studyApply(alarm);
         return res;
     }
 }

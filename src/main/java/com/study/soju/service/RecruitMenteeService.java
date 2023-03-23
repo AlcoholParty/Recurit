@@ -1,10 +1,7 @@
 package com.study.soju.service;
 
 import com.study.soju.entity.*;
-import com.study.soju.repository.MemberRepository;
-import com.study.soju.repository.RecruitMenteeCommentRepository;
-import com.study.soju.repository.RecruitMenteeLikeRepository;
-import com.study.soju.repository.RecruitMenteeRepository;
+import com.study.soju.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +20,14 @@ public class RecruitMenteeService {
 
     @Autowired
     RecruitMenteeLikeRepository recruitMenteeLikeRepository;
+
+    @Autowired
+    AlarmRepository alarmRepository;
+
+    //닉네임으로 emailId 가져오기
+    public String returnEmailId(String nickname) {
+        return memberRepository.findByNickname(nickname).getEmailId();
+    }
 
     public int rowTotal() {
         return Long.valueOf(recruitMenteeRepository.count()).intValue();
@@ -122,13 +127,17 @@ public class RecruitMenteeService {
     }
 
     //글 좋아요 눌렀는지 확인하기
-    public RecruitMentee likeUpdate(RecruitMenteeLike recruitMenteeLike) {
+    public RecruitMentee likeUpdate(RecruitMenteeLike recruitMenteeLike, Alarm alarm) {
         RecruitMenteeLike recruitMenteeLike1 = recruitMenteeLikeRepository.findByLikeIdxAndMemberIdx(recruitMenteeLike.getLikeIdx(), recruitMenteeLike.getMemberIdx());
         RecruitMentee afterRecruitMentee = null;
         if (recruitMenteeLike1 == null) {
             recruitMenteeLikeRepository.save(recruitMenteeLike);
             recruitMenteeRepository.updateMenteeLikeCount(recruitMenteeLike.getLikeIdx());
             afterRecruitMentee = recruitMenteeRepository.findByIdx(recruitMenteeLike.getLikeIdx());
+            //좋아요를 눌렀을때 알람 생성
+            alarm.setTitle(alarm.getNickname() + "님 이 좋아요를 눌렀어요");
+            //알람 생성
+            alarmRepository.save(alarm);
         }else {
             recruitMenteeLikeRepository.delete(recruitMenteeLike1);
             recruitMenteeRepository.updateMenteeLikeCount(recruitMenteeLike1.getLikeIdx());
@@ -145,5 +154,23 @@ public class RecruitMenteeService {
             count = 1;
         }
         return count;
+    }
+
+    //멘티 신청
+    public String menteeApply(Alarm alarm) {
+        String res = "no";
+        //신청이 두번 가지않게 하기위해서 알람 타입, 이메일, 닉네임, 스터디글 idx 를 확인해서 있으면 중복이므로 알람을 생성하지 않는다.
+        Alarm alarm1 = alarmRepository.findByAlarmTypeAndEmailIdAndNicknameAndRecruitStudyIdx(alarm.getAlarmType(),
+                alarm.getEmailId(),
+                alarm.getNickname(),
+                alarm.getRecruitStudyIdx());
+        if(alarm1 != null) {
+            res = "exist";
+        } else {
+            alarm.setTitle(alarm.getNickname() + "님 이 멘티 신청을 했습니다.");
+            alarmRepository.save(alarm);
+            res = "yes";
+        }
+        return res;
     }
 }

@@ -82,6 +82,10 @@ public class RecruitMentorController {
         recruitMentor.setStudyLikeCheck(count);
         model.addAttribute("recruitMentor", recruitMentor);
 
+        //알람 처리를 위해서 writer 의 emailId 를 넘겨준다.
+        String email = recruitMentorService.returnEmailId(recruitMentor.getWriter());
+        model.addAttribute("emailId", email);
+
         //댓글 리스트 보내주기
         List<RecruitMentorComment> recruitMentorCommentList = recruitMentorService.findCommentList(idx);
         model.addAttribute("list", recruitMentorCommentList);
@@ -119,9 +123,9 @@ public class RecruitMentorController {
     //글 좋아요
     @GetMapping("/post/like")
     @ResponseBody
-    public String like(RecruitMentorLike recruitMentorLike) {
+    public String like(RecruitMentorLike recruitMentorLike, Alarm alarm) {
         String res = "no";
-        RecruitMentor afterRecruitMentor = recruitMentorService.likeUpdate(recruitMentorLike);
+        RecruitMentor afterRecruitMentor = recruitMentorService.likeUpdate(recruitMentorLike, alarm);
         if(afterRecruitMentor != null) {
             res = String.valueOf(afterRecruitMentor.getStudyLike());
         }
@@ -152,6 +156,17 @@ public class RecruitMentorController {
     public String commentModify(RecruitMentorComment recruitMentorComment){
         String res = "no";
         res = recruitMentorService.modifyComment(recruitMentorComment);
+        return res;
+    }
+
+    //멘토 구하기 신청
+    @GetMapping("/post/apply")
+    @ResponseBody
+    public String mentorApply(RecruitMentor recruitMentor, Alarm alarm) {
+        String res = "no";
+        //알람을 생성하기 위해서 타입 넣어주기
+        alarm.setAlarmType(2);
+        res = recruitMentorService.mentorApply(alarm);
         return res;
     }
 }

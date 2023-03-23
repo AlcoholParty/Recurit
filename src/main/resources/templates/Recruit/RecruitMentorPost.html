@@ -39,7 +39,7 @@
             <input type="button" value="글 삭제" onclick="writeDelete();">
         </li>
         <li th:if="${nickname} != ${recruitMentor.writer}">
-            <input type="button" value="신청하기">
+            <input type="button" value="신청하기" onclick="mentorRequest();">
         </li>
         <li>
             <a href="/recruitmentorlist">뒤로가기</a>
@@ -82,6 +82,33 @@
 </body>
 <script src="/js/httpRequest.js"></script>
 <script th:inline="javascript">
+//////////////////////////////////////////////////////스터디 신청////////////////////////////////////////////////////////////////
+    function mentorRequest() {
+        let idx = [[${recruitMentor.idx}]];
+        let emailId = [[${emailId}]];
+        let nickname = [[${nickname}]];
+        let url = "/recruitmentorlist/post/apply";
+        let param = "writer=" + [[${recruitMentor.writer}]] +
+                    "&emailId=" + emailId +
+                    "&nickname=" + nickname +
+                    "&recruitStudyIdx=" + idx;
+        sendRequest(url, param, mentorRequestRes, "GET");
+    }
+    function mentorRequestRes() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("멘토 구하기 신청 실패");
+                return;
+            } else if(data == 'exist'){
+                alert("멘토 구하기 신청 중복");
+            } else {
+                alert("멘토 구하기 신청 성공");
+            }
+        }
+    }
+//////////////////////////////////////////////////////스터디 신청////////////////////////////////////////////////////////////////
+
 //////////////////////////////////////////////////////댓글 수정////////////////////////////////////////////////////////////////
     function commentModify(f){
         let idx = f.idx.value;
@@ -196,7 +223,10 @@
         let url = "/recruitmentorlist/post/like";
         param = "&studyLike=" + studyLike +
                 "&likeIdx=" + idx +
-                "&memberIdx=" + [[${memberIdx}]];
+                "&memberIdx=" + [[${memberIdx}]] +
+                "&emailId=" + [[${emailId}]] +
+                "&recruitStudyIdx=" + idx +
+                "&nickname=" + [[${nickname}]];
         sendRequest(url, param, likeRes, "GET");
     }
     function likeRes(){

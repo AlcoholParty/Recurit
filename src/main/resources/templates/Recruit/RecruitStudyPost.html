@@ -45,7 +45,7 @@
             <input type="button" value="글 삭제" onclick="writeDelete();">
         </li>
         <li th:if="${nickname} != ${recruitStudy.writer}">
-            <input type="button" value="신청하기">
+            <input type="button" value="신청하기" onclick="studyRequest();">
         </li>
         <li>
             <a href="/recruitstudy">뒤로가기</a>
@@ -88,6 +88,33 @@
 </body>
 <script src="/js/httpRequest.js"></script>
 <script th:inline="javascript">
+//////////////////////////////////////////////////////스터디 신청////////////////////////////////////////////////////////////////
+    function studyRequest() {
+        let idx = [[${recruitStudy.idx}]];
+        let emailId = [[${emailId}]];
+        let nickname = [[${nickname}]];
+        let url = "/recruitstudy/post/apply";
+        let param = "writer=" + [[${recruitStudy.writer}]] +
+                    "&emailId=" + emailId +
+                    "&nickname=" + nickname +
+                    "&recruitStudyIdx=" + idx;
+        sendRequest(url, param, studyRequestRes, "GET");
+    }
+    function studyRequestRes() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("스터디원 구하기 신청 실패");
+                return;
+            } else if(data == 'exist'){
+                alert("스터디원 구하기 신청 중복");
+            } else {
+                alert("스터디원 구하기 신청 성공");
+            }
+        }
+    }
+//////////////////////////////////////////////////////스터디 신청////////////////////////////////////////////////////////////////
+
 //////////////////////////////////////////////////////댓글 수정////////////////////////////////////////////////////////////////
     function commentModify(f){
         let idx = f.idx.value;
@@ -157,7 +184,10 @@
         let param = "commentIdx=" + idx +
                     "&writeDate=" + today +
                     "&writer=" + [[${nickname}]] +
-                    "&comment=" + comment;
+                    "&comment=" + comment +
+                    "&emailId=" + [[${emailId}]] +
+                    "&nickname=" + [[${nickname}]] +
+                    "&recruitStudyIdx=" + idx;
         sendRequest(url, param, commentRes, "GET");
     }
     function commentRes(){
@@ -202,7 +232,10 @@
         let url = "/recruitstudy/post/like";
         param = "&studyLike=" + studyLike +
                 "&likeIdx=" + idx +
-                "&memberIdx=" + [[${memberIdx}]];
+                "&memberIdx=" + [[${memberIdx}]] +
+                "&emailId=" + [[${emailId}]] +
+                "&recruitStudyIdx=" + idx +
+                "&nickname=" + [[${nickname}]];
         sendRequest(url, param, likeRes, "GET");
     }
     function likeRes(){

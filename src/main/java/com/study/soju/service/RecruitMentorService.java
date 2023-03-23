@@ -1,10 +1,7 @@
 package com.study.soju.service;
 
 import com.study.soju.entity.*;
-import com.study.soju.repository.MemberRepository;
-import com.study.soju.repository.RecruitMentorCommentRepository;
-import com.study.soju.repository.RecruitMentorLikeRepository;
-import com.study.soju.repository.RecruitMentorRepository;
+import com.study.soju.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +18,14 @@ public class RecruitMentorService {
     RecruitMentorCommentRepository recruitMentorCommentRepository;
     @Autowired
     RecruitMentorLikeRepository recruitMentorLikeRepository;
+
+    @Autowired
+    AlarmRepository alarmRepository;
+
+    //닉네임으로 emailId 가져오기
+    public String returnEmailId(String nickname) {
+        return memberRepository.findByNickname(nickname).getEmailId();
+    }
 
     public int rowTotal() {
         return Long.valueOf(recruitMentorRepository.count()).intValue();
@@ -119,13 +124,17 @@ public class RecruitMentorService {
     }
 
     //좋아요값 수정하기
-    public RecruitMentor likeUpdate(RecruitMentorLike recruitMentorLike) {
+    public RecruitMentor likeUpdate(RecruitMentorLike recruitMentorLike ,Alarm alarm) {
         RecruitMentorLike recruitMentorLike1 = recruitMentorLikeRepository.findByLikeIdxAndMemberIdx(recruitMentorLike.getLikeIdx(), recruitMentorLike.getMemberIdx());
         RecruitMentor afterRecruitMentor = null;
         if (recruitMentorLike1 == null) {
             recruitMentorLikeRepository.save(recruitMentorLike);
             recruitMentorRepository.updateMentorLikeCount(recruitMentorLike.getLikeIdx());
             afterRecruitMentor = recruitMentorRepository.findByIdx(recruitMentorLike.getLikeIdx());
+            //좋아요를 눌렀을때 알람 생성
+            alarm.setTitle(alarm.getNickname() + "님 이 좋아요를 눌렀어요");
+            //알람 생성
+            alarmRepository.save(alarm);
         }else {
             recruitMentorLikeRepository.delete(recruitMentorLike1);
             recruitMentorRepository.updateMentorLikeCount(recruitMentorLike1.getLikeIdx());
@@ -142,5 +151,23 @@ public class RecruitMentorService {
             count = 1;
         }
         return count;
+    }
+
+    //멘토 신청
+    public String mentorApply(Alarm alarm) {
+        String res = "no";
+        //신청이 두번 가지않게 하기위해서 알람 타입, 이메일, 닉네임, 스터디글 idx 를 확인해서 있으면 중복이므로 알람을 생성하지 않는다.
+        Alarm alarm1 = alarmRepository.findByAlarmTypeAndEmailIdAndNicknameAndRecruitStudyIdx(alarm.getAlarmType(),
+                alarm.getEmailId(),
+                alarm.getNickname(),
+                alarm.getRecruitStudyIdx());
+        if(alarm1 != null) {
+            res = "exist";
+        } else {
+            alarm.setTitle(alarm.getNickname() + "님 이 멘토 신청을 했습니다.");
+            alarmRepository.save(alarm);
+            res = "yes";
+        }
+        return res;
     }
 }

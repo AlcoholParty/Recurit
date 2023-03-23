@@ -80,6 +80,10 @@ public class RecruitMenteeController {
         recruitMentee.setStudyLikeCheck(count);
         model.addAttribute("recruitMentee", recruitMentee);
 
+        //알람 처리를 위해서 writer 의 emailId 를 넘겨준다.
+        String email = recruitMenteeService.returnEmailId(recruitMentee.getWriter());
+        model.addAttribute("emailId", email);
+
         List<RecruitMenteeComment> recruitMenteeCommentList = recruitMenteeService.findCommentList(idx);
         model.addAttribute("list", recruitMenteeCommentList);
         return "Recruit/RecruitMenteePost";
@@ -88,9 +92,9 @@ public class RecruitMenteeController {
     //멘티 글 좋아요
     @GetMapping("/post/like")
     @ResponseBody
-    public String like(RecruitMenteeLike recruitMenteeLike) {
+    public String like(RecruitMenteeLike recruitMenteeLike, Alarm alarm) {
         String res = "no";
-        RecruitMentee afterRecruitMentee = recruitMenteeService.likeUpdate(recruitMenteeLike);
+        RecruitMentee afterRecruitMentee = recruitMenteeService.likeUpdate(recruitMenteeLike, alarm);
         if(afterRecruitMentee != null) {
             res = String.valueOf(afterRecruitMentee.getStudyLike());
         }
@@ -150,6 +154,17 @@ public class RecruitMenteeController {
     public String commentModify(RecruitMenteeComment recruitMenteeComment){
         String res = "no";
         res = recruitMenteeService.modifyComment(recruitMenteeComment);
+        return res;
+    }
+
+    //스터디원 구하기 신청
+    @GetMapping("/post/apply")
+    @ResponseBody
+    public String menteeApply(RecruitMentee recruitMentee, Alarm alarm) {
+        String res = "no";
+        //알람을 생성하기 위해서 타입 넣어주기
+        alarm.setAlarmType(2);
+        res = recruitMenteeService.menteeApply(alarm);
         return res;
     }
 }
