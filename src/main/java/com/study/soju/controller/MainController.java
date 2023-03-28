@@ -1,7 +1,9 @@
 package com.study.soju.controller;
 
+import com.study.soju.entity.RecruitMentee;
 import com.study.soju.entity.RecruitStudy;
 import com.study.soju.service.MyPageService;
+import com.study.soju.service.RecruitMenteeService;
 import com.study.soju.service.RecruitStudyService;
 import com.study.soju.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,12 @@ public class MainController {
     @Autowired
     MyPageService myPageService;
 
+    @Autowired
+    RecruitStudyService recruitStudyService;
+
+    @Autowired
+    RecruitMenteeService recruitMenteeService;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // 로그인 후 메인 페이지
     @GetMapping("/")
@@ -38,14 +46,32 @@ public class MainController {
             model.addAttribute("nickname", nickname);
             int alarmCount = myPageService.alarmCount(principal.getName());
             model.addAttribute("alarmCount", alarmCount);
+
+            List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 5);
+            model.addAttribute("list", recruitStudyList);
+            List<RecruitStudy> recruitStudyList1 = recruitStudyService.recruitStudyListAll(6, 10);
+            model.addAttribute("list2", recruitStudyList1);
+
+            List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 5);
+            List<RecruitMentee> recruitMenteeList1 = recruitMenteeService.recruitMenteeListAll(6, 10);
+            model.addAttribute("menteeList", recruitMenteeList);
+            model.addAttribute("menteeList2", recruitMenteeList1);
             return "Main";
         }
     }
 
     // 로그인 전 메인 페이지
     @GetMapping("/n")
-    public String nmain() {
+    public String nmain(Model model) {
         // 1. 메인 페이지로 이동한다.
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 5);
+        model.addAttribute("list", recruitStudyList);
+        List<RecruitStudy> recruitStudyList1 = recruitStudyService.recruitStudyListAll(6, 10);
+        model.addAttribute("list2", recruitStudyList1);
+        List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 5);
+        List<RecruitMentee> recruitMenteeList1 = recruitMenteeService.recruitMenteeListAll(6, 10);
+        model.addAttribute("menteeList", recruitMenteeList);
+        model.addAttribute("menteeList2", recruitMenteeList1);
         return "Main";
     }
 

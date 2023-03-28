@@ -22,6 +22,7 @@ public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Obje
     //서비스에서 받아온 pageable 정보로 리스트(Page 객체) 를 리턴한다.
     Page<RecruitStudy> findAll(Pageable pageable);
 
+    Long countByStudyType(String studyType);
     @Modifying
     @Query("UPDATE RecruitStudy rs SET rs.studyLike = (SELECT COUNT(rsl) FROM RecruitStudyLike rsl WHERE rsl.likeIdx = :idx) WHERE rs.idx = :idx")
     void updateStudyLikeCount(@Param("idx") long idx);
@@ -31,8 +32,14 @@ public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Obje
     @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY idx DESC)AS ranking FROM RecruitStudy)AS ranking WHERE ranking BETWEEN :start AND :end", nativeQuery = true)
     List<RecruitStudy> findRecruitStudyList(@Param("start") int start, @Param("end") int end);
 
+    //메인 페이지 리스트 뽑아주기
     @Modifying
-    @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY studyLike DESC)AS ranking FROM RecruitStudy)AS ranking;", nativeQuery = true)
-    List<RecruitStudy> findRecruitStudyList();
+    @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY studyLike DESC, idx DESC)AS ranking FROM RecruitStudy)AS ranking WHERE ranking BETWEEN :start AND :end", nativeQuery = true)
+    List<RecruitStudy> findRecruitStudyListRanking(@Param("start") int start, @Param("end") int end);
+
+    //분야별 페이징 처리
+    @Modifying
+    @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY idx DESC)AS ranking FROM RecruitStudy)AS ranking WHERE ranking BETWEEN :start AND :end AND studyType= :studyType", nativeQuery = true)
+    List<RecruitStudy> findRecruitStudyList(@Param("start") int start, @Param("end") int end, @Param("studyType") String studyType);
 
 }

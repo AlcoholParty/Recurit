@@ -15,15 +15,24 @@
                 <select name="studyType" onchange="showImage();">
                     <option value="">선택하던가 말던가</option>
                     <option value="computer">컴퓨터</option>
+                    <option value="math">수학</option>
+                    <option value="management">경영/마케팅</option>
                     <option value="design">디자인</option>
                     <option value="education">교육</option>
-                </select></li>
+                    <option value="literature">문학</option>
+                    <option value="entrance">입시</option>
+                    <option value="engineer">공학</option>
+                    <option value="language">언어</option>
+                    <option value="employment">취업</option>
+                    <option value="etc">기타</option>
+                </select>
+            </li>
             <li><span>사진 : </span><div id="test1"></div></li>
             <li><span>본인소개 : </span><textarea name="studyIntro"></textarea></li>
             <li><input type="button" value="작성 완료" onclick="a(this.form)"></li>
         </ul>
     </form>
-    <input type="button" value="뒤로가기" onclick="location.href='/recruitmenteelist'">
+    <input type="button" value="뒤로가기" onclick="location.href='/mentorprofilelist'">
     <script>
         const TIME_ZONE = 3240 * 10000; // 현재 시간을 설정하는 변수
         let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
@@ -45,7 +54,7 @@
                 alert('설명 작성하셈');
                 return;
             }
-            f.action = '/recruitmenteelist/writeform/write';
+            f.action = '/mentorprofilelist/writeform/write';
             f.method = "GET";
             f.submit();
         }

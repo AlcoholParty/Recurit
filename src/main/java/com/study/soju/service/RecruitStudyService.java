@@ -32,14 +32,27 @@ public class RecruitStudyService {
 
     //페이징을 위한 전체 게시물 갯수 반환하기
     public int rowTotal() {
-        //전체 카운트 갯수를 반환하느것은 long 타입이기때문에 int 로 형변환을 해준다.
+        //전체 카운트 갯수를 반환하는것은 long 타입이기때문에 int 로 형변환을 해준다.
         return Long.valueOf(recruitStudyRepository.count()).intValue();
     }
 
-    public List<RecruitStudy> recruitStudyListAll() {
-        return recruitStudyRepository.findRecruitStudyList();
+    public int rowTotal(String studyType) {
+        //전체 카운트 갯수를 반환하는것은 long 타입이기때문에 int 로 형변환을 해준다.
+        return Long.valueOf(recruitStudyRepository.countByStudyType(studyType)).intValue();
     }
 
+    //메인 페이지에 넘겨주기 위해서 사용
+    public List<RecruitStudy> recruitStudyListAll(int start, int end) {
+        return recruitStudyRepository.findRecruitStudyListRanking(start, end);
+    }
+
+    //메인 페이지에서 스터디 타입을 선택했을 때 사용하는 메서드
+    public List<RecruitStudy> recruitStudyListAll(HashMap<String, Integer> map, String studyType) {
+        List<RecruitStudy> recruitStudyList = recruitStudyRepository.findRecruitStudyList(map.get("start"), map.get("end"), studyType);
+        return recruitStudyList;
+    }
+
+    //스터디원 구하기 페이지에서 사용하는 메서드
     public List<RecruitStudy> recruitStudyListAll(HashMap<String, Integer> map) {
         List<RecruitStudy> recruitStudyList = recruitStudyRepository.findRecruitStudyList(map.get("start"), map.get("end"));
         return recruitStudyList;

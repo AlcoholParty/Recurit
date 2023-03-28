@@ -46,11 +46,11 @@ public class Paging {
 //            sb.append("'>◀</a>");
             sb.append("<input type='button' value='◀' onclick='location.href=\"" + pageURL + "?page=");
             sb.append(startPage-1);
-            sb.append("\"'>");
+            sb.append("\"'style=\"width:35px; height:35px; background-color:white; border:none; border-radius:100%;\">");
         }
         else {
             //sb.append("◀");
-            sb.append("<input type='button' value='◀' onclick='noPage();'>");
+            sb.append("<input type='button' value='◀' onclick='noPage();' style=\"width:35px; height:35px; background-color:white; border:none; border-radius:100%;\">");
         }
 //------페이지 목록 출력 -------------------------------------------------------------------------------------------------
         for(int i = startPage; i <= endPage; i++){
@@ -61,7 +61,7 @@ public class Paging {
 //                sb.append("</font></b>");
                 sb.append("&nbsp;<input type='button' value='");
                 sb.append(i);
-                sb.append("' disabled='disabled'>");
+                sb.append("' disabled='disabled' style=\"text-align:center; width:35px; height:35px; background-color:#57B862; border:none; border-radius:100%;\">");
             }
             else{//현재 페이지가 아니면
 //                sb.append("&nbsp;<a href='"+pageURL+"?page=");
@@ -73,7 +73,7 @@ public class Paging {
                 sb.append(i);
                 sb.append("' onclick='location.href=\"" + pageURL + "?page=");
                 sb.append(i);
-                sb.append("\"'>");
+                sb.append("\"' style=\"width:35px; height:35px; background-color:white; border:none;\">");
             }
         }// end for
 
@@ -91,11 +91,11 @@ public class Paging {
 //            sb.append("'>▶</a>");
             sb.append("<input type='button' value='▶' onclick='location.href=\"" + pageURL + "?page=");
             sb.append(endPage+1);
-            sb.append("\"'>");
+            sb.append("\"'style=\"width:35px; height:35px; background-color:white; border:none; border-radius:100%;\">");
         }
         else {
             //sb.append("▶");
-            sb.append("<input type='button' value='▶' onclick='noPage();'>");
+            sb.append("<input type='button' value='▶' onclick='noPage();' style=\"width:35px; height:35px; background-color:white; border:none; border-radius:100%;\">");
         }
 //---------------------------------------------------------------------------------------------------------------------
 

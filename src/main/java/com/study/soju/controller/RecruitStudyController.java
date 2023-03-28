@@ -55,6 +55,227 @@ public class RecruitStudyController {
         return "Recruit/RecruitStudy";
     }
 
+    @GetMapping("computer")
+    public String recruitStudyComputer(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "computer";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("computer", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("math")
+    public String recruitStudyMath(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "math";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("math", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("management")
+    public String recruitStudyManagement(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "management";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("management", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("design")
+    public String recruitStudyDesign(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "design";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("design", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("education")
+    public String recruitStudyEducation(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "education";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("education", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("literature")
+    public String recruitStudyLiterature(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "education";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("literature", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("entrance")
+    public String recruitStudyEntrance(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "entrance";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("entrance", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("engineer")
+    public String recruitStudyEngineer(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "engineer";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("engineer", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("language")
+    public String recruitStudyLanguage(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "language";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("language", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("employment")
+    public String recruitStudyEmployment(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "employment";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("employment", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+    @GetMapping("etc")
+    public String recruitStudyEte(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        String studyType = "etc";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = recruitStudyService.rowTotal(studyType);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(map, studyType);
+        model.addAttribute("list", recruitStudyList);
+        String pageMenu = Paging.getPaging("etc", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
+        return "Recruit/RecruitStudy";
+    }
+
+
     //스터디원 모집 작성페이지
     @GetMapping("/writeform")
     public String writeForm(Model model, Principal principal) {

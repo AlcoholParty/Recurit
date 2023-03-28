@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Controller
-@RequestMapping("/recruitmenteelist")
+@RequestMapping("/mentorprofilelist")
 public class RecruitMenteeController {
 
     @Autowired
@@ -45,7 +45,7 @@ public class RecruitMenteeController {
         List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(map);
         model.addAttribute("list", recruitMenteeList);
         //페이징 처리를 위해 url, 이동할 페이지번호, 전체 열의 갯수, 페이징을 위해 설정을 잡아둔 값들을 가지고 HTML 에 작성해줄 내용을 생성한다.
-        String pageMenu = Paging.getPaging("recruitmenteelist", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        String pageMenu = Paging.getPaging("mentorprofilelist", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
         model.addAttribute("pageMenu", pageMenu);
         return "Recruit/RecruitMenteeList";
     }
@@ -63,7 +63,7 @@ public class RecruitMenteeController {
     @GetMapping("/writeform/write")
     public String write(RecruitMentee recruitMentee) {
         recruitMenteeService.writeRecruitMentee(recruitMentee);
-        return "redirect:/recruitmenteelist";
+        return "redirect:/mentorprofilelist";
     }
 
     //멘티 글 상세보기

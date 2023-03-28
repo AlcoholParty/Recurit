@@ -2,6 +2,7 @@ package com.study.soju.repository;
 
 import com.study.soju.entity.RecruitMentee;
 import com.study.soju.entity.RecruitMentor;
+import com.study.soju.entity.RecruitStudy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,8 @@ public interface RecruitMenteeRepository extends JpaRepository<RecruitMentee, Ob
     @Modifying
     @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY idx DESC)AS ranking FROM RecruitMentee)AS ranking WHERE ranking BETWEEN :start AND :end", nativeQuery = true)
     List<RecruitMentee> findRecruitMenteeList(@Param("start") int start, @Param("end") int end);
+
+    @Modifying
+    @Query(value = "SELECT * FROM (SELECT *, RANK() OVER (ORDER BY studyLike DESC, idx DESC)AS ranking FROM RecruitMentee)AS ranking WHERE ranking BETWEEN :start AND :end", nativeQuery = true)
+    List<RecruitMentee> findRecruitMenteeListRanking(@Param("start") int start, @Param("end") int end);
 }

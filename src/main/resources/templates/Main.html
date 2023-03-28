@@ -34,7 +34,7 @@
             align-items: center;
             border: 1px solid #ccc;
             border-radius: 50%;
-            background-color: #ffffff9e;
+            background-color: #ffffff;
             box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
             cursor: pointer;
         }
@@ -47,7 +47,7 @@
             align-items: center;
             border: 1px solid #ccc;
             border-radius: 50%;
-            background-color: #ffffff9e;
+            background-color: #ffffff;
             box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
             cursor: pointer;
         }
@@ -60,7 +60,7 @@
             align-items: center;
             border: 1px solid #ccc;
             border-radius: 50%;
-            background-color: #ffffff9e;
+            background-color: #ffffff;
             box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
             cursor: pointer;
         }
@@ -73,7 +73,7 @@
             align-items: center;
             border: 1px solid #ccc;
             border-radius: 50%;
-            background-color: #ffffff9e;
+            background-color: #ffffff;
             box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
             cursor: pointer;
         }
@@ -141,9 +141,17 @@
             </div>
 
             <div class="headerMenuRight">
-                <div class="whenLogin">
+                <div class="whenLogin" sec:authorize="isAuthenticated()">
                     <div class="welcome" th:text="${nickname} + '님 반갑습니다!'"></div>
                     <div class="notificationsMenu" onclick="location.href='/mypage/alarm'">
+                        <div class="icon" th:data-number="${alarmCount}">
+                            <i class="ri-notification-4-fill"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="whenLogin" sec:authorize="isAnonymous()">
+                    <div class="welcome"></div>
+                    <div class="notificationsMenu" onclick="location.href='/mypage/alarm'" style="visibility: hidden;">
                         <div class="icon" th:data-number="${alarmCount}">
                             <i class="ri-notification-4-fill"></i>
                         </div>
@@ -171,77 +179,77 @@
     <div class="interestDivBody">
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/computer">
                 <img src="/img/computer.png" class="interestElementImg">
                 <p class="interestElementText">컴퓨터/IT</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/math">
                 <img src="/img/math.png" class="interestElementImg">
                 <p class="interestElementText">수학</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/management">
                 <img src="/img/management.png" class="interestElementImg">
                 <p class="interestElementText">경영/마케팅</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/design">
                 <img src="/img/design.png" class="interestElementImg">
                 <p class="interestElementText">디자인</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/education">
                 <img src="/img/education.png" class="interestElementImg">
                 <p class="interestElementText">교육</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/literature">
                 <img src="/img/literature.png" class="interestElementImg">
                 <p class="interestElementText">문학</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/entrance">
                 <img src="/img/entrance.png" class="interestElementImg">
                 <p class="interestElementText">입시</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/engineer">
                 <img src="/img/engineer.png" class="interestElementImg">
                 <p class="interestElementText">공학</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/language">
                 <img src="/img/language.png" class="interestElementImg">
                 <p class="interestElementText">언어</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/employment">
                 <img src="/img/employment.png" class="interestElementImg">
                 <p class="interestElementText">취업</p>
             </a>
         </div>
 
         <div class="interestElement">
-            <a href="/">
+            <a href="/recruitstudy/etc">
                 <img src="/img/etc.png" class="interestElementImg">
                 <p class="interestElementText">기타</p>
             </a>
@@ -256,118 +264,27 @@
         <span>지금 가장 인기있는 스터디</span>
     </div>
     <ul class="bestStudyInner">
-        <li class="bestStudyElement">
+        <li class="bestStudyElement" th:each="recruitStudy : ${list}">
             <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">백엔드 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">프론트엔드 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">OPIC 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">토익 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">수학 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
+                <a th:href="@{/recruitstudy/post(idx = ${recruitStudy.idx})}">
+                    <img th:src="${recruitStudy.image}" class="bestStudyImg">
+                    <p class="bestStudyTitle" th:text="${recruitStudy.title}">백엔드 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText" th:text="${recruitStudy.writer}">밤톨</p>
                 </a>
             </div>
         </li>
         <li>
             <input type="button" value=">" class="toright slider">
         </li>
-
         <li>
             <input type="button" value="<" class="toleft slider">
         </li>
-<!--        <li class="bestStudyElement" th:each="recruitStudy : ${list}">-->
-<!--            <div class="bestStudyA">-->
-<!--                <a th:href="@{/recruitstudy/post(idx = ${recruitStudy.idx})}">-->
-<!--                    <img th:src="${recruitStudy.image}" class="bestStudyImg">-->
-<!--                    <p class="bestStudyTitle" th:text="${recruitStudy.title}"></p>-->
-<!--                    <p class="bestStudyText" th:text="${recruitStudy.writer}"></p>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </li>-->
-
-        <li class="bestStudyElement">
+        <li class="bestStudyElement" th:each="recruitStudy : ${list2}">
             <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
+                <a th:href="@{/recruitstudy/post(idx = ${recruitStudy.idx})}">
+                    <img th:src="${recruitStudy.image}" class="bestStudyImg">
+                    <p class="bestStudyTitle" th:text="${recruitStudy.title}"></p>
+                    <p class="bestStudyText" th:text="${recruitStudy.writer}"></p>
                 </a>
             </div>
         </li>
@@ -379,109 +296,27 @@
         <span>요즘 주목받는 멘토</span>
     </div>
     <ul class="bestMentorInner">
-        <li class="bestStudyElement">
+        <li class="bestStudyElement" th:each="recruitMentee : ${menteeList}">
             <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">백엔드 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">프론트엔드 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">OPIC 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">토익 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/cookie.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">수학 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
+                <a th:href="@{/mentorprofilelist/post(idx = ${recruitMentee.idx})}">
+                    <img th:src="${recruitMentee.image}" class="bestStudyImg">
+                    <p class="bestStudyTitle" th:text="${recruitMentee.title}">백엔드 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText" th:text="${recruitMentee.writer}">밤톨</p>
                 </a>
             </div>
         </li>
         <li>
             <input type="button" value=">" class="toright1 sliderBtn">
         </li>
-
         <li>
             <input type="button" value="<" class="toleft1 sliderBtn">
         </li>
-
-        <li class="bestStudyElement">
+        <li class="bestStudyElement" th:each="recruitMentee : ${menteeList2}">
             <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
-                </a>
-            </div>
-        </li>
-
-        <li class="bestStudyElement">
-            <div class="bestStudyA">
-                <a href="/">
-                    <img src="/img/pink.jpg" class="bestStudyImg">
-                    <p class="bestStudyTitle">정처기 공부할 사람 구합니다 @@@@</p>
-                    <p class="bestStudyText">밤톨</p>
+                <a th:href="@{/mentorprofilelist/post(idx = ${recruitMentee.idx})}">
+                    <img th:src="${recruitMentee.image}" class="bestStudyImg">
+                    <p class="bestStudyTitle" th:text="${recruitMentee.title}">정처기 공부할 사람 구합니다 @@@@</p>
+                    <p class="bestStudyText" th:text="${recruitMentee.writer}">밤톨</p>
                 </a>
             </div>
         </li>

@@ -33,6 +33,10 @@ public class RecruitMenteeService {
         return Long.valueOf(recruitMenteeRepository.count()).intValue();
     }
 
+    public List<RecruitMentee> recruitMenteeListAll(int start, int end) {
+        return recruitMenteeRepository.findRecruitMenteeList(start, end);
+    }
+
     public List<RecruitMentee> recruitMenteeListAll(HashMap<String, Integer> map) {
         List<RecruitMentee> recruitMenteeList = recruitMenteeRepository.findRecruitMenteeList(map.get("start"), map.get("end"));
         return recruitMenteeList;

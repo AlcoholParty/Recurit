@@ -44,7 +44,7 @@
             <input type="button" value="신청하기" onclick="menteeRequest();">
         </li>
         <li>
-            <a href="/recruitmenteelist">뒤로가기</a>
+            <a href="/mentorprofilelist">뒤로가기</a>
         </li>
         <li>
             <input type="text" id="comment">
@@ -89,7 +89,7 @@
         let idx = [[${recruitMentee.idx}]];
         let emailId = [[${emailId}]];
         let nickname = [[${nickname}]];
-        let url = "/recruitmenteelist/post/apply";
+        let url = "/mentorprofilelist/post/apply";
         let param = "writer=" + [[${recruitMentee.writer}]] +
                     "&emailId=" + emailId +
                     "&nickname=" + nickname +
@@ -121,7 +121,7 @@
             alert("내용을 작성하세요");
             return;
         }
-        let url = "/recruitmenteelist/post/comment/modify"
+        let url = "/mentorprofilelist/post/comment/modify"
         let param = "idx=" + idx +
                     "&comment=" + comment +
                     "&writeDate=" + today;
@@ -152,7 +152,7 @@
 //////////////////////////////////////////////////////댓글 삭제////////////////////////////////////////////////////////////////
     function commentDelete(f) {
         let idx = f.idx.value;
-        let url = "/recruitmenteelist/post/comment/delete"
+        let url = "/mentorprofilelist/post/comment/delete"
         let param = "idx=" + idx;
         sendRequest(url, param, deleteRes, "GET");
     }
@@ -176,7 +176,7 @@
         let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
         let idx = document.getElementById("idx").value;
         let comment = document.getElementById("comment").value;
-        let url = "/recruitmenteelist/post/comment"
+        let url = "/mentorprofilelist/post/comment"
         let param = "commentIdx=" + idx +
                     "&writeDate=" + today +
                     "&writer=" + [[${nickname}]] +
@@ -200,7 +200,7 @@
 //////////////////////////////////////////////////////게시글 삭제////////////////////////////////////////////////////////////////
     function writeDelete() {
         let idx = document.getElementById("idx").value;
-        let url = "/recruitmenteelist/post/delete";
+        let url = "/mentorprofilelist/post/delete";
         let param = "idx=" + idx;
         sendRequest(url, param, deleteStudy, "GET");
     }
@@ -212,7 +212,7 @@
                 return;
             } else {
                 alert("삭제 성공");
-                location.href="/recruitmenteelist";
+                location.href="/mentorprofilelist";
             }
         }
     }
@@ -222,7 +222,7 @@
     function like(f){
         let studyLike = parseInt(f.studyLike.value);
         let idx = document.getElementById("idx").value;
-        let url = "/recruitmenteelist/post/like";
+        let url = "/mentorprofilelist/post/like";
         param = "&studyLike=" + studyLike +
                 "&likeIdx=" + idx +
                 "&memberIdx=" + [[${memberIdx}]] +
