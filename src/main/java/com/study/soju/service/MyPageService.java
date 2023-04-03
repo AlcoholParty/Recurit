@@ -1,13 +1,7 @@
 package com.study.soju.service;
 
-import com.study.soju.entity.Alarm;
-import com.study.soju.entity.RecruitMentee;
-import com.study.soju.entity.RecruitMentor;
-import com.study.soju.entity.RecruitStudy;
-import com.study.soju.repository.AlarmRepository;
-import com.study.soju.repository.RecruitMenteeRepository;
-import com.study.soju.repository.RecruitMentorRepository;
-import com.study.soju.repository.RecruitStudyRepository;
+import com.study.soju.entity.*;
+import com.study.soju.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +20,9 @@ public class MyPageService {
 
     @Autowired
     RecruitMenteeRepository recruitMenteeRepository;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     public List<Alarm> findEmailId(String emailId) {
         return alarmRepository.findByEmailId(emailId);
@@ -96,6 +93,10 @@ public class MyPageService {
     //나중에 다른 컨트롤러로 이동 시킬 메서드
     public int alarmCount(String emailId) {
         return alarmRepository.countByEmailId(emailId);
+    }
+
+    public Member returnMember(String emailId) {
+        return memberRepository.findByEmailId(emailId);
     }
 
 }

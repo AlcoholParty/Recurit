@@ -1,7 +1,9 @@
 package com.study.soju.controller;
 
 import com.study.soju.entity.Alarm;
+import com.study.soju.entity.Member;
 import com.study.soju.service.MyPageService;
+import com.study.soju.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +21,24 @@ public class MyPageController {
     @Autowired
     MyPageService myPageService;
 
+    @Autowired
+    SignUpService signUpService;
+
     @GetMapping("")
-    public String myPage() {
-        return "MyPage/MyPage";
+    public String myPage(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/n";
+        } else {
+            String nickname = signUpService.returnNickname(principal.getName());
+            model.addAttribute("nickname", nickname);
+            int alarmCount = myPageService.alarmCount(principal.getName());
+            model.addAttribute("alarmCount", alarmCount);
+            List<Alarm> alarmList = myPageService.findEmailId(principal.getName());
+            model.addAttribute("alarmList", alarmList);
+            Member member = myPageService.returnMember(principal.getName());
+            model.addAttribute("member", member);
+            return "MyPage/MyPage";
+        }
     }
 
     @GetMapping("/alarm")

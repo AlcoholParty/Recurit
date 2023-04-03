@@ -1,5 +1,6 @@
 package com.study.soju.controller;
 
+import com.study.soju.entity.Alarm;
 import com.study.soju.entity.RecruitMentee;
 import com.study.soju.entity.RecruitStudy;
 import com.study.soju.service.MyPageService;
@@ -47,15 +48,14 @@ public class MainController {
             int alarmCount = myPageService.alarmCount(principal.getName());
             model.addAttribute("alarmCount", alarmCount);
 
-            List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 5);
-            model.addAttribute("list", recruitStudyList);
-            List<RecruitStudy> recruitStudyList1 = recruitStudyService.recruitStudyListAll(6, 10);
-            model.addAttribute("list2", recruitStudyList1);
+            List<Alarm> alarmList = myPageService.findEmailId(principal.getName());
+            model.addAttribute("alarmList", alarmList);
 
-            List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 5);
-            List<RecruitMentee> recruitMenteeList1 = recruitMenteeService.recruitMenteeListAll(6, 10);
+            List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 10);
+            model.addAttribute("list", recruitStudyList);
+
+            List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 10);
             model.addAttribute("menteeList", recruitMenteeList);
-            model.addAttribute("menteeList2", recruitMenteeList1);
             return "Main";
         }
     }
@@ -64,14 +64,10 @@ public class MainController {
     @GetMapping("/n")
     public String nmain(Model model) {
         // 1. 메인 페이지로 이동한다.
-        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 5);
+        List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 10);
         model.addAttribute("list", recruitStudyList);
-        List<RecruitStudy> recruitStudyList1 = recruitStudyService.recruitStudyListAll(6, 10);
-        model.addAttribute("list2", recruitStudyList1);
-        List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 5);
-        List<RecruitMentee> recruitMenteeList1 = recruitMenteeService.recruitMenteeListAll(6, 10);
+        List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 10);
         model.addAttribute("menteeList", recruitMenteeList);
-        model.addAttribute("menteeList2", recruitMenteeList1);
         return "Main";
     }
 
