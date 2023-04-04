@@ -178,8 +178,37 @@
 ## 04/04
 ### 스토어페이지 작업
 #### 1. 스토어 병합작업
+### 추가된 데이터베이스
+### Store
+	CREATE TABLE Store(
+		storeIdx BIGINT PRIMARY KEY,
+		goods VARCHAR(50),
+		category VARCHAR(50),
+		price INT NOT NULL,
+		introduce VARCHAR(500),
+		stock INT NOT NULL,
+		goodsLike INT,
+		itemName VARCHAR(50) NOT NULL
+	);
 ### 결제페이지 작업
 #### 1. 결제기능 병합작업
+### 추가된 데이터베이스
+### Pay
+	CREATE TABLE Pay(
+		impUid VARCHAR(200) PRIMARY KEY,
+		merchantUid VARCHAR(200),
+		PGname VARCHAR(50), 
+		payMethod VARCHAR(300),
+		itemName VARCHAR(50),
+		price INT,
+		buyerEmail VARCHAR(50),
+		buyerName VARCHAR(20),
+		buyerTel VARCHAR(20),
+		buyerAddress VARCHAR(50),
+		buyerPostNum VARCHAR(50),
+		itemCount INT,
+		isPaid INT
+	);
 ### 메인페이지 작업
 #### 1. 메인페이지 알림 리스트로 보여주기 작업
 #### 2. 알림 확인 및 내용 삭제
