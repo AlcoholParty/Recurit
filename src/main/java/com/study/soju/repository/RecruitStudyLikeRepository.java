@@ -12,6 +12,8 @@ import java.util.List;
 public interface RecruitStudyLikeRepository extends JpaRepository<RecruitStudyLike, Object> {
     RecruitStudyLike findByLikeIdxAndMemberIdx(long likeIdx, long memberIdx);
 
+    List<RecruitStudyLike> findByMemberIdx(long memberIdx);
+
     //countBy 로 검색할 컬럼의 갯수를 반환한다.
     //countBy 는 예약어처럼 항상 앞에 작성해줘야한다.
     //마치 findBy...처럼

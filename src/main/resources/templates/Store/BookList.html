@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>교재</h1>
+    <input type="button" value="뒤로가기" onclick="location.href='/store'">
+    <div th:each="store:${categoryList}" style="border: 1px solid black;">
+        <div th:onclick="|location.href='/store/pay?itemName=@{${store.itemName}}'|">
+            <span>
+                <div>
+                    <div th:id="${store.itemName}" th:text="${store.itemName}"></div>
+                    <div th:text="${store.price} + '원'"></div>
+                    <div>
+                        <p th:text="${store.introduce}"></p>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </div>
+</body>
+</html>

@@ -99,4 +99,9 @@ public class MyPageService {
         return memberRepository.findByEmailId(emailId);
     }
 
+    public long returnIdx(String emailId) {
+        Member member = memberRepository.findByEmailId(emailId);
+        long idx = member.getIdx();
+        return idx;
+    }
 }

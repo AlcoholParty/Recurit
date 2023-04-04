@@ -5,6 +5,7 @@ import com.study.soju.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +25,16 @@ public class RecruitStudyService {
 
     @Autowired
     AlarmRepository alarmRepository;
+
+    public List<RecruitStudy> likeList(long idx) {
+        List<RecruitStudyLike> likeList = recruitStudyLikeRepository.findByMemberIdx(idx);
+        List<RecruitStudy> recruitStudyList = new ArrayList<>();
+        for(int i = 0; i < likeList.size(); i++) {
+            RecruitStudy recruitStudy = recruitStudyRepository.findByIdx(likeList.get(i).getLikeIdx());
+            recruitStudyList.add(recruitStudy);
+        }
+        return recruitStudyList;
+    }
 
     //닉네임으로 emailId 가져오기
     public String returnEmailId(String nickname) {

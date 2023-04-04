@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/js/storeCount.js"></script>
+    <script type="text/javascript" src="/js/storePayPopup.js"></script>
+</head>
+<body>
+    <h1>결제</h1>
+    <input type="button" value="뒤로가기" onclick="location.href='/store'">
+    <div class="payDiv">
+        <span>
+            <div>
+                <div id="itemName" th:text="${item.itemName}"></div>
+                <input type="hidden" id="staticPrice" th:value="${item.price}">
+                <div id="price" th:text="${item.price} + '원'"></div>
+                <div>
+                    <button id="minus" onclick="count('-')">
+                        <img src="/img/minus.png">
+                    </button>
+                    <label type="text" id="num">1</label>
+                    <button id="plus" onclick="count('+')">
+                        <img src="/img/plus.png">
+                    </button>
+                </div>
+                <div>
+                    <input type="button" value="구매하기" onclick="payPopup();">
+                </div>
+            </div>
+        </span>
+    </div>
+    <div>
+        <div>
+            <div>상세정보</div>
+        </div>
+        <div>
+            <div>
+                <textarea readonly th:text="${item.introduce}"></textarea>
+                <input type="hidden" value="상세정보 내용">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
