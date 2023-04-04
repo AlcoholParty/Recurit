@@ -8,7 +8,7 @@
     <h1>스터디원 모집</h1>
     <ul>
         <li><a href="recruitmentorlist">멘토모집</a> </li>
-        <li><a href="recruitmenteelist">멘티모집</a> </li>
+        <li><a href="mentorprifilelist">멘토프로필</a> </li>
         <li><a href="/recruitstudy/writeform">글쓰기</a> </li>
         <li><a href="/">메인으로</a> </li>
     </ul>
@@ -22,7 +22,7 @@
                 모집완료
             </div>
             <div>
-                <img th:src="${recruitStudy.image}">
+                <img th:src="${recruitStudy.image}" style="width: 50px; height: 50px;">
             </div>
             <div name="title" th:text="${recruitStudy.title}">
                 제목

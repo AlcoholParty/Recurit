@@ -4,17 +4,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.study.soju.config.IamPortPass;
 import com.study.soju.entity.Member;
 import com.study.soju.entity.Pay;
+import com.study.soju.entity.RecruitStudy;
 import com.study.soju.entity.Store;
 import com.study.soju.service.PayService;
+import com.study.soju.util.PageSetup;
+import com.study.soju.util.Paging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -34,37 +35,64 @@ public class StoreController {
     //'/store/memvershiplist' 이라는 url 값이 들어오면 memberShipList 메서드로 들어온다.
     @GetMapping("/membershiplist")
     //Model 은 이동하려는 페이지에 객체를 넘겨주기위해 선언하다.
-    public String membershipList(Model model){
-        //카테고리 별로 나눠서 검색
-        //파라미터로 membership 을 넘겨줘서
-        //카테고리가 membership 인 모든 객체들을 리스트로 반환
-        List<Store> memberShipList = payService.findList("membership");
-        //catagoryList 라는 이름으로 이동한 페이지에서 사용할 수 있게 리스트를 추가한다.
-        model.addAttribute("categoryList", memberShipList);
+    public String membershipList(Model model, @RequestParam(value="page", defaultValue="0") int page){
+        String goods = "membership";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = payService.rowTotal(goods);
+        List<Store> storeList = payService.storeListAll(map, goods);
+        model.addAttribute("categoryList", storeList);
+        String pageMenu = Paging.getPaging("membershiplist", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
         return "Store/MemberShipList";
     }
 
     //'/store/booklist' 이라는 url 값이 들어오면 bookList 메서드로 들어온다.
     @GetMapping("/booklist")
-    public String bookList(Model model){
-        //카테고리 별로 나눠서 검색
-        //파라미터로 book 을 넘겨줘서
-        //카테고리가 book 인 모든 객체들을 리스트로 반환
-        List<Store> bookList = payService.findList("book");
-        //catagoryList 라는 이름으로 이동한 페이지에서 사용할 수 있게 리스트를 추가한다.
-        model.addAttribute("categoryList", bookList);
+    public String bookList(Model model, @RequestParam(value="page", defaultValue="0") int page){
+        String goods = "book";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = payService.rowTotal(goods);
+        List<Store> storeList = payService.storeListAll(map, goods);
+        model.addAttribute("categoryList", storeList);
+        String pageMenu = Paging.getPaging("booklist", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
         return "Store/BookList";
     }
 
     //'/store/etclist' 이라는 url 값이 들어오면 etcList 메서드로 들어온다.
     @GetMapping("/etclist")
-    public String etcList(Model model){
-        //카테고리 별로 나눠서 검색
-        //파라미터로 etc 을 넘겨줘서
-        //카테고리가 etc 인 모든 객체들을 리스트로 반환
-        List<Store> etcList = payService.findList("etc");
-        //catagoryList 라는 이름으로 이동한 페이지에서 사용할 수 있게 리스트를 추가한다.
-        model.addAttribute("categoryList", etcList);
+    public String etcList(Model model, @RequestParam(value="page", defaultValue="0") int page){
+        String goods = "etc";
+        int nowPage = 1;
+        if(page != 0) {
+            nowPage = page;
+        }
+        int start = (nowPage - 1) * PageSetup.BLOCKLIST + 1;
+        int end = start + PageSetup.BLOCKLIST - 1;
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("start", start);
+        map.put("end", end);
+        int rowTotal = payService.rowTotal(goods);
+        List<Store> storeList = payService.storeListAll(map, goods);
+        model.addAttribute("categoryList", storeList);
+        String pageMenu = Paging.getPaging("etclist", nowPage, rowTotal, PageSetup.BLOCKLIST, PageSetup.BLOCKPAGE);
+        model.addAttribute("pageMenu", pageMenu);
         return "Store/EtcList";
     }
 

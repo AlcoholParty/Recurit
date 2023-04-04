@@ -8,8 +8,10 @@ import com.study.soju.repository.PayRepository;
 import com.study.soju.repository.StoreRepository;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -65,4 +67,14 @@ public class PayService {
         pay.setIsPaid(1);
         payRepository.save(pay);
     }
+
+    public int rowTotal(String goods) {
+        return Long.valueOf(storeRepository.countByGoods(goods)).intValue();
+    }
+
+    public List<Store> storeListAll(HashMap<String, Integer> map, String goods) {
+        List<Store> storeList = storeRepository.findStoreList(map.get("start"), map.get("end"), goods);
+        return storeList;
+    }
+
 }
