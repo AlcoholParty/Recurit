@@ -74,7 +74,7 @@
                                             <input type="hidden" name="recruitStudyIdx" th:value="${alarm.recruitStudyIdx}">
                                             <input type="hidden" name="recruitMentorIdx" th:value="${alarm.recruitMentorIdx}">
                                             <input type="hidden" name="recruitMenteeIdx" th:value="${alarm.recruitMenteeIdx}">
-                                            <input type="button" value="수락" onclick="recruitAccept(this.form);">
+                                            <input type="button" value="수락" onclick="recruitAccept1(this.form);">
                                             <input type="button" value="거절" onclick="recruitRefuse(this.form);">
                                         </form>
                                     </div>
@@ -422,87 +422,89 @@
             }
         });
     </script>
-    <script src="/js/httpRequest.js"></script>
-    <script th:inline="javascript">
-        function deleteAlarm(f) {
-            let idx = f.idx.value;
-            let url = "/mypage/alarm/delete";
-            let param = "idx=" + idx;
-            sendRequest(url, param, deleteRes, "GET");
-        }
-        function deleteRes() {
-            if ( xhr.readyState == 4 && xhr.status == 200 ) {
-                var data = xhr.responseText;
-                if(data == 'no'){
-                    alert("삭제 실패");
-                    return;
-                } else {
-                    alert("삭제 성공");
-                    location.reload();
-                }
-            }
-        }
-
-        function recruitAccept(f) {
-            let idx = f.idx.value;
-            let recruitStudyIdx = f.recruitStudyIdx.value;
-            let recruitMentorIdx = f.recruitMentorIdx.value;
-            let recruitMenteeIdx = f.recruitMenteeIdx.value;
-            let url = "/mypage/alarm/accept"
-            let param = "idx=" + idx +
-                        "&recruitStudyIdx=" + recruitStudyIdx +
-                        "&recruitMentorIdx=" + recruitMentorIdx +
-                        "&recruitMenteeIdx=" + recruitMenteeIdx;
-            sendRequest(url, param, acceptRes, "GET");
-        }
-        function acceptRes() {
-            if ( xhr.readyState == 4 && xhr.status == 200 ) {
-                var data = xhr.responseText;
-                if(data == 'no'){
-                    alert("실패");
-                    return;
-                } else {
-                    if(data == 'study') {
-                        alert("스터디원 구하기 수락 성공");
-                        location.reload();
-                    }
-                    if(data == 'mentor') {
-                        alert("멘토 구하기 수락 성공");
-                        location.reload();
-                    }
-                    if(data == 'mentee') {
-                        alert("멘티 구하기 수락 성공");
-                        location.reload();
-                    }
-                    if(data == 'excess') {
-                        alert("인원이 다 구해져 받을 수 없습니다.");
-                        return;
-                    }
-                }
-            }
-        }
-
-        function recruitRefuse(f) {
-            let idx = f.idx.value;
-            let recruitStudyIdx = f.recruitStudyIdx.value;
-            let recruitMentorIdx = f.recruitMentorIdx.value;
-            let recruitMenteeIdx = f.recruitMenteeIdx.value;
-            let url = "/mypage/alarm/refuse"
-            let param = "idx=" + idx;
-            sendRequest(url, param, refuseRes, "GET");
-        }
-        function refuseRes() {
-            if ( xhr.readyState == 4 && xhr.status == 200 ) {
-                var data = xhr.responseText;
-                if(data == 'no'){
-                    alert("거절 실패");
-                    return;
-                } else {
-                    alert("거절 성공");
-                    location.reload();
-                }
-            }
-        }
-    </script>
 </body>
+<script src="/js/httpRequest.js"></script>
+<script th:inline="javascript">
+    function deleteAlarm(f) {
+        let idx = f.idx.value;
+        let url = "/mypage/alarm/delete";
+        let param = "idx=" + idx;
+        sendRequest(url, param, deleteRes, "GET");
+    }
+    function deleteRes() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("삭제 실패");
+                return;
+            } else {
+                alert("삭제 성공");
+                location.reload();
+            }
+        }
+    }
+
+    function recruitAccept1(f) {
+        let idx = f.idx.value;
+        let recruitStudyIdx = f.recruitStudyIdx.value;
+        let recruitMentorIdx = f.recruitMentorIdx.value;
+        let recruitMenteeIdx = f.recruitMenteeIdx.value;
+        let url = "/mypage/alarm/accept";
+        let param = "idx=" + idx +
+                    "&recruitStudyIdx=" + recruitStudyIdx +
+                    "&recruitMentorIdx=" + recruitMentorIdx +
+                    "&recruitMenteeIdx=" + recruitMenteeIdx;
+        sendRequest(url, param, acceptRes1, "GET");
+    }
+    
+    function acceptRes1() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            alert(data);
+            if(data == 'no'){
+                alert("실패");
+                return;
+            } else {
+                if(data == 'study') {
+                    alert("스터디원 구하기 수락 성공");
+                    location.reload();
+                }
+                if(data == 'mentor') {
+                    alert("멘토 구하기 수락 성공");
+                    location.reload();
+                }
+                if(data == 'mentee') {
+                    alert("멘티 구하기 수락 성공");
+                    location.reload();
+                }
+                if(data == 'excess') {
+                    alert("인원이 다 구해져 받을 수 없습니다.");
+                    return;
+                }
+            }
+        }
+    }
+
+    function recruitRefuse(f) {
+        let idx = f.idx.value;
+        let recruitStudyIdx = f.recruitStudyIdx.value;
+        let recruitMentorIdx = f.recruitMentorIdx.value;
+        let recruitMenteeIdx = f.recruitMenteeIdx.value;
+        let url = "/mypage/alarm/refuse"
+        let param = "idx=" + idx;
+        sendRequest(url, param, refuseRes, "GET");
+    }
+    function refuseRes() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("거절 실패");
+                return;
+            } else {
+                alert("거절 성공");
+                location.reload();
+            }
+        }
+    }
+</script>
 </html>

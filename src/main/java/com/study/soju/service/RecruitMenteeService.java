@@ -175,10 +175,10 @@ public class RecruitMenteeService {
     public String menteeApply(Alarm alarm) {
         String res = "no";
         //신청이 두번 가지않게 하기위해서 알람 타입, 이메일, 닉네임, 스터디글 idx 를 확인해서 있으면 중복이므로 알람을 생성하지 않는다.
-        Alarm alarm1 = alarmRepository.findByAlarmTypeAndEmailIdAndNicknameAndRecruitStudyIdx(alarm.getAlarmType(),
+        Alarm alarm1 = alarmRepository.findByAlarmTypeAndEmailIdAndNicknameAndRecruitMenteeIdx(alarm.getAlarmType(),
                 alarm.getEmailId(),
                 alarm.getNickname(),
-                alarm.getRecruitStudyIdx());
+                alarm.getRecruitMenteeIdx());
         if(alarm1 != null) {
             res = "exist";
         } else {

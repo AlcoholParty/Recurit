@@ -8,6 +8,10 @@ import java.util.List;
 public interface AlarmRepository extends JpaRepository<Alarm, Object> {
     Alarm findByAlarmTypeAndEmailIdAndNicknameAndRecruitStudyIdx(int alarmType, String emailId, String nickname, long recruitStudyIdx);
 
+    Alarm findByAlarmTypeAndEmailIdAndNicknameAndRecruitMentorIdx(int alarmType, String emailId, String nickname, long recruitMentorIdx);
+
+    Alarm findByAlarmTypeAndEmailIdAndNicknameAndRecruitMenteeIdx(int alarmType, String emailId, String nickname, long recruitMenteeIdx);
+
     int countByEmailId(String emailId);
 
     List<Alarm> findByEmailId(String emailId);

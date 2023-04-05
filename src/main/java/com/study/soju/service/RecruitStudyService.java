@@ -230,6 +230,7 @@ public class RecruitStudyService {
 
     //스터디원 신청
     public String studyApply(Alarm alarm) {
+        //인원추가 아직안넣어둠
         String res = "no";
         //신청이 두번 가지않게 하기위해서 알람 타입, 이메일, 닉네임, 스터디글 idx 를 확인해서 있으면 중복이므로 알람을 생성하지 않는다.
         Alarm alarm1 = alarmRepository.findByAlarmTypeAndEmailIdAndNicknameAndRecruitStudyIdx(alarm.getAlarmType(),

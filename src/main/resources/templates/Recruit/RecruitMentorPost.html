@@ -91,7 +91,7 @@
         let param = "writer=" + [[${recruitMentor.writer}]] +
                     "&emailId=" + emailId +
                     "&nickname=" + nickname +
-                    "&recruitStudyIdx=" + idx;
+                    "&recruitMentorIdx=" + idx;
         sendRequest(url, param, mentorRequestRes, "GET");
     }
     function mentorRequestRes() {
@@ -225,7 +225,7 @@
                 "&likeIdx=" + idx +
                 "&memberIdx=" + [[${memberIdx}]] +
                 "&emailId=" + [[${emailId}]] +
-                "&recruitStudyIdx=" + idx +
+                "&recruitMentorIdx=" + idx +
                 "&nickname=" + [[${nickname}]];
         sendRequest(url, param, likeRes, "GET");
     }

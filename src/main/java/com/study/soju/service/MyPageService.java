@@ -38,12 +38,13 @@ public class MyPageService {
             if(recruitStudy.getRecruiting() == 0) {
                 recruitStudy.setRecruitingPersonnel(recruitStudy.getRecruitingPersonnel() + 1);
                 //인월은 추가한 이후에 인원이 꽉차면 더이상 구하지 않게 하기위해서 모집완료로 변경
-                if(recruitStudy.getPersonnel() >= recruitStudy.getRecruitingPersonnel()) {
+                if(recruitStudy.getPersonnel() <= recruitStudy.getRecruitingPersonnel()) {
                     recruitStudy.setRecruiting(1);
                 }
                 recruitStudyRepository.save(recruitStudy);
                 //알람 삭제
                 Alarm deleteAlarm = alarmRepository.findByIdx(alarm.getIdx());
+                System.out.println("삭제할거 : " + deleteAlarm);
                 alarmRepository.delete(deleteAlarm);
                 res = "study";
             } else {

@@ -50,7 +50,6 @@ public class MainController {
 
             List<Alarm> alarmList = myPageService.findEmailId(principal.getName());
             model.addAttribute("alarmList", alarmList);
-
             List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 10);
             model.addAttribute("list", recruitStudyList);
 
