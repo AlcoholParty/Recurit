@@ -29,8 +29,8 @@ public class MyPageService {
     }
 
 
-    public String accept(Alarm alarm) {
-        String res = "no";
+    public int accept(Alarm alarm) {
+        int res = 0;
         if (alarm.getRecruitStudyIdx() != null && alarm.getRecruitMentorIdx() == null && alarm.getRecruitMenteeIdx() == null) {
             //구하는 사람 추가
             RecruitStudy recruitStudy = recruitStudyRepository.findByIdx(alarm.getRecruitStudyIdx());
@@ -46,30 +46,28 @@ public class MyPageService {
                 Alarm deleteAlarm = alarmRepository.findByIdx(alarm.getIdx());
                 System.out.println("삭제할거 : " + deleteAlarm);
                 alarmRepository.delete(deleteAlarm);
-                res = "study";
+                res = 1;
             } else {
                 //인원을 다 구했다면 삭제하지 않고 돌아간다.
-                res = "excess";
+                res = 4;
             }
-        }
-        if(alarm.getRecruitMentorIdx() != null && alarm.getRecruitStudyIdx() == null && alarm.getRecruitMenteeIdx() == null) {
+        } else if(alarm.getRecruitMentorIdx() != null && alarm.getRecruitStudyIdx() == null && alarm.getRecruitMenteeIdx() == null) {
             RecruitMentor recruitMentor = recruitMentorRepository.findByIdx(alarm.getRecruitMentorIdx());
             if(recruitMentor.getRecruiting() == 0) {
                 Alarm deleteAlarm = alarmRepository.findByIdx(alarm.getIdx());
                 alarmRepository.delete(deleteAlarm);
-                res = "mentor";
+                res = 2;
             } else {
-                res = "excess";
+                res = 4;
             }
-        }
-        if(alarm.getRecruitMenteeIdx() != null && alarm.getRecruitStudyIdx() == null && alarm.getRecruitMentorIdx() == null) {
+        } else if(alarm.getRecruitMenteeIdx() != null && alarm.getRecruitStudyIdx() == null && alarm.getRecruitMentorIdx() == null) {
             RecruitMentee recruitMentee = recruitMenteeRepository.findByIdx(alarm.getRecruitMenteeIdx());
             if(recruitMentee.getRecruiting() == 0) {
                 Alarm deleteAlarm = alarmRepository.findByIdx(alarm.getIdx());
                 alarmRepository.delete(deleteAlarm);
-                res = "mentee";
+                res = 3;
             } else {
-                res = "excess";
+                res = 4;
             }
         }
         return res;

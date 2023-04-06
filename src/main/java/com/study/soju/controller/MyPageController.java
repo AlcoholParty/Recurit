@@ -62,9 +62,27 @@ public class MyPageController {
     @GetMapping("/alarm/accept")
     @ResponseBody
     public String alarmAccept(Alarm alarm) {
-        String res = "no";
-        res = myPageService.accept(alarm);
-        return res;
+        String result = "";
+        int res = myPageService.accept(alarm);
+        switch(res) {
+            case 1 :
+                result = "study";
+                break;
+            case 2 :
+                result = "mentor";
+                break;
+            case 3 :
+                result = "mentee";
+                break;
+            case 4 :
+                result = "excess";
+                break;
+            default :
+                result = "no";
+        }
+        System.out.println("res : " + res);
+        System.out.println("result : " + result);
+        return result;
     }
 
     @GetMapping("/alarm/refuse")

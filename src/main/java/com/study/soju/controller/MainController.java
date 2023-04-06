@@ -55,6 +55,7 @@ public class MainController {
 
             List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 10);
             model.addAttribute("menteeList", recruitMenteeList);
+            System.out.println("제발 나오지마세용");
             return "Main";
         }
     }

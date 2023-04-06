@@ -9,10 +9,11 @@ function createRequest(){
 //그러면 Mozzlia, Safari나 다른 브라우저에서도 Microsoft의 ActiveX 객체의 method와 property를 지원하기 위해 XMLHttpRequest클래스를 구현 하고 있다.
 
 	if(xhr!=null)return;
-	if(window.ActiveXObject)
-		xhr = new ActiveXObject("Microsoft.XMLHTTP");
-	else
+	if(window.ActiveXObject) {
+	    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+	} else {
 		xhr = new XMLHttpRequest();
+	}
 }
 
 
@@ -20,27 +21,24 @@ function sendRequest(url, param, callBack, method){
 	createRequest();//HTTP request생성
 
 	//전송타입 구분
-	var httpMethod = 
-	(method!='POST' && method!='post')?'GET':'POST';
+	var httpMethod = (method!='POST' && method!='post')?'GET':'POST';
 	
 	//파라미터 구분
-	var httpParam = 
-	(param==null || param == '')?null:param;
+	var httpParam = (param==null || param == '')?null:param;
 	
 	//접근 url
 	var httpURL = url;
 	
 	//요청 방식이 get방식이고, 전달할 파라미터 값이 있다면
 	//url경로를 제작 해야 한다.(.../test.jsp?ch=123)
-	if(httpMethod == 'GET' && httpParam != null)
+	if(httpMethod == 'GET' && httpParam != null) {
 		httpURL = httpURL+"?"+httpParam;
-	
-        //xhr.open( 요청방식, 접근url, 비동기(true면 비동기) ); 
+	}
+    //xhr.open( 요청방식, 접근url, 비동기(true면 비동기) );
 	xhr.open(httpMethod, httpURL, true);
 
 	//만약 "POST" type을 보내려 한다면, 요청(request)에 MINE type을 설정 해야 한다. 예를 들자면 send()를 호출 하기 전에 아래와 같은 형태로 send()로 보낼 쿼리를 이용해야 한다.
-	xhr.setRequestHeader("Content-Type",
-	  "application/x-www-form-urlencoded");
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
 	//작업이 완료된 후 호출될 콜백메서드 지정
 	xhr.onreadystatechange = callBack;

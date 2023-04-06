@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+    <script src="/js/httpRequest.js"></script>
+    <script src="/js/mainAlarm.js"></script>
 </head>
 <body>
 <header>
@@ -62,7 +64,7 @@
                         <div class="icon" th:data-number="${alarmCount}">
                             <i class="ri-notification-4-fill"></i>
                         </div>
-                        <div class="notiDrop">
+                        <div class="notiDrop" style="display : block;">
                             <p>최근 알림</p>
                             <div class="notiList">
                                 <a class="notiDropMenu" href="/" th:each="alarm : ${alarmList}">
@@ -317,22 +319,22 @@
         slides.style.width = (slideWidth + slideMargin) * slideCount + 'px';
 
         function moveSlide(num) {
-          slides.style.left = -num * 1284 + 'px';
-          currentIdx = num;
+            slides.style.left = -num * 1284 + 'px';
+            currentIdx = num;
         }
 
         prev.addEventListener('click', function () {
-          if (currentIdx !== 0) {
-            moveSlide(currentIdx - 1);
-          }
-          //첫번째 슬라이드가 아닐 때, 이전 버튼을 누르면 전 슬라이드로 이동
+            if (currentIdx !== 0) {
+                moveSlide(currentIdx - 1);
+            }
+            //첫번째 슬라이드가 아닐 때, 이전 버튼을 누르면 전 슬라이드로 이동
         });
 
         next.addEventListener('click', function () {
-          if (currentIdx !== slideCount - 1) {
-            moveSlide(currentIdx + 1);
-          }
-          //마지막 슬라이드가 아닐 때,  다음 버튼을 누르면 다음 슬라이드로 이동
+            if (currentIdx !== slideCount - 1) {
+                moveSlide(currentIdx + 1);
+            }
+            //마지막 슬라이드가 아닐 때,  다음 버튼을 누르면 다음 슬라이드로 이동
         });
     </script>
 
@@ -350,22 +352,22 @@
         bestStudySlides.style.width = studySlideWidth * studySlideCount + 'px';
 
         function studyMoveSlide(num) {
-          bestStudySlides.style.left = -num * 1184 + 'px';
-          studyCurrentIdx = num;
+            bestStudySlides.style.left = -num * 1184 + 'px';
+            studyCurrentIdx = num;
         }
 
         studyPrev.addEventListener('click', function () {
-          if (studyCurrentIdx !== 0) {
-            studyMoveSlide(studyCurrentIdx - 1);
-          }
-          //첫번째 슬라이드가 아닐 때, 이전 버튼을 누르면 전 슬라이드로 이동
+            if (studyCurrentIdx !== 0) {
+                studyMoveSlide(studyCurrentIdx - 1);
+            }
+            //첫번째 슬라이드가 아닐 때, 이전 버튼을 누르면 전 슬라이드로 이동
         });
 
         studyNext.addEventListener('click', function () {
-          if (studyCurrentIdx !== studySlideCount - 1) {
-            studyMoveSlide(studyCurrentIdx + 1);
-          }
-          //마지막 슬라이드가 아닐 때,  다음 버튼을 누르면 다음 슬라이드로 이동
+            if (studyCurrentIdx !== studySlideCount - 1) {
+                studyMoveSlide(studyCurrentIdx + 1);
+            }
+            //마지막 슬라이드가 아닐 때,  다음 버튼을 누르면 다음 슬라이드로 이동
         });
     </script>
 
@@ -381,31 +383,31 @@
         bestMentorSlides.style.width = mentorSlideWidth * mentorSlideCount + 'px';
 
         function mentorMoveSlide(num) {
-          bestMentorSlides.style.left = -num * 1184 + 'px';
-          mentorCurrentIdx = num;
+            bestMentorSlides.style.left = -num * 1184 + 'px';
+            mentorCurrentIdx = num;
         }
 
         mentorPrev.addEventListener('click', function () {
-          if (mentorCurrentIdx !== 0) {
-            mentorMoveSlide(mentorCurrentIdx - 1);
-          }
-          //첫번째 슬라이드가 아닐 때, 이전 버튼을 누르면 전 슬라이드로 이동
+            if (mentorCurrentIdx !== 0) {
+                mentorMoveSlide(mentorCurrentIdx - 1);
+            }
+            //첫번째 슬라이드가 아닐 때, 이전 버튼을 누르면 전 슬라이드로 이동
         });
 
         mentorNext.addEventListener('click', function () {
-          if (mentorCurrentIdx !== mentorSlideCount - 1) {
-            mentorMoveSlide(mentorCurrentIdx + 1);
-          }
-          //마지막 슬라이드가 아닐 때,  다음 버튼을 누르면 다음 슬라이드로 이동
+            if (mentorCurrentIdx !== mentorSlideCount - 1) {
+                mentorMoveSlide(mentorCurrentIdx + 1);
+            }
+            //마지막 슬라이드가 아닐 때,  다음 버튼을 누르면 다음 슬라이드로 이동
         });
     </script>
 
     <script>
         const icon = document.querySelector('.icon');
         const notiDrop = document.querySelector('.notiDrop');
-        let status = 0; //0이면 클릭 안된 상태, 1이면 클릭 된 상태
+        let status2 = 0; //0이면 클릭 안된 상태, 1이면 클릭 된 상태
 
-        function open(e){
+        function menuOpen(e){
             if ( e == 1 ){
                 notiDrop.style.display = "block";
             } else {
@@ -413,98 +415,14 @@
             }
         }
         icon.addEventListener('click', function () {
-            if( status == 0 ){
-                status = 1;
-                open(status);
+            if( status2 == 0 ){
+                status2 = 1;
+                menuOpen(status2);
             } else{
-                status = 0;
-                open(status);
+                status2 = 0;
+                menuOpen(status2);
             }
         });
     </script>
 </body>
-<script src="/js/httpRequest.js"></script>
-<script th:inline="javascript">
-    function deleteAlarm(f) {
-        let idx = f.idx.value;
-        let url = "/mypage/alarm/delete";
-        let param = "idx=" + idx;
-        sendRequest(url, param, deleteRes, "GET");
-    }
-    function deleteRes() {
-        if ( xhr.readyState == 4 && xhr.status == 200 ) {
-            var data = xhr.responseText;
-            if(data == 'no'){
-                alert("삭제 실패");
-                return;
-            } else {
-                alert("삭제 성공");
-                location.reload();
-            }
-        }
-    }
-
-    function recruitAccept1(f) {
-        let idx = f.idx.value;
-        let recruitStudyIdx = f.recruitStudyIdx.value;
-        let recruitMentorIdx = f.recruitMentorIdx.value;
-        let recruitMenteeIdx = f.recruitMenteeIdx.value;
-        let url = "/mypage/alarm/accept";
-        let param = "idx=" + idx +
-                    "&recruitStudyIdx=" + recruitStudyIdx +
-                    "&recruitMentorIdx=" + recruitMentorIdx +
-                    "&recruitMenteeIdx=" + recruitMenteeIdx;
-        sendRequest(url, param, acceptRes1, "GET");
-    }
-    
-    function acceptRes1() {
-        if ( xhr.readyState == 4 && xhr.status == 200 ) {
-            var data = xhr.responseText;
-            alert(data);
-            if(data == 'no'){
-                alert("실패");
-                return;
-            } else {
-                if(data == 'study') {
-                    alert("스터디원 구하기 수락 성공");
-                    location.reload();
-                }
-                if(data == 'mentor') {
-                    alert("멘토 구하기 수락 성공");
-                    location.reload();
-                }
-                if(data == 'mentee') {
-                    alert("멘티 구하기 수락 성공");
-                    location.reload();
-                }
-                if(data == 'excess') {
-                    alert("인원이 다 구해져 받을 수 없습니다.");
-                    return;
-                }
-            }
-        }
-    }
-
-    function recruitRefuse(f) {
-        let idx = f.idx.value;
-        let recruitStudyIdx = f.recruitStudyIdx.value;
-        let recruitMentorIdx = f.recruitMentorIdx.value;
-        let recruitMenteeIdx = f.recruitMenteeIdx.value;
-        let url = "/mypage/alarm/refuse"
-        let param = "idx=" + idx;
-        sendRequest(url, param, refuseRes, "GET");
-    }
-    function refuseRes() {
-        if ( xhr.readyState == 4 && xhr.status == 200 ) {
-            var data = xhr.responseText;
-            if(data == 'no'){
-                alert("거절 실패");
-                return;
-            } else {
-                alert("거절 성공");
-                location.reload();
-            }
-        }
-    }
-</script>
 </html>
