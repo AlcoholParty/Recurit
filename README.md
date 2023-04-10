@@ -219,3 +219,13 @@
 ## 04/05
 ### 알림기능 오류 해결
 ### 멘토신청, 멘티 신청 오류 
+
+## 04/10
+### 스토어 좋아요 기능 넣기
+### 추가된 데이터베이스
+### StoreLike
+	CREATE TABLE StoreLike(
+		idx BIGINT PRIMARY KEY,
+		likeIdx BIGINT,
+		memberIdx BIGINT
+	);
