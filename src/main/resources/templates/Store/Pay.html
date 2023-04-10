@@ -12,6 +12,7 @@
     <div class="payDiv">
         <span>
             <div>
+                <input type="hidden" th:value="${item.storeIdx}" id="storeIdx">
                 <div id="itemName" th:text="${item.itemName}"></div>
                 <input type="hidden" id="staticPrice" th:value="${item.price}">
                 <div id="price" th:text="${item.price} + '원'"></div>
@@ -26,6 +27,13 @@
                 </div>
                 <div>
                     <input type="button" value="구매하기" onclick="payPopup();">
+                </div>
+                <div>
+                    <input type="hidden" th:value="${likeCheck}" id="storeLikeCheck">
+                    <div th:text="${item.goodsLike}" id="storeLikeView">
+
+                    </div>
+                    <input type="button" value="찜하기" onclick="storeLike();">
                 </div>
             </div>
         </span>
@@ -42,4 +50,35 @@
         </div>
     </div>
 </body>
+<script src="/js/httpRequest.js"></script>
+<script th:inline="javascript">
+    function storeLike() {
+        let idx = document.getElementById("storeIdx").value;
+        let memberIdx = [[${memberIdx}]];
+        let url = "/store/pay/like";
+        let param = "likeIdx=" + idx +
+                    "&memberIdx=" + memberIdx;
+        sendRequest(url, param, likeRes, "GET");
+    }
+    function likeRes() {
+        let storeLIkeCheck = document.getElementById("storeLikeCheck");
+        let storeLikeView = document.getElementById("storeLikeView");
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == "no") {
+
+            } else {
+                if(storeLikeCheck.value == '0') {
+                    alert('좋아요');
+                    storeLikeCheck.value += 1;
+                    storeLikeView.innerHTML = data;
+                } else {
+                    alert('좋아요 취소');
+                    storeLikeCheck.value -= 1;
+                    storeLikeView.innerHTML = data;
+                }
+            }
+        }
+    }
+</script>
 </html>

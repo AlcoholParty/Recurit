@@ -2,10 +2,7 @@ package com.study.soju.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.study.soju.config.IamPortPass;
-import com.study.soju.entity.Member;
-import com.study.soju.entity.Pay;
-import com.study.soju.entity.RecruitStudy;
-import com.study.soju.entity.Store;
+import com.study.soju.entity.*;
 import com.study.soju.service.PayService;
 import com.study.soju.util.PageSetup;
 import com.study.soju.util.Paging;
@@ -99,19 +96,24 @@ public class StoreController {
     //'/store/pay' 이라는 url 값이 들어오면 pay 메서드로 들어온다.
     @GetMapping("/pay")
     //이전 페이지의 url 에서 Store 객체에 맞는 값들을 자동으로 파라미터로 받아온다.
-    public String pay(Store store, Model model){
+    public String pay(Store store, Model model, Principal principal){
         //Store 객체로 받아온 것중 itemName 값을 파라미터로 넘겨준다.
         //이후 itemName 으로 찾아온 Store 객체들을 buyItem 이라는 이름으로 저장
         Store buyItem = payService.findStore(store.getItemName());
         //저장된 Store 객체를 모델에 넣고 넘어가는 페이지에서 사용할 수 있도록 추가
         model.addAttribute("item", buyItem);
+
+        long memberIdx = payService.returnIdx(principal.getName());
+        model.addAttribute("memberIdx", memberIdx);
+        int check = payService.likeCheck(buyItem.getStoreIdx(), memberIdx);
+        model.addAttribute("likeCheck", check);
         return "Store/Pay";
     }
 
     //'/store/purchase' 이라는 url 값이 들어오면 popupPay 메서드로 들어온다.
     @GetMapping("/purchase")
     //이전 페이지의 url 에서 Store 객체에 맞는 값들을 자동으로 파라미터로 받아온다.
-    ////이전 페이지의 url 에서 Principal 객체에 emailId 값을 담아서 파라미터로 받아온다.(스프링 시큐리티 부분)
+    //이전 페이지의 url 에서 Principal 객체에 emailId 값을 담아서 파라미터로 받아온다.(스프링 시큐리티 부분)
     public String popupPay(Store store, Pay pay, Model model, Principal principal){
         //결제를 하려는 갯수를 저장한다.
         int itemCount = pay.getItemCount();
@@ -159,4 +161,18 @@ public class StoreController {
         }
         return res;
     }
+
+    @GetMapping("/pay/like")
+    @ResponseBody
+    public String like(StoreLike storeLike) {
+        String res = "no";
+        System.out.println(storeLike);
+        Store afterStore = payService.likeUpdate(storeLike);
+        System.out.println(afterStore);
+        if(afterStore != null) {
+            res = String.valueOf(afterStore.getGoodsLike());
+        }
+        return res;
+    }
+
 }

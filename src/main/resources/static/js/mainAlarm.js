@@ -4,6 +4,7 @@ function deleteAlarm(f) {
     let param = "idx=" + idx;
     sendRequest(url, param, deleteRes, "GET");
 }
+
 function deleteRes() {
     if ( xhr.readyState == 4 && xhr.status == 200 ) {
         var data = xhr.responseText;
@@ -64,6 +65,7 @@ function recruitRefuse(f) {
     let param = "idx=" + idx;
     sendRequest(url, param, refuseRes, "GET");
 }
+
 function refuseRes() {
     if ( xhr.readyState == 4 && xhr.status == 200 ) {
         var data = xhr.responseText;

@@ -16,13 +16,11 @@
     <nav class="headerContainer">
         <div class="headerMenu">
             <div class="headerMenuLeft">
-
                 <div class="headerImg">
                     <a href="/" alt="SOJU">
                         <img src="/img/logo_mate.png" class="mainLogo">
                     </a>
                 </div>
-
                 <div class="menuContainer">
                     <div class="categoryMenu">
                         <span>스터디원</span>
@@ -32,7 +30,6 @@
                             <a class="dropMentorProfile dropMenu" href="/mentorprofilelist">멘토 프로필</a>
                         </div>
                     </div>
-
                     <div class="categoryMenu">
                         <a href="/meta">
                             <span>스터디룸</span>
@@ -55,7 +52,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="headerMenuRight">
                 <div class="whenLogin" sec:authorize="isAnonymous()">로그인이 필요합니다!!</div>
                 <div class="whenLogin" sec:authorize="isAuthenticated()">
@@ -64,7 +60,7 @@
                         <div class="icon" th:data-number="${alarmCount}">
                             <i class="ri-notification-4-fill"></i>
                         </div>
-                        <div class="notiDrop" style="display : block;">
+                        <div class="notiDrop">
                             <p>최근 알림</p>
                             <div class="notiList">
                                 <a class="notiDropMenu" href="/" th:each="alarm : ${alarmList}">
@@ -93,7 +89,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="whenLogin" sec:authorize="isAnonymous()">
                     <div class="welcome"></div>
                     <div class="notificationsMenu" onclick="location.href='/mypage/alarm'" style="visibility: hidden;">
@@ -102,7 +97,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="btnLogin">
                     <input class="inputButtonLogin" sec:authorize="isAnonymous()" type="button" value="로그인" onclick="location.href='/loginform'">
                     <input class="inputButtonLogin" sec:authorize="isAuthenticated()" type="button" value="로그아웃" onclick="location.href='/logout'">
@@ -208,11 +202,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 <div class="bestStudyContainer">
     <div class="BestTitle">
         <a href="/">지금 가장 인기있는 스터디&nbsp;&nbsp></a>
@@ -236,10 +225,6 @@
         <span class="studyNext next">></span>
     </p>
 </div>
-
-
-
-
 <div class="bestMentorContainer">
     <div class="BestTitle">
         <a href="/">요즘 주목받는 멘토&nbsp;&nbsp;></a>
