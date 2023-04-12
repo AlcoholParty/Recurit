@@ -37,7 +37,6 @@ function sendRequest(url, param, callBack, method){
 	
         //xhr.open( 요청방식, 접근url, 비동기(true면 비동기) ); 
 	xhr.open(httpMethod, httpURL, true);
-
 	//만약 "POST" type을 보내려 한다면, 요청(request)에 MINE type을 설정 해야 한다. 예를 들자면 send()를 호출 하기 전에 아래와 같은 형태로 send()로 보낼 쿼리를 이용해야 한다.
 	xhr.setRequestHeader("Content-Type",
 	  "application/x-www-form-urlencoded");

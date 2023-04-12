@@ -51,56 +51,62 @@
                 <textarea name="studyIntro" th:text="${recruitMentor.studyIntro}"></textarea>
             </li>
             <li>
-                <input type="button" value="수정하기" onclick="a(this.form);">
+                <input type="button" value="수정하기" onclick="mentorModify(this.form);">
             </li>
         </ul>
     </form>
 </body>
 <script src="/js/httpRequest.js"></script>
 <script>
-        const TIME_ZONE = 3240 * 10000; // 현재 시간을 설정하는 변수
-        let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
-        let writeDate = document.getElementById("writeDate");
-        writeDate.value = today;
-        function a(f) {
-            let idx = f.idx.value;
-            let title = f.title.value;
-            let studyType = f.studyType.value;
-            let studyIntro = f.studyIntro.value;
-            let writer = f.writer.value;
-            let writeDate = f.writeDate.value;
-            if (title == '') {
-                alert('제목작성하셈');
-                return;
-            }
-            if (studyType == '') {
-                alert('타입 선택하셈');
-                return;
-            }
-            if (studyIntro == '') {
-                alert('설명 작성하셈');
-                return;
-            }
-            let url = '/recruitmentorlist/post/modifyform/modify';
-            let param = "idx=" + idx +
-                        "&title=" + title +
-                        "&writer=" + writer +
-                        "&writeDate=" + writeDate +
-                        "&studyType=" + studyType +
-                        "&studyIntro=" + studyIntro;
-            sendRequest(url, param, res, "GET");
+    //현재 시간을 설정하는 변수
+    const TIME_ZONE = 3240 * 10000;
+    //시간에서 날짜만 따로 잘라낼 변수
+    let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
+    //날짜를 저장할 변수
+    let writeDate = document.getElementById("writeDate");
+    //날짜 저장
+    writeDate.value = today;
+    //멘토구하기 내용 변경 메서드
+    function mentorModify(f) {
+        let idx = f.idx.value;
+        let title = f.title.value;
+        let studyType = f.studyType.value;
+        let studyIntro = f.studyIntro.value;
+        let writer = f.writer.value;
+        let writeDate = f.writeDate.value;
+        if (title == '') {
+            alert('제목작성하셈');
+            return;
         }
-        function res() {
-            if ( xhr.readyState == 4 && xhr.status == 200 ) {
-                var data = xhr.responseText;
-                if(data == 'no') {
-                    alert('내용변경 실패');
-                    return;
-                } else {
-                    alert('내용변경 성공');
-                    location.href="/recruitmentorlist";
-                }
+        if (studyType == '') {
+            alert('타입 선택하셈');
+            return;
+        }
+        if (studyIntro == '') {
+            alert('설명 작성하셈');
+            return;
+        }
+        let url = '/recruitmentorlist/post/modifyform/modify';
+        let param = "idx=" + idx +
+                    "&title=" + title +
+                    "&writer=" + writer +
+                    "&writeDate=" + writeDate +
+                    "&studyType=" + studyType +
+                    "&studyIntro=" + studyIntro;
+        sendRequest(url, param, res, "GET");
+    }
+
+    function res() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no') {
+                alert('내용변경 실패');
+                return;
+            } else {
+                alert('내용변경 성공');
+                location.href="/recruitmentorlist";
             }
         }
+    }
 </script>
 </html>

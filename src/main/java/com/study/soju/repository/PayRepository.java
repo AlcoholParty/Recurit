@@ -11,9 +11,11 @@ import java.util.List;
 
 @Repository
 public interface PayRepository extends JpaRepository<Pay, Object> {
-    List<Pay> findByBuyerEmail(String buyerEmail); //결제 항목들을 리스트로 이메일이 일치하는 모든값을 가져가기
-    Pay findByImpUid(String impUid); //impUid 로 일치하는 결제 항목 가져가기
-
+    //이메일로 결제 리스트 검색
+    List<Pay> findByBuyerEmail(String buyerEmail);
+    //impUid 로 결제객체 검색
+    Pay findByImpUid(String impUid);
+    //itemName 으로 결제 리스트 검색
     @Modifying(clearAutomatically = true)
     @Query(value = "SELECT * FROM Pay WHERE itemName=:itemName", nativeQuery = true)
     List<Pay> commentList(@Param("itemName") String itemName);

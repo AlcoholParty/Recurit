@@ -8,8 +8,11 @@
     <script type="text/javascript" src="/js/httpRequest.js"></script>
     <script th:inline="javascript">
         //현재시간으로 uid설정
+        //현재 날짜 가져오기
         let day = new Date().toTimeString().split(' ')[0];
+        //타임존 설정
         const TIME_ZONE = 3240 * 10000;
+        //오늘 날짜 시간 가져오기
         let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
         var IMP = window.IMP;
         //init로 객체초기화(가맹점식별코드)
@@ -46,7 +49,6 @@
                     //alert("결제 상황 : " + rsp.status);
                     //alert("결제 승인 시각 : " + rsp.paid_at);
                     //alert("매출전표" + rsp.receipt_url);
-                    //location.href='/payform';
                     //ajax사용
                     //alert(rsp.name);
                     var url = "/store/complete";

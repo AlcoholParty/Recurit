@@ -7,7 +7,7 @@
 <body>
     <h1>이용권</h1>
     <input type="button" value="뒤로가기" onclick="location.href='/store'">
-    <!-- list목록 끌고오는거임 -->
+    <!-- 멤버쉽 리스트 -->
     <div th:each="store:${categoryList}" style="border: 1px solid black;">
         <div>
             <span>
@@ -22,6 +22,7 @@
             </span>
         </div>
     </div>
+    <!-- 페이징처리를 자바에서 처리해 넘어올 객체 -->
     <div th:utext="${pageMenu}">
 
     </div>

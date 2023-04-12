@@ -63,7 +63,8 @@
                         <div class="notiDrop">
                             <p>최근 알림</p>
                             <div class="notiList">
-                                <a class="notiDropMenu" href="/" th:each="alarm : ${alarmList}">
+                                <!-- 여기에 있는 a링크 꼭 다 지워주세요 안그러면 알림 안먹어요 -->
+                                <a class="notiDropMenu" th:each="alarm : ${alarmList}">
                                     <div th:if="${alarm.alarmType} == '2'">
                                         <form>
                                             <span class="notiCircle"></span>
@@ -72,7 +73,8 @@
                                             <input type="hidden" name="recruitStudyIdx" th:value="${alarm.recruitStudyIdx}">
                                             <input type="hidden" name="recruitMentorIdx" th:value="${alarm.recruitMentorIdx}">
                                             <input type="hidden" name="recruitMenteeIdx" th:value="${alarm.recruitMenteeIdx}">
-                                            <input type="button" value="수락" onclick="recruitAccept1(this.form);">
+                                            <input type="hidden" name="nickname" th:value="${alarm.nickname}">
+                                            <input type="button" value="수락" onclick="recruitAccept(this.form);">
                                             <input type="button" value="거절" onclick="recruitRefuse(this.form);">
                                         </form>
                                     </div>

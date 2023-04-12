@@ -1,3 +1,4 @@
+//Pay 페이지에서 팝업을 띄울때 사용할 메서드
 function payPopup(){
     let itemName = document.getElementById("itemName").innerHTML;
     let itemCount = document.getElementById("num").innerHTML;

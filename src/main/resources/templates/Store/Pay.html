@@ -92,6 +92,7 @@
 </body>
 <script src="/js/httpRequest.js"></script>
 <script th:inline="javascript">
+    //상품 좋아요
     function storeLike() {
         let idx = document.getElementById("storeIdx").value;
         let memberIdx = [[${memberIdx}]];
@@ -122,6 +123,7 @@
     }
 </script>
 <script th:inline="javascript">
+    //구매자 댓글
     function writeComment() {
         let comment = document.getElementById("comment").value;
         let idx = document.getElementById("storeIdx").value;

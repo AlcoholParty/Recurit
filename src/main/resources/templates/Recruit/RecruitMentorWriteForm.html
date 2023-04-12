@@ -35,18 +35,23 @@
                 <textarea name="studyIntro"></textarea>
             </li>
             <li>
-                <input type="button" value="작성하기" onclick="a(this.form);">
+                <input type="button" value="작성하기" onclick="mentorWrite(this.form);">
             </li>
         </ul>
     </form>
     <input type="button" value="뒤로가기" onclick="location.href='/recruitmentorlist'">
 </body>
 <script>
-    const TIME_ZONE = 3240 * 10000; // 현재 시간을 설정하는 변수
+    //현재 시간을 설정하는 변수
+    const TIME_ZONE = 3240 * 10000;
+    //시간에서 날짜만 따로 잘라낼 변수
     let today = new Date(+new Date() + TIME_ZONE).toISOString().split('T')[0];
+    //날짜를 저장할 변수
     let writeDate = document.getElementById("writeDate");
+    //날짜 저장
     writeDate.value = today;
-    function a(f) {
+    //멘토프로필 작성하는 메서드
+    function mentorWrite(f) {
         let title = f.title.value;
         let studyType = f.studyType.value;
         let studyIntro = f.studyIntro.value;

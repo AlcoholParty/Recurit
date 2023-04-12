@@ -5,7 +5,8 @@
     <title>Title</title>
     <script type="text/javascript" src="/js/httpRequest.js"></script>
     <script>
-        function c(merchantUid, email, impUid) {
+        //환불 메서드
+        function refund(merchantUid, email, impUid) {
             //정말로 환불 할껀지 확인
             let result = confirm("환불하시겠습니까??");
             if(result == true){
@@ -14,12 +15,12 @@
                 let param = "merchantUid=" + merchantUid +
                             "&impUid=" + impUid +
                             "&buyerEmail=" + email;
-                sendRequest(url, param, res, "post");
+                sendRequest(url, param, refundRes, "post");
             }else{
                 alert("취소");
             }
         }
-        function res() {
+        function refundRes() {
         	if (xhr.readyState == 4 && xhr.status == 200) {
 		        var data = xhr.responseText;
 		        if (data == "no") {
@@ -39,6 +40,7 @@
 <body>
     <h1>구매내역</h1>
     <input type="button" value="뒤로가기" onclick="location.href='/'">
+    <!-- 결제내역 리스트 -->
     <div th:each="pay:${payList}" style="border: 1px solid black;">
         <div>
             <div>
@@ -54,7 +56,7 @@
                    th:impUid="${pay.impUid}"
                    th:email="${pay.buyerEmail}"
                    value="환불하기"
-                   th:onclick="c(this.getAttribute('merchantUid'),
+                   th:onclick="refund(this.getAttribute('merchantUid'),
                                      this.getAttribute('email'),
                                      this.getAttribute('impUid')
                                      )">

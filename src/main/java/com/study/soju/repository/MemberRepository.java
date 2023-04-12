@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Object> {
+    //이메일로 검색
     Member findByEmailId(String emailId);
-
+    //닉네임으로 검색
     Member findByNickname(String nickname);
 
 }

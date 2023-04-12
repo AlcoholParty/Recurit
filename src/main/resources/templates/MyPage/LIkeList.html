@@ -9,8 +9,9 @@
     <input type="button" value="뒤로가기" onclick="location.href='/mypage'">
     <div style="border: 1px solid black; width: 100%; height: 400px; overflow: scroll;">
         <h2>스터디원 구하기</h2>
-        <form  th:each="recruitStudy : ${studyList}">
-            <div style="border: 1px solid black">
+        <!-- 좋아요를 한 목록중 study 리스트 -->
+        <div style="border: 1px solid black" th:each="recruitStudy : ${studyList}">
+            <form>
                 <input type="text" name="idx" th:value="${recruitStudy.idx}" readonly>
                 <div th:if="${recruitStudy.recruiting} == '0'">
                     모집중
@@ -31,11 +32,12 @@
                 <div th:text="${recruitStudy.studyIntro}">
                     내용
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
     <div style="border: 1px solid black; width: 100%; height: 400px; overflow: scroll; margin-top: 10px;">
         <h2>멘토 구하기</h2>
+        <!-- 좋아요를 한 목록중 mentor 리스트 -->
         <div style="border: 1px solid black" th:each="recruitMentor : ${mentorList}">
             <form>
                 <input type="hidden" th:value="${recruitMentor.idx}" name="idx">
@@ -54,6 +56,7 @@
     </div>
     <div style="border: 1px solid black; width: 100%; height: 400px; overflow: scroll; margin-top: 10px;">
         <h2>멘토 프로필</h2>
+        <!-- 좋아요를 한 목록중 mentee 리스트 -->
         <div style="border: 1px solid black" th:each="recruitMentee : ${menteeList}">
             <form>
                 <input type="hidden" th:value="${recruitMentee.idx}" name="idx">
@@ -81,16 +84,19 @@
     </div>
 </body>
 <script th:inline="javascript">
+    //상세보기버튼 클릭시 실행될 메서드
     function changeStudy(f){
         f.action = '/recruitstudy/post';
         f.method = "GET";
         f.submit();
     }
+    //상세보기버튼 클릭시 실행될 메서드
     function changeMentor(f){
         f.action = '/recruitmentorlist/post';
         f.method = "GET";
         f.submit();
     }
+    //상세보기버튼 클릭시 실행될 메서드
     function changeMentee(f){
         f.action = '/mentorprofilelist/post';
         f.method = "GET";

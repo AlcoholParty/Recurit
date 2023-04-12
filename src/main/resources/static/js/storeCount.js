@@ -1,3 +1,4 @@
+//Pay 페이지에서 숫자를 증가시키고 감소시킬때 사용되는 메서드
 function count(f){
     const staticPrice = parseInt(document.getElementById("staticPrice").value);
     let price = document.getElementById("price");

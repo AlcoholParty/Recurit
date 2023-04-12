@@ -43,19 +43,26 @@ public class MainController {
             // 1-2. 로그인을 한 경우
         } else {
             // 1-2-1. 메인 페이지로 이동한다.
+            //닉네임 검색
             String nickname = signUpService.returnNickname(principal.getName());
+            //모델 바인딩
             model.addAttribute("nickname", nickname);
+            //알림 카운트 검색
             int alarmCount = myPageService.alarmCount(principal.getName());
+            //모델 바인딩
             model.addAttribute("alarmCount", alarmCount);
-
+            //본인에게 온 이메일 리스트 검색
             List<Alarm> alarmList = myPageService.findEmailId(principal.getName());
+            //모델 바인딩
             model.addAttribute("alarmList", alarmList);
+            //가장 인기있는 스터디 리스트 검색
             List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 10);
+            //모델 바인딩
             model.addAttribute("list", recruitStudyList);
-
+            //요즘 주목받는 멘토 리스트 검색
             List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 10);
+            //모델 바인딩
             model.addAttribute("menteeList", recruitMenteeList);
-            System.out.println("제발 나오지마세용");
             return "Main";
         }
     }
@@ -64,9 +71,13 @@ public class MainController {
     @GetMapping("/n")
     public String nmain(Model model) {
         // 1. 메인 페이지로 이동한다.
+        //가장 인기있는 스터디 리스트 검색
         List<RecruitStudy> recruitStudyList = recruitStudyService.recruitStudyListAll(1, 10);
+        //모델 바인딩
         model.addAttribute("list", recruitStudyList);
+        //요즘 주목받는 멘토 리스트 검색
         List<RecruitMentee> recruitMenteeList = recruitMenteeService.recruitMenteeListAll(1, 10);
+        //모델 바인딩
         model.addAttribute("menteeList", recruitMenteeList);
         return "Main";
     }

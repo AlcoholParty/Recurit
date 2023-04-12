@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class RecruitStudyService {
+
     @Autowired
     RecruitStudyRepository recruitStudyRepository;
 
@@ -26,224 +27,290 @@ public class RecruitStudyService {
     @Autowired
     AlarmRepository alarmRepository;
 
+    //멤버 idx 로 스터디원구하기중 좋아요를 한 리스트 검색 메서드
     public List<RecruitStudy> likeList(long idx) {
+        //멤버 idx 로 스터디원구하기 좋아요 리스트 검색
         List<RecruitStudyLike> likeList = recruitStudyLikeRepository.findByMemberIdx(idx);
+        //스터디원구하기 리스트 생성
         List<RecruitStudy> recruitStudyList = new ArrayList<>();
+        //스터디원구하기 좋아요 리스트 수만큼 스터디원구하기 리스트에 스터디원구하기 객체 저장
         for(int i = 0; i < likeList.size(); i++) {
             RecruitStudy recruitStudy = recruitStudyRepository.findByIdx(likeList.get(i).getLikeIdx());
             recruitStudyList.add(recruitStudy);
         }
+        //스터디원구하기 리스트 리턴
         return recruitStudyList;
     }
 
-    //닉네임으로 emailId 가져오기
+    //닉네임으로 emailId를 검색하는 메서드
     public String returnEmailId(String nickname) {
+        //닉네임으로 멤버 객체를 검색한 이후 멤버 객체에서 이메일을 리턴
         return memberRepository.findByNickname(nickname).getEmailId();
     }
 
-    //페이징을 위한 전체 게시물 갯수 반환하기
+    //페이징 처리를 위한 열 갯수를 반환하는 메서드
     public int rowTotal() {
-        //전체 카운트 갯수를 반환하는것은 long 타입이기때문에 int 로 형변환을 해준다.
+        //스터디원구하기 리스트 갯수 리턴
         return Long.valueOf(recruitStudyRepository.count()).intValue();
     }
 
+    //페이징 처리를 위한 스터디타입에 맞는 열 갯수를 반환하는 메서드
     public int rowTotal(String studyType) {
-        //전체 카운트 갯수를 반환하는것은 long 타입이기때문에 int 로 형변환을 해준다.
+        //스터디타입에 맞는 스터디원구하기 리스트 갯수 반환
         return Long.valueOf(recruitStudyRepository.countByStudyType(studyType)).intValue();
     }
 
-    //메인 페이지에 넘겨주기 위해서 사용
+    //페이징 처리를 하는 메서드(메인 페이지)
     public List<RecruitStudy> recruitStudyListAll(int start, int end) {
+        //페이징 처리를 위해서 start 숫자와 end 숫자를 보내 그 길이 안에 맞는 리스트 검색 후 리턴
         return recruitStudyRepository.findRecruitStudyListRanking(start, end);
     }
 
-    //메인 페이지에서 스터디 타입을 선택했을 때 사용하는 메서드
+    //피이징 처리를 하는 메서드(어느분야에 관심이있나요 페이지)
     public List<RecruitStudy> recruitStudyListAll(HashMap<String, Integer> map, String studyType) {
+        //페이징 처리를 위해서 start 숫자와 end 숫자, 스터디타입을 보내 스터디타입에 맞고 그 길이 안에 맞는 리스트를 검색 후 리턴
         List<RecruitStudy> recruitStudyList = recruitStudyRepository.findRecruitStudyList(map.get("start"), map.get("end"), studyType);
         return recruitStudyList;
     }
 
-    //스터디원 구하기 페이지에서 사용하는 메서드
+    //페이징 처리를 하는 메서드(스터디원구하기 페이지)
     public List<RecruitStudy> recruitStudyListAll(HashMap<String, Integer> map) {
+        //페이징 처리를 위헤서 start 숫자와 end 숫자를 보내 그 길이 안에 맞는 리스트 검색 후 리턴
         List<RecruitStudy> recruitStudyList = recruitStudyRepository.findRecruitStudyList(map.get("start"), map.get("end"));
         return recruitStudyList;
     }
 
-    //글쓴내용 저장
+    //스터디원구하기 글쓴내용을 저장하는 메서드
     public void writeRecruitStudy(RecruitStudy recruitStudy) {
         //스터디원을 구할때 본인도 들어가기때문에 기본 설정값을 1로 잡아준다.
         recruitStudy.setRecruitingPersonnel(1);
+        //스터디원구하기 객체 저장
         recruitStudyRepository.save(recruitStudy);
     }
 
-    //이메일로 닉네임 검색
+    //이메일로 닉네임을 검색하는 메서드
     public String returnNickname(String emailId) {
+        //이메일로 멤버 객체 검색
         Member member = memberRepository.findByEmailId(emailId);
+        //닉네임 변수에 멤버 객체의 닉네임을 저장
         String nickname = member.getNickname();
+        //닉네임 변수 리턴
         return nickname;
     }
 
+    //이메일로 멤버 idx 를 반환하는 메서드
     public long returnIdx(String emailId) {
+        //멤버 이메일로 멤버 객체 검색
         Member member = memberRepository.findByEmailId(emailId);
+        //멤버 idx 리턴
         return member.getIdx();
     }
 
-//    //리스트로 전체내용 뽑아오기
-//    이건 Page 클래스를 이용하는 방식
-//    public Page<RecruitStudy> recruitStudyListAll(int page) { // page 파라미터를 받아서 현재 어느 페이지에 있는지 알려줌
-//        //게시물을 역순으로 보여주기 위해서 Sort.Order 객체로 이루어진 리스트를 생성
-//        //List<Sort.Order> sorts = new ArrayList<>();
-//        //이후 리스트에 idx 를 역순으로 정렬한다.
-//        //sorts.add(Sort.Order.desc("idx"));
-//        //이후 파라미터값에 Sort.by(소트 리스트) 를 추가해서 page 리스트를 받아온다.
-//        //맨처음에 studyLike로 정렬
-//        Pageable pageable = PageRequest.of(page, 2, Sort.by("idx")); // 총 5개의 값들을 보여줄것이고 현재 페이지 위치를 알려줌
-//        Page<RecruitStudy> recruitStudyList = recruitStudyRepository.findAll(pageable);
-//        return recruitStudyList; // 그 정보를 가진 pageable 객체를 가지고 findAll 로 리스트를 가져운다(Page 객체지만 리스트와 비슷함)
-//    }
-
-    //title 로 객체 찾기
+    //스터디원구하기 idx 로 스터디원구하기 객체를 검색하는 메서드
     public RecruitStudy findRecruitStudy(long idx) {
+        //스터디원구하기 idx 로 스터디원구하기 객체 검색
         RecruitStudy recruitStudy = recruitStudyRepository.findByIdx(idx);
+        //스터디원구하기 객체 리턴
         return recruitStudy;
     }
 
-    //writer 로 객체 찾기
+    //작성자로 스터디원구하기 객체를 검색하는 메서드
     public RecruitStudy findRecruitStudy(String writer) {
+        //작성자로 스터디원구하기 객체 검색 및 리턴
         return recruitStudyRepository.findByWriter(writer);
     }
 
-    //check 값을 확인해서 변경하기위한 메서드
+    //좋아요 값을 확인해서 변경하기위한 메서드
     public int likeCheck(long likeIdx, long memberIdx) {
+        //결과값을 저장하는 변수
         int count = 0;
+        //스터디원구하기 idx 와 멤버 idx 로 스터디원구하기 좋아요 객체 검색
         RecruitStudyLike recruitStudyLike = recruitStudyLikeRepository.findByLikeIdxAndMemberIdx(likeIdx, memberIdx);
+        //만약 스터디원구하기 좋아요 객체가 있다면
         if(recruitStudyLike != null) {
+            //결과값 변경
             count = 1;
         }
+        //결과값 리턴
         return count;
     }
 
-    //좋아요값 수정하기
+    //스터디원구하기에 좋아요를 눌렀는지 확인하는 메서드
     public RecruitStudy likeUpdate(RecruitStudyLike recruitStudyLike, Alarm alarm) {
-        //idx를 가지고 어떤 글인지 확인하고
-        //글의 객체를 가지고옴
-        //RecruitStudy beforeRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
-        //좋아요 db 수정
-        //studyIdx 와 memberIdx 로 객체가 있는지 조회한뒤 null 값이면 값이 없는것 이므로 데이터 저장
-        //만약 값이 있다면 그 저장된 정보를 삭제
+        //스터디원구하기 idx 와 멤버 idx 로 스터디원구하기 좋아요 객체 검색
         RecruitStudyLike recruitStudyLike1 = recruitStudyLikeRepository.findByLikeIdxAndMemberIdx(recruitStudyLike.getLikeIdx(), recruitStudyLike.getMemberIdx());
+        //스터디원구하기 객체 생성
         RecruitStudy afterRecruitStudy = null;
+        //만약 스터디원구하기 좋아요 객체가 없다면
         if (recruitStudyLike1 == null) {
+            //스터디원구하기 좋아요 저장
             recruitStudyLikeRepository.save(recruitStudyLike);
+            //스터디원구하기에 좋아요 갯수 업데이트
             recruitStudyRepository.updateStudyLikeCount(recruitStudyLike.getLikeIdx());
+            //업데이트된 좋아요 갯수를 받아오기위해 스터디원구하기 객체 검색
             afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudyLike.getLikeIdx());
             //좋아요를 눌렀을때 알람 생성
             alarm.setTitle(alarm.getNickname() + "님 이 좋아요를 눌렀어요");
             //알람 생성
             alarmRepository.save(alarm);
+        //스터디원구하기 좋아요 객체가 있다면
         }else {
-            //저장이 되어있는거니깐 데이터베이스 삭제
+            //스터디원구하기 좋아요 삭제
             recruitStudyLikeRepository.delete(recruitStudyLike1);
+            //스터디원구하기 좋아요 갯수 업데이트
             recruitStudyRepository.updateStudyLikeCount(recruitStudyLike1.getLikeIdx());
+            //업데이트된 좋아요 갯수를 받아오기위해 스터디원구하기 객체 검색
             afterRecruitStudy = recruitStudyRepository.findByIdx(recruitStudyLike1.getLikeIdx());
         }
-        //like 의 갯수는 studyIdx 로 저장된 정보들 갯수를 카운트 해서 like 에 저장
-        //int studyLike = recruitStudyLikeRepository.countByLikeIdx(recruitStudyLike.getLikeIdx());
-        //beforeRecruitStudy.setStudyLike(studyLike);
-        //RecruitStudy afterRecruitStudy = recruitStudyRepository.save(beforeRecruitStudy);
-        //RecruitStudy afterRecruitStudy = recruitStudyLikeRepository.updateStudyLikeCount(recruitStudyLike.getLikeIdx());
+        //스터디원구하기 객체 리턴
         return afterRecruitStudy;
     }
 
-    //업데이트 쿼리문
+    //스터디원구하기 글을 수정하는 메서드
     public String modify(RecruitStudy recruitStudy) {
+        //결과값 저장 변수
+        String res = "no";
+        //스터디원구하기 글을 변경하기 이전 스터디원구하기 객체에 저장
         RecruitStudy beforeRecruitStudy = recruitStudyRepository.findByIdx(recruitStudy.getIdx());
+        //만약 변경 이전 스터디원구하기 객체의 구해진 인원수가 변경하려는 스터디원구하기 객체의 총 인원수보다 많으면
         if(beforeRecruitStudy.getRecruitingPersonnel() > recruitStudy.getPersonnel()) {
-            //모집중인 인원이 바꾸려는 총 인원수보다 많으면 안된다.
-            return "fail";
+            //결과값 변경
+            res = "fail";
+        //변경이전 스터디원구하기 객체의 구해진 인원수가 변경하려는 스터디원구하기 객체의 총 인원보다 적거나 같을때
         } else{
+            //만약 변경이전 스터디원구하기 객체의 구해진 인원수가 변경하려는 스터디원구하기 객체의 총 인원과 같으면
             if(beforeRecruitStudy.getRecruitingPersonnel() == recruitStudy.getPersonnel()) {
-                //만약 바꾸려는 인원수와 모아진 인원수가 같다면 모집중을 모집완료로 변경한다
+                //모집 상태를 변경
                 beforeRecruitStudy.setRecruiting(1);
+            //변경 이전 스터디원구하기 객체의 구해진 인원수가 변경하려는 스터디원구하기 객체의 총 인원보다 적으면
             }else{
-                //바꾸려는 인원이 모아진 인원수보다 많다면 모집중으로 변경
+                //모집상태를 변경
                 beforeRecruitStudy.setRecruiting(0);
             }
-            beforeRecruitStudy.setTitle(recruitStudy.getTitle());//제목변경
-            beforeRecruitStudy.setStudyType(recruitStudy.getStudyType());//타입 변경
-            beforeRecruitStudy.setPersonnel(recruitStudy.getPersonnel());//인원수 변경
-            beforeRecruitStudy.setImage(recruitStudy.getImage());//이미지 변경
-            beforeRecruitStudy.setStudyIntro(recruitStudy.getStudyIntro());//내용 변경
+            //스터디원구하기 제목 변경
+            beforeRecruitStudy.setTitle(recruitStudy.getTitle());
+            //스터디원구하기 타입 변경
+            beforeRecruitStudy.setStudyType(recruitStudy.getStudyType());
+            //스터디원구하기 인원수 변경
+            beforeRecruitStudy.setPersonnel(recruitStudy.getPersonnel());
+            //스터디원구하기 이미지 변경
+            beforeRecruitStudy.setImage(recruitStudy.getImage());
+            //스터디원구하기 내용 변경
+            beforeRecruitStudy.setStudyIntro(recruitStudy.getStudyIntro());
+            //스터디원구하기 객체 업데이트
             recruitStudyRepository.save(beforeRecruitStudy);
-            return "success";
+            //결과값 변경
+            res = "success";
         }
+        //결과값 리턴
+        return res;
     }
 
-    //내용 삭제
+    //스터디원구하기 글을 삭제하는 메서드
     public String delete(RecruitStudy recruitStudy) {
-        recruitStudyRepository.delete(recruitStudy);
-        return "yes";
+        //결과값 저장 변수
+        String res = "no";
+        //만약 스터디원구하기 객체가 있다면
+        if(recruitStudy != null) {
+            //스터디원구하기 삭제
+            recruitStudyRepository.delete(recruitStudy);
+            //결과값 변경
+            res = "yes";
+        }
+        //결과값 리턴
+        return res;
     }
 
-    //전체 댓글 리스트
+    //스터디원구하기 idx 로 스터디원구하기 댓글 리스트를 반환하는 메서드
     public List<RecruitStudyComment> findCommentList(long commentIdx) {
+        //스터디원구하기 idx 로 스터디원구하기 댓글 리스트를 검색
         List<RecruitStudyComment> recruitStudyCommentList = recruitStudyCommentRepository.findByCommentIdx(commentIdx);
+        //스터디원구하기 댓글 리스트 리턴
         return recruitStudyCommentList;
     }
 
-    //댓글 저장
+    //스터디원구하기 댓글을 저장하는 메서드
     public String saveComment(RecruitStudyComment recruitStudyComment, Alarm alarm) {
+        //결과값을 저장하는 변수
         String res = "no";
+        //만약 스터디원구하기 댓글 객체가 있다면
         if (recruitStudyComment != null) {
+            //스터디원구하기 댓글 데이터베이스에 저장
             recruitStudyCommentRepository.save(recruitStudyComment);
+            //스터디원구하기 댓글 알림 내용 생성
             alarm.setTitle(alarm.getNickname() + "님 이 댓글을 달았어요");
+            //스터디원구하기 댓글 알림 저장
             alarmRepository.save(alarm);
+            //결과값 변경
             res = "yes";
         }
+        //결과값 리턴
         return res;
     }
 
-    //댓글 삭제
+    //스터디원구하기 댓글 idx 로 스터디원구하기 댓글을 삭제하는 메서드
     public String deleteComment(long idx) {
+        //결과값을 저장하는 변수
         String res = "no";
+        //스터디원구하기 댓글 idx 로 스터디원구하기 댓글 객체 검색
         RecruitStudyComment deleteComment = recruitStudyCommentRepository.findByIdx(idx);
+        //만약 스터디원구하기 댓글이 있다면
         if(deleteComment != null) {
+            //스터디원구하기 댓글 삭제처리
             deleteComment.setDeleteCheck(1);
+            //스터디원구하기 댓글 저장
             recruitStudyCommentRepository.save(deleteComment);
+            //결과값 변경
             res = "yes";
         }
+        //결과값 리턴
         return res;
     }
 
-    //댓글 수정
+    //스터디원구하기 댓글을 수정하는 메서드
     public String modifyComment(RecruitStudyComment recruitStudyComment) {
+        //결과값을 저장하는 변수
         String res = "no";
+        //스터디원구하기 댓글 객체를 파라미터로 받아온 스터디원구하기 댓글 idx 로 검색
         RecruitStudyComment beforeModify = recruitStudyCommentRepository.findByIdx(recruitStudyComment.getIdx());
+        //만약 검색한 스터디원구하기 댓글이 있다면
         if(beforeModify != null) {
+            //스터디원구하기 댓글 내용 변경
             beforeModify.setComment(recruitStudyComment.getComment());
+            //스터디원구하기 댓글 작성시간 변경
             beforeModify.setWriteDate(recruitStudyComment.getWriteDate());
+            //스터디원구하기 댓글 업데이트
             recruitStudyCommentRepository.save(beforeModify);
+            //결과값 변경
             res = "yes";
         }
+        //결과값 리턴
         return res;
     }
 
-    //스터디원 신청
+    //스터디원구하기 신청 알림을 보내는 메서드
     public String studyApply(Alarm alarm) {
-        //인원추가 아직안넣어둠
+        //결과값을 저장할 변수
         String res = "no";
-        //신청이 두번 가지않게 하기위해서 알람 타입, 이메일, 닉네임, 스터디글 idx 를 확인해서 있으면 중복이므로 알람을 생성하지 않는다.
+        //알람 타입, 이메일, 닉네임, 스터디원구하기 idx 로 알림 객체 검색
         Alarm alarm1 = alarmRepository.findByAlarmTypeAndEmailIdAndNicknameAndRecruitStudyIdx(alarm.getAlarmType(),
-                                                                                              alarm.getEmailId(),
-                                                                                              alarm.getNickname(),
-                                                                                              alarm.getRecruitStudyIdx());
+                alarm.getEmailId(),
+                alarm.getNickname(),
+                alarm.getRecruitStudyIdx());
+        //만약 알림이 있다면 이미 신청을 한 상태이므로
         if(alarm1 != null) {
+            //결과값 변경
             res = "exist";
+        //알림이 없다면 신청을 안한 상태이므로
         } else {
+            //알림 내용 생성
             alarm.setTitle(alarm.getNickname() + "님 이 스터디원 신청을 했습니다.");
+            //알림 객체 저장
             alarmRepository.save(alarm);
+            //결과값 변경
             res = "yes";
         }
+        //결과값 리턴
         return res;
     }
 
