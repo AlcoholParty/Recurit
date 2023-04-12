@@ -229,3 +229,17 @@
 		likeIdx BIGINT,
 		memberIdx BIGINT
 	);
+
+## 04/12
+### 스토어 댓글 기능 넣기
+### 댓글은 구매한 사람만 작성할 수 있게 설정
+### 댓글 수정 및 삭제기능 추가
+### 추가된 데이터베이스
+### StoreComment
+	CREATE TABLE StoreComment(
+		idx BIGINT PROMARY KEY,
+		commentIdx BIGINT NOT NULL,
+		writer VARCHAR(20) NOT NULL,
+		comment VARCHAR(100) NOT NULL,
+		deleteCheck INT NOT NULL
+	);
