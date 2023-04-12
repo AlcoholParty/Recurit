@@ -1,13 +1,7 @@
 package com.study.soju.service;
 
-import com.study.soju.entity.Member;
-import com.study.soju.entity.Pay;
-import com.study.soju.entity.Store;
-import com.study.soju.entity.StoreLike;
-import com.study.soju.repository.MemberRepository;
-import com.study.soju.repository.PayRepository;
-import com.study.soju.repository.StoreLikeRepository;
-import com.study.soju.repository.StoreRepository;
+import com.study.soju.entity.*;
+import com.study.soju.repository.*;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +22,19 @@ public class PayService {
     @Autowired
     StoreLikeRepository storeLikeRepository;
 
+    @Autowired
+    StoreCommentRepository storeCommentRepository;
+
     //멤버 객체 정보 조회
     public Member findAll(String emailId){
         Member member = memberRepository.findByEmailId(emailId);
         return member;
+    }
+
+    public String returnNickname(String emailId) {
+        Member member = memberRepository.findByEmailId(emailId);
+        String nickname = member.getNickname();
+        return nickname;
     }
 
     //모든 상품 리스트로 끌어오기
@@ -110,4 +113,43 @@ public class PayService {
         return afterStore;
     }
 
+    public List<Pay> commentList(String itemName) {
+        return payRepository.commentList(itemName);
+    }
+
+    public List<StoreComment> storeCommentList() {
+        return storeCommentRepository.findAll();
+    }
+
+    public String saveComment(StoreComment storeComment) {
+        String res = "no";
+        if(storeComment != null) {
+            storeCommentRepository.save(storeComment);
+            res = "yes";
+        }
+        return res;
+    }
+
+    public String deleteComment(long idx) {
+        String res = "no";
+        StoreComment deleteComment = storeCommentRepository.findByIdx(idx);
+        if(deleteComment != null) {
+            deleteComment.setDeleteCheck(1);
+            storeCommentRepository.save(deleteComment);
+            res = "yes";
+        }
+        return res;
+    }
+
+    //댓글 수정
+    public String modifyComment(StoreComment storeComment) {
+        String res = "no";
+        StoreComment beforeModify = storeCommentRepository.findByIdx(storeComment.getIdx());
+        if(beforeModify != null) {
+            beforeModify.setComment(storeComment.getComment());
+            storeCommentRepository.save(beforeModify);
+            res = "yes";
+        }
+        return res;
+    }
 }

@@ -10,10 +10,10 @@ function deleteRes() {
         var data = xhr.responseText;
         if(data == 'no'){
             alert("삭제 실패");
-            return;
+            location.reload();
         } else {
             alert("삭제 성공");
-            return;
+            location.reload();
         }
     }
 }
@@ -41,16 +41,16 @@ function acceptRes1() {
         } else {
             if(data == 'study') {
                 alert("스터디원 구하기 수락 성공");
-                return;
+                location.reload();
             } else if(data == 'mentor') {
                 alert("멘토 구하기 수락 성공");
-                return;
+                location.reload();
             } else if(data == 'mentee') {
                 alert("멘티 구하기 수락 성공");
-                return;
+                location.reload();
             } else if(data == 'excess') {
                 alert("인원이 다 구해져 받을 수 없습니다.");
-                return;
+                location.reload();
             }
         }
     }
@@ -71,10 +71,10 @@ function refuseRes() {
         var data = xhr.responseText;
         if(data == 'no'){
             alert("거절 실패");
-            return;
+            location.reload();
         } else {
             alert("거절 성공");
-            return;
+            location.reload();
         }
     }
 }

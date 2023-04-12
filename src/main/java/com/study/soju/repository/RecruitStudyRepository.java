@@ -23,7 +23,7 @@ public interface RecruitStudyRepository extends JpaRepository<RecruitStudy, Obje
     Page<RecruitStudy> findAll(Pageable pageable);
 
     Long countByStudyType(String studyType);
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE RecruitStudy rs SET rs.studyLike = (SELECT COUNT(rsl) FROM RecruitStudyLike rsl WHERE rsl.likeIdx = :idx) WHERE rs.idx = :idx")
     void updateStudyLikeCount(@Param("idx") long idx);
 

@@ -107,6 +107,14 @@ public class StoreController {
         model.addAttribute("memberIdx", memberIdx);
         int check = payService.likeCheck(buyItem.getStoreIdx(), memberIdx);
         model.addAttribute("likeCheck", check);
+        //itemName, buyerEmail로 검색
+        List<Pay> payList = payService.commentList(store.getItemName());
+        model.addAttribute("payList", payList);
+        model.addAttribute("emailId", principal.getName());
+        String nickname = payService.returnNickname(principal.getName());
+        model.addAttribute("nickname", nickname);
+        List<StoreComment> storeCommentList = payService.storeCommentList();
+        model.addAttribute("commentList", storeCommentList);
         return "Store/Pay";
     }
 
@@ -168,10 +176,34 @@ public class StoreController {
         String res = "no";
         System.out.println(storeLike);
         Store afterStore = payService.likeUpdate(storeLike);
-        System.out.println(afterStore);
         if(afterStore != null) {
             res = String.valueOf(afterStore.getGoodsLike());
         }
+        return res;
+    }
+
+    @GetMapping("/pay/comment")
+    @ResponseBody
+    public String comment(StoreComment storeComment) {
+        String res = "no";
+        System.out.println(storeComment);
+        res = payService.saveComment(storeComment);
+        return res;
+    }
+
+    @GetMapping("/pay/comment/modify")
+    @ResponseBody
+    public String commentModify(StoreComment storeComment) {
+        String res = "no";
+        res = payService.modifyComment(storeComment);
+        return res;
+    }
+
+    @GetMapping("/pay/comment/delete")
+    @ResponseBody
+    public String commentDelete(StoreComment storeComment){
+        String res = "no";
+        res = payService.deleteComment(storeComment.getIdx());
         return res;
     }
 

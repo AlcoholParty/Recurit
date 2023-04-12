@@ -49,6 +49,46 @@
             </div>
         </div>
     </div>
+    <div th:each="pay:${payList}">
+    <!-- 댓글 -->
+        <div>
+            댓글 달기
+        </div>
+        <div th:if="${#strings.equals(emailId, pay.buyerEmail)}">
+            <div>
+               <input type="text" id="comment">
+            </div>
+            <div>
+                <input type="button" value="댓글달기" onclick="writeComment();">
+            </div>
+        </div>
+    </div>
+    <div>댓글 나오는곳</div>
+    <ul th:each="comment : ${commentList}" style="border:2px solid black;">
+        <div th:if="${comment.deleteCheck} == '0'">
+            <form>
+                <input type="hidden" name="idx" th:value="${comment.idx}">
+                <li>
+                    <span>작성자 : </span>
+                    <input type="text" name="writer" th:value="${comment.writer}" readonly>
+                </li>
+                <li>
+                    <span>내용 : </span>
+                    <textarea name="comment" th:text="${comment.comment}" readonly></textarea>
+                </li>
+                <li th:if="${nickname} == ${comment.writer}">
+                    <input name="beforeModify" type="button" value="수정" onclick="commentModifyForm(this.form);">
+                    <input name="modify" style="display:none;" type="button" value="수정하기" onclick="commentModify(this.form);">
+                    <input type="button" value="삭제" onclick="commentDelete(this.form);">
+                </li>
+            </form>
+        </div>
+        <div th:if="${comment.deleteCheck} == '1'">
+            <li>
+                <span>삭제된 댓글입니다.</span>
+            </li>
+        </div>
+    </ul>
 </body>
 <script src="/js/httpRequest.js"></script>
 <script th:inline="javascript">
@@ -80,5 +120,88 @@
             }
         }
     }
+</script>
+<script th:inline="javascript">
+    function writeComment() {
+        let comment = document.getElementById("comment").value;
+        let idx = document.getElementById("storeIdx").value;
+        if(comment == ''){
+            alert("내용을 작성하세요");
+            return;
+        }
+        let url = "/store/pay/comment";
+        let param = "commentIdx=" + idx +
+                    "&writer=" + [[${nickname}]] +
+                    "&comment=" + comment;
+        sendRequest(url, param, commentRes, "GET");
+    }
+
+    function commentRes() {
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("댓글 작성 실패");
+                return;
+            } else {
+                alert("댓글 작성 완료");
+                location.reload();
+            }
+        }
+    }
+//////////////////////////////////////////////////////댓글 수정////////////////////////////////////////////////////////////////
+    function commentModify(f){
+        let idx = f.idx.value;
+        let comment = f.comment.value;
+        if(comment == ''){
+            alert("내용을 작성하세요");
+            return;
+        }
+        let url = "/store/pay/comment/modify"
+        let param = "idx=" + idx +
+                    "&comment=" + comment;
+        sendRequest(url, param, commentModifyRes, "GET");
+    }
+    function commentModifyRes(){
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("댓글 수정 실패");
+                return;
+            } else {
+                alert("댓글 수정 완료");
+                location.reload();
+            }
+        }
+    }
+
+    function commentModifyForm(f) {
+        alert("내용을 변경해주세요");
+        f.comment.readOnly = false;
+        f.comment.value = "";
+        f.modify.style.display = "inline";
+        f.beforeModify.style.display = "none";
+    }
+//////////////////////////////////////////////////////댓글 수정////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////댓글 삭제////////////////////////////////////////////////////////////////
+    function commentDelete(f) {
+        let idx = f.idx.value;
+        let url = "/store/pay/comment/delete"
+        let param = "idx=" + idx;
+        sendRequest(url, param, deleteRes, "GET");
+    }
+    function deleteRes(){
+        if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var data = xhr.responseText;
+            if(data == 'no'){
+                alert("댓글 삭제 실패");
+                return;
+            } else {
+                alert("댓글 삭제 완료");
+                location.reload();
+            }
+        }
+    }
+//////////////////////////////////////////////////////댓글 삭제////////////////////////////////////////////////////////////////
 </script>
 </html>
