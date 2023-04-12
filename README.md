@@ -243,3 +243,24 @@
 		comment VARCHAR(100) NOT NULL,
 		deleteCheck INT NOT NULL
 	);
+
+## 04/13
+### 현재진행중인 만남 기능 넣기
+### 전체 주석정리
+### 추가된 데이터베이스
+### Meeting
+	CREATE TABLE Meeting(
+		idx BIGINT PRIMARY KEY,
+		emailId VARCHAR(20) NOT NULL,
+		recruitStudyIdx BIGINT,
+		recruitStudyImage VARCHAR(50),
+		recruitStudyTitle VARCHAR(100),
+		recruitMentorIdx BIGINT,
+		recruitMentorTitle VARCHAR(100),
+		recruitMentorWriter VARCHAR(20),
+		recruitMenteeIdx BIGINT,
+		recruitMenteeImage VARCHAR(50),
+		recruitMenteeTitle VARCHAR(100),
+		recruitMenteeWriter VARCHAR(20)
+	
+	);
