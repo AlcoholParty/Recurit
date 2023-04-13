@@ -35,4 +35,7 @@ public class Store {
 
     @Column(length = 50, nullable = false)
     private String itemName;
+
+    @Column(nullable = false,length = 50)
+    private String image;
 }
