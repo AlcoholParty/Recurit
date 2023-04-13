@@ -264,3 +264,18 @@
 		recruitMenteeWriter VARCHAR(20)
 	
 	);
+
+### store 테이블 변경
+### 변경된 테이블
+### Store
+	CREATE TABLE Store(
+		storeIdx BIGINT PRIMARY KEY AUTO_INCREMENT,
+		goods VARCHAR(50) NOT NULL,
+		category VARCHAR(50) NOT NULL,
+		price INT NOT NULL,
+		introduce VARCHAR(500),
+		stock INT(10) NOT NULL,
+		goodsLike INT NOT NULL,
+		itemName VARCHAR(50) NOT NULL,
+		image VARCHAR(50) NOT NULL
+	);
